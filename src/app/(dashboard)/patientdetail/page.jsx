@@ -22,6 +22,18 @@ import { Suspense, useEffect, useRef, useState } from "react";
   const dateInput = useRef();
 const timeInput = useRef();
 const operation = useRef();
+const statusOption =useRef()
+// function that reads from the local
+  let readAppointmentsFromLocalStorage = () => {
+  let isAppointments = localStorage.getItem('appointments');
+  return isAppointments ? JSON.parse(isAppointments) : [];
+}
+// function saves the data
+let saveAppointmentsAndSync = (newAppointments) => {
+  localStorage.setItem('appointments', JSON.stringify(newAppointments));
+  setAppointments(newAppointments);
+  setTheRequiredAppointmentPerPerson(newAppointments.filter((app) => app.patientId === paramsID));
+}
 
 let handleEdit =()=>{
 router.push(`/addpatient?id=${theRequiredPatient.id}`)
@@ -41,12 +53,10 @@ let handleNewAppointment =()=>{
     procedure : operation.current.value
 
   }
-let isAppointments = localStorage.getItem('appointments');
-let allClinicAppointments = isAppointments ? JSON.parse(isAppointments) : [];
-allClinicAppointments.push(newAppointment);
+let allAppointments = readAppointmentsFromLocalStorage()
+allAppointments.push(newAppointment);
 
-setTheRequiredAppointmentPerPerson(allClinicAppointments.filter((appointment) => appointment.patientId === paramsID));
-localStorage.setItem('appointments',JSON.stringify(allClinicAppointments))
+saveAppointmentsAndSync(allAppointments)
   timeInput.current.value = ''
   dateInput.current.value = ''
   operation.current.value = ''
@@ -61,26 +71,22 @@ localStorage.setItem('appointments',JSON.stringify(allClinicAppointments))
   setTheRequiredPatient(patients.find((patient)=>{return patient.id === paramsID}))
 
   // reading appointments data from the localStorage if there is 
-  let isAppointments = localStorage.getItem('appointments');
-  let appointmentsHere =isAppointments? JSON.parse(isAppointments) : []
-  setAppointments(appointmentsHere)
-    setTheRequiredAppointmentPerPerson(appointmentsHere.filter((appointment)=>{return appointment.patientId == paramsID })) 
+let allAppointments = readAppointmentsFromLocalStorage()
+saveAppointmentsAndSync(allAppointments)
     
   },[paramsID])
 
 // handle delete
 let handleDeleteAppointment =(appointment)=>{
-  let isAppointments = localStorage.getItem('appointments');
-  let appointmentsHere = isAppointments ? JSON.parse(isAppointments) : [];
-let filteredAppointments = appointmentsHere.filter((appointments)=>{return appointment.id !== appointments.id })
-localStorage.setItem('appointments', JSON.stringify(filteredAppointments));
-setTheRequiredAppointmentPerPerson(filteredAppointments.filter((item) => item.patientId === paramsID));
+let allAppointments = readAppointmentsFromLocalStorage()
+let filteredAppointments = allAppointments.filter((appointments)=>{return appointment.id !== appointments.id })
+saveAppointmentsAndSync(filteredAppointments)
 
 
 }
 // handle change Status
 let handleChangeStatus =(appointment,newStatus)=>{
-
+let allAppointments = readAppointmentsFromLocalStorage();
 }
 
 
@@ -197,10 +203,15 @@ theRequiredAppointmentPerPerson?.map((appointment)=>{
   <td className=" text-[#45556C] text-[10px] md:text-[18px]  text-center py-5  md:px-6">{appointment.time}</td>
   <td className=" text-[#45556C] text-[10px] md:text-[18px] text-center py-5  md:px-6">{appointment.procedure}</td>
   <td className=" py-5 px-2  md:px-6 text-center">
-  <select value={appointment.status || "مجدول"} >
+  <select value={appointment.status || "مجدول"} ref={statusOption}   onChange={(e) => handleChangeStatus(appointment, e.target.value)}
+  className={`px-2 text-[11px] py-0.5 font-bold shadow-md rounded-full outline-none ${
+  appointment.status === 'مكتمل' ? 'bg-[#ecfdf5] text-[#007A55]' :
+  appointment.status === 'في الانتظار' ? 'bg-[#fffbeb] text-[#BB4D00]' :
+  'bg-[#f8fafc] text-[#45556C]'
+}`}>
   <option value="مجدول" >مجدول</option>
-  <option value="في الانتظار">في الانتظار</option>
-  <option value="مكتمل"  className=" text-[#007A55] bg-[#ecfdf5]">مكتمل</option>
+  <option value="في الانتظار">انتظار</option>
+  <option value="مكتمل"  className=" ">مكتمل</option>
 </select>
   </td>
   <td className="   ">
