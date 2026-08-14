@@ -1,10 +1,36 @@
 import { Menu, Plus } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import { usePathname } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
 
 export default function NavBar({modal,setModal}) {
+  const pathName =usePathname();
+const [title,setTitle]=useState('')
+  useEffect(()=>{
+    if(pathName === '/'){
+setTitle("نظرة عامة")
+    }
+    else if(pathName ==='/patients'){
+      setTitle("المرضي")
+    }
+    else if(pathName === '/addpatient'){
+      setTitle( <div className=''>
+        <span className='  text-[#62748E] '><Link className='' href="/patients" >المرضي</Link> / </span>
+اضافه مريض جديد
+      </div>)
+    }
+    else if(pathName === "/patientdetail"){
+        setTitle( <div className=''>
+        <span className='  text-[#62748E] '><Link className='' href="/patients" >المرضي</Link> {' < '} </span>
+تفاصيل المريض
+      </div>)
+    }
+    else if(pathName === "/appointments"){
+      setTitle("المواعيد")
+    }
+  },[pathName])
   let handleModal =()=>{
 setModal(true)
 
@@ -18,7 +44,7 @@ setModal(true)
         </div> 
         {/* right side */}
 <div className="rightSide flex gap-2.5 md:gap-3 items-center md:text-[20px] text-[18px] ">
-    نظرة عامة 
+  <span className=''>{title}</span>  
  <div className="smallAndMidSideBar pt-1 pr-4 lg:hidden">
       <button onClick={handleModal}>    <Menu /></button>
   
