@@ -79,12 +79,12 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
   <tbody>
 {
 todaysAppointments?.map((appointment)=>{ 
-  return <tr key={appointment.id} >
+  return <tr key={appointment.id} className='transition duration-200 hover:bg-slate-50  border-b border-gray-200/70' >
     
-  <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-medium py-5  text-center md:px-6">{appointment.patientName}</td>
+  <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-bold py-5  text-center md:px-6 ">{appointment.patientName}</td>
     
   <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-medium py-5  text-center md:px-6">{appointment.date}</td>
-  <td className=" text-[#45556C] text-[10px] md:text-[18px]  text-center py-5  md:px-6">{appointment.time}</td>
+  <td className=" text-[#45556C] text-[10px] md:text-[18px]  text-center py-5  md:px-6">{new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
   <td className=" text-[#45556C] text-[10px] md:text-[18px] text-center py-5  md:px-6">{appointment.procedure}</td>
   <td className=" py-5 px-2  md:px-6 text-center">
 <span  className={` whitespace-nowrap px-2 text-[11px] py-0.5 font-bold shadow-md rounded-full outline-none ${

@@ -40,7 +40,7 @@ setTitle("نظرة عامة")
         <Link href='/addpatient' className=' hover:transition-transform hover:scale-105 flex bg-[#0D9488]  text-white items-center rounded-md md:w-auto md:h-auto w-10 text-[12px]  md:py-2 md:px-4 md:text-[18px] h-8 font-semibold' > <span className='hidden md:flex'>إضافة مريض </span> <Plus className=' md:ml-2 mx-auto md:mx-0' /></Link>
         </div> 
         {/* right side */}
-<div className="rightSide flex gap-2.5 md:gap-3 items-center md:text-[20px] text-[18px] ">
+<div className="rightSide flex gap-2.5 md:gap-3 items-center md:text-[25px] text-[18px] ">
   <span className=''>{title}</span>  
  <div className="smallAndMidSideBar pt-1 pr-4 lg:hidden">
       <button onClick={()=>{setModal(true)}}>    <Menu /></button>

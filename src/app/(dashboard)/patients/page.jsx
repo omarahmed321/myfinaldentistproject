@@ -19,7 +19,8 @@ export default function page() {
    savedData? setData(JSON.parse( savedData)) : ''
   }, []);
 
-
+// for live search
+// controlled / uncontrolled inputs
 
   const [searchTerm, setSearchTerm] = useState("");
   const [buttonStatus, setbuttonStatus] = useState("الكل");
@@ -27,7 +28,7 @@ const filteredItems = data.filter((patient) => {
 
   const SearchBox =
     patient.phone.includes(searchTerm) ||
-    patient.name.toLowerCase().includes(searchTerm.toLowerCase());
+    patient.name.toLowerCase().trim().includes(searchTerm.trim().toLowerCase());
 
   const StatusAllOfThem =
     buttonStatus === "الكل" || patient.status === buttonStatus;
@@ -93,7 +94,7 @@ let handlePatientDetails =(id)=>{
 
           {
             filteredItems.map((el,index)=>{
-              return    <tr className="  transition duration-200 " key={el.id}  >
+              return    <tr className=" transition duration-200 hover:bg-slate-50  border-b border-gray-200/70 " key={el.id}  >
             <td className=" flex py-5 justify-end text-[#90A1B9]  gap-2 w-full ">
               <button onClick={()=>{
                 let dataAfterDelete=data.filter((patient) => patient.id !== el.id)
@@ -125,6 +126,7 @@ let handlePatientDetails =(id)=>{
               {el.name}  <p className=' whitespace-nowrap p-2 text-[#45556C] bg-[#F1F5F9] md:text-[16px]     rounded-full flex  justify-center items-center text-center text-[10px]  '>
 
 {
+  // انا واخدهم من الai
 (() => {
       let nameParts = el.name ? el.name.trim().split(' ') : [];
       let firstChar = nameParts[0] ? nameParts[0][0] : '';
@@ -132,7 +134,7 @@ let handlePatientDetails =(id)=>{
       return `${firstChar} ${secondChar}`;
     })()
 }
-
+          
 
 
               </p>
