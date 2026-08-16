@@ -3,6 +3,7 @@ import { ArrowRight, NotepadText } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useRef } from 'react'
+import toast from 'react-hot-toast'
 
  function AddPatient() {
  // lol مفكر انه لما يسميها searchparas كده معرفتش يعني يوجع 
@@ -50,8 +51,32 @@ useEffect(() => {
 let statusInput = useRef()
 
 
+let validatePatientInputs = () => {
+  let name = nameInput.current?.value?.trim();
+  let phone = PhoneInput.current?.value?.trim();
+  let age = ageInput.current?.value?.trim();
+  let genderValue = maleInput.current?.checked ? 'ذكر' : femaleInput.current?.checked ? 'أنثى' : '';
+  if (!name) {
+    toast.error("يرجى إدخال اسم المريض بالكامل!");
+    return false;
+  }
+  if (!phone || phone.length < 11) {
+    toast.error("يرجى إدخال رقم هاتف صحيح (11 رقم)!");
+    return false;
+  }
+  if (!age || isNaN(age) || age < 1 || age > 120) {
+    toast.error("يرجى إدخال سن صحيح للمريض!");
+    return false;
+  }
+  if (!genderValue) {
+    toast.error("يرجى تحديد جنس المريض (ذكر / أنثى)!");
+    return false;
+  }
+  return true;
+}
 
   let handleAddPatient =()=>{
+      if (!validatePatientInputs()) return;
   let isTherePatients = localStorage.getItem('data')
     let patients = isTherePatients ? JSON.parse(isTherePatients) : []
     let genderValue = maleInput.current.checked ? 'ذكر' : femaleInput.current.checked ? 'أنثى' : ''
@@ -103,7 +128,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
   }
   
   return (
-    <div className=' px-4 pt-4 mt-12 w-full lg:w-[50%] mx-auto pb-4 '>
+    <div className=' px-4 pt-4 mt-12 lg:mt-0 w-full lg:w-[50%] mx-auto pb-4 '>
       {/* back to Home */}
       <div className="flex w-full items-center justify-end font-semibold gap-1.5 text-[#62748E]  mb-8 ">
        
@@ -111,7 +136,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
           
       </div>
      {/* the main div */}
-      <main className='w-full md:min-h-0 min-h-dvh pb-4 md:h-160 border border-[#E2E8F0] shadow-lg bg-white rounded-xl mx-auto px-4 pt-4 md:px-12 md:pt-12 text-end'>
+      <main className='w-full md:min-h-0 min-h-dvh  pb-4  border border-[#E2E8F0] shadow-lg bg-white rounded-xl mx-auto px-4 pt-4 md:px-12 md:pt-4 text-end'>
        <p className='text-[24px] text-black font-bold  mb-2'>بيانات المريض</p>
        <p className='text-[16px] text-[#62748E] mb-10'>يرجى إدخال البيانات الأساسية للمريض بدقة لضمان دقة السجلات الطبية.</p>
        {/* inputs and gender checkboxes */}

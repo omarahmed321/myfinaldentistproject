@@ -28,13 +28,10 @@ setTitle("نظرة عامة")
       </div>)
     }
     else if(pathName === "/appointments"){
-      setTitle("المواعيد")
+      setTitle("إدارة المواعيد")
     }
   },[pathName])
-  let handleModal =()=>{
-setModal(true)
 
-}
   return (
 <div className='w-full py-2 px-2 md:py-4 md:px-8 flex justify-between  items-center bg-white border-b border-[#45556C]/20 text-[#0F172B] font-bold text-[20px]'>
   {/* left Side */}
@@ -46,7 +43,7 @@ setModal(true)
 <div className="rightSide flex gap-2.5 md:gap-3 items-center md:text-[20px] text-[18px] ">
   <span className=''>{title}</span>  
  <div className="smallAndMidSideBar pt-1 pr-4 lg:hidden">
-      <button onClick={handleModal}>    <Menu /></button>
+      <button onClick={()=>{setModal(true)}}>    <Menu /></button>
   
     </div>
 </div>

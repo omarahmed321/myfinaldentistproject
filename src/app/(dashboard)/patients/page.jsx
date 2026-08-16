@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 export default function page() {
   const router = useRouter()
 
-  const [data,setData]=useState([])
+  const [data,setData]=useState([]) // ده بيدل علي ال patient 
   let filterButtonStyle =
     "w-full md:w-1/4  px-3  font-md rounded-lg  text-center     ";
   let headStyle =
@@ -77,8 +77,8 @@ let handlePatientDetails =(id)=>{
         </div>
       </div>
       {/* the table */}
-      <div className=" overflow-auto ">
-         <table className="mt-6 border border-[#F1F5F9] w-full text-right shadow-lg rounded-lg  lg:table-fixed border-separate border-spacing-0 tab overflow-hidden text-sm md:text-[18px] lg:text-[20px]">
+      <div className=" overflow-auto h-[75vh] mt-6 ">
+         <table className=" border border-[#F1F5F9] w-full text-right shadow-lg rounded-lg  lg:table-fixed border-separate border-spacing-0 tab overflow-hidden text-sm md:text-[18px] lg:text-[20px]">
         <thead className=" bg-[#f8fafc] rounded-lg ">
           <tr className=" rounded-lg">
             <th className={`${headStyle} w-[10%]`}>إجراءات</th>
@@ -111,7 +111,7 @@ let handlePatientDetails =(id)=>{
             </td>
   <td className="font-bold text-xs pr-5 py-2">
   {el.status ? (
-  <span className={` ${el.status === "جديد"? 'text-[#1447E6] bg-[#EFF6FF] ':'' } ${el.status === "يحتاج متابعه"? 'text-[#BB4D00] bg-[#FFFBEB] ':'' } ${el.status === "منتظم"? 'text-[#008236] bg-[#f0fdf4] ':'' }  py-0.5 px-2.5  rounded-2xl  w-[15%]`}>
+  <span className={` whitespace-nowrap ${el.status === "جديد"? 'text-[#1447E6] bg-[#EFF6FF] ':'' } ${el.status === "يحتاج متابعه"? 'text-[#BB4D00] bg-[#FFFBEB] ':'' } ${el.status === "منتظم"? 'text-[#008236] bg-[#f0fdf4] ':'' }  py-0.5 px-2.5  rounded-2xl  w-[15%]`}>
              {el.status}
               </span>
   ) : (

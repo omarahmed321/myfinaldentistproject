@@ -14,9 +14,10 @@ setModal(false);
 router.push('/login');
 }
 
+let optionElse ='hover:bg-[#0D9488]/5 hover:text-[#0D9488]/50 transition rounded-xl '
 
 const pathName = usePathname();
-
+useEffect(()=>{},[])
 useEffect(() => {
   modal
     ? (document.body.style.overflow = "hidden", document.documentElement.style.overflow = "hidden")
@@ -27,7 +28,7 @@ let optionClassname = ` flex w-fit ml-auto py-2.5 `;
 
   return (<>
 
-    <div className={ `   ${modal ? '   translate-x-0  ':'translate-x-full'}  lg:translate-x-0 right-0 fixed top-0 lg:static  lg:flex flex-col w-[60%] md:w-[27%] lg:w-[13%] ml-auto h-dvh  bg-[#1D293D] transition duration-500 z-50 lg:z-0  `}>
+    <div className={ `  min-h-dvh  ${modal ? '   translate-x-0  ':'translate-x-full'}  lg:translate-x-0 right-0 fixed top-0 lg:static  lg:flex flex-col w-[60%] md:w-[27%] lg:w-[13%] ml-auto   bg-[#1D293D] transition duration-500 z-50 lg:z-0  `}>
 
 
   {/* Title and Logo */}
@@ -41,10 +42,10 @@ let optionClassname = ` flex w-fit ml-auto py-2.5 `;
  */}
   </div>
 <div className="options flex flex-col pr-8 mt-6.5 justify-center gap-1">
-<div className={` hover:transition-transform hover:scale-105 pr-3 ml-3 ${pathName == '/' ? ' transition duration-300 text-[#0D9488] bg-[#0D9488]/10 rounded-xl ':'hover:bg-[#0D9488]/5 hover:text-[#0D9488]/50 transition rounded-xl ' }`}><Link href="/" onClick={()=>{ setModal(false)}} className={optionClassname + `${pathName == '/'? 'text-[#0D9488]':'text-[#CAD5E2]'}` }>لوحة التحكم <LayoutDashboard className={`ml-2 ${pathName == '/' ? 'text-[#0D9488] ':'' }`} /></Link></div>
-<div className={` hover:transition-transform hover:scale-105 pr-3 ml-3 ${pathName == '/patients' ? 'transition duration-300 text-[#0D9488] bg-[#0D9488]/10 rounded-xl ':'hover:bg-[#0D9488]/5 hover:text-[#0D9488]/50 transition rounded-xl' }`}><Link  href="/patients" onClick={()=>{ setModal(false)}}  className={optionClassname + `${pathName == '/patients'? 'text-[#0D9488]':'text-[#CAD5E2]'}`}>المرضى <Users className={`ml-2 ${pathName == '/patients' ? 'text-[#0D9488] ':'' }`}/></Link></div>
-<div className={` hover:transition-transform hover:scale-105 pr-3 ml-3 ${pathName == '/appointments' ? ' transition duration-300 text-[#0D9488] bg-[#0D9488]/10 rounded-xl ':'hover:bg-[#0D9488]/5 hover:text-[#0D9488]/50 transition rounded-xl' }`}><Link  href="/appointments" onClick={()=>{ setModal(false)}}  className={optionClassname + `${pathName == '/appointments'? 'text-[#0D9488]':'text-[#CAD5E2]'}`}>المواعيد <Calendar className={`ml-2 ${pathName == '/appointments' ? 'text-[#0D9488] ':'' }`}/></Link></div>
-<div className={` hover:transition-transform hover:scale-105 pr-3 ml-3 ${pathName == '/analisys' ? 'transition duration-300 text-[#0D9488] bg-[#0D9488]/10 rounded-xl ':'hover:bg-[#0D9488]/5 hover:text-[#0D9488]/50 transition rounded-xl' }`}><Link  href="/analisys" onClick={()=>{ setModal(false)}}  className={optionClassname + `${pathName == '/analisys'? 'text-[#0D9488]':'text-[#CAD5E2]'}`}>التقارير <ChartColumn className={`ml-2 ${pathName == '/analisys' ? 'text-[#0D9488] ':'' }`}/></Link></div>
+<div className={` hover:transition-transform hover:scale-105 pr-3 ml-3 ${pathName == '/' ? ' transition duration-300 text-[#0D9488] bg-[#0D9488]/10 rounded-xl ':optionElse }`}><Link href="/" onClick={()=>{ setModal(false)}} className={optionClassname + `${pathName == '/'? 'text-[#0D9488]':'text-[#CAD5E2]'}` }>لوحة التحكم <LayoutDashboard className={`ml-2 ${pathName == '/' ? 'text-[#0D9488] ':'' }`} /></Link></div>
+<div className={` hover:transition-transform hover:scale-105 pr-3 ml-3 ${pathName == '/patients' ? 'transition duration-300 text-[#0D9488] bg-[#0D9488]/10 rounded-xl ':optionElse }`}><Link  href="/patients" onClick={()=>{ setModal(false)}}  className={optionClassname + `${pathName == '/patients'? 'text-[#0D9488]':'text-[#CAD5E2]'}`}>المرضى <Users className={`ml-2 ${pathName == '/patients' ? 'text-[#0D9488] ':'' }`}/></Link></div>
+<div className={` hover:transition-transform hover:scale-105 pr-3 ml-3 ${pathName == '/appointments' ? ' transition duration-300 text-[#0D9488] bg-[#0D9488]/10 rounded-xl ':optionElse }`}><Link  href="/appointments" onClick={()=>{ setModal(false)}}  className={optionClassname + `${pathName == '/appointments'? 'text-[#0D9488]':'text-[#CAD5E2]'}`}>المواعيد <Calendar className={`ml-2 ${pathName == '/appointments' ? 'text-[#0D9488] ':'' }`}/></Link></div>
+<div className={` hover:transition-transform hover:scale-105 pr-3 ml-3 ${pathName == '/analisys' ? 'transition duration-300 text-[#0D9488] bg-[#0D9488]/10 rounded-xl ':optionElse }`}><Link  href="/analisys" onClick={()=>{ setModal(false)}}  className={optionClassname + `${pathName == '/analisys'? 'text-[#0D9488]':'text-[#CAD5E2]'}`}>التقارير <ChartColumn className={`ml-2 ${pathName == '/analisys' ? 'text-[#0D9488] ':'' }`}/></Link></div>
 
 </div>
 {/*settings option   */}

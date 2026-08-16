@@ -5,6 +5,7 @@ import { AlertCircle, Info, Phone, PlusCircle, Trash } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Suspense, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 
 
@@ -43,6 +44,10 @@ router.push(`/addpatient?id=${theRequiredPatient.id}`)
 
 // handle the add new appointment
 let handleNewAppointment =()=>{
+    if (!dateInput.current?.value || !timeInput.current?.value || !operation.current?.value) {
+    toast.error("! انت ليه سايب اماكن فاضيه ");
+    return;
+  }
   let newAppointment ={
     id: crypto.randomUUID(),
     patientId : theRequiredPatient.id,
@@ -87,6 +92,10 @@ saveAppointmentsAndSync(filteredAppointments)
 // handle change Status
 let handleChangeStatus =(appointment,newStatus)=>{
 let allAppointments = readAppointmentsFromLocalStorage();
+let updatedAppointmentsAfterNewStatus = allAppointments.map((appointmentInLoop)=>{
+  return appointment.id === appointmentInLoop.id ? { ...appointmentInLoop, status: newStatus } : appointmentInLoop;
+})
+saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
 }
 
 
@@ -161,7 +170,7 @@ let allAppointments = readAppointmentsFromLocalStorage();
 </label>
 <label htmlFor="" className=" text-[#314158] flex flex-col font-bold text-[14px] gap-1">
   الوقت
-  <input type="text"  ref={timeInput}   value={timeValue}   onChange={(e) => setTimeValue(e.target.value)} className="py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"/>
+  <input type="time"  ref={timeInput}   value={timeValue}   onChange={(e) => setTimeValue(e.target.value)} className="py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"/>
   { !timeValue.trim() ? (
     <span></span>
   ) : appointments.some((app) => app.time === timeValue) ? (
@@ -174,7 +183,7 @@ let allAppointments = readAppointmentsFromLocalStorage();
 </label>
 <label htmlFor="" className=" text-[#314158] flex flex-col font-bold text-[14px] gap-1">
   نوع الإجراء
-  <input type="text" ref={operation} className="py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"/>
+  <input required={true} type="text" ref={operation} className="py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"/>
 </label>
 
 <button className=" justify-center flex text-[16px] font-bold text-white bg-[#0D9488] rounded-lg py-3" onClick={handleNewAppointment}>تأكيد الحجز</button>
@@ -182,11 +191,11 @@ let allAppointments = readAppointmentsFromLocalStorage();
 </div>
 
 
-  <div className="appointmentsTable md:w-full  lg:w-2/3 ">
+  <div className="appointmentsTable md:w-full   lg:w-2/3 overflow-auto overflow-y-auto max-h-100 ">
  
-    <table dir="rtl" className="bg-white shadow-md w-full   overflow-hidden   border border-[#E2E8F0] rounded-xl text-right ">
-  <thead>
-    <tr dir="rtl" className="  text-right"><td className=" text-[#0F172B] whitespace-nowrap font-bold py-4 pr-3 ">سجل المواعيد</td></tr>
+    <table dir="rtl" className="bg-white shadow-lg w-full  overflow-auto     border border-[#E2E8F0] rounded-xl text-right ">
+ <thead className="">
+    <tr dir="rtl" className="  text-right"><td className=" text-[#0F172B] whitespace-nowrap font-bold py-4 pr-3 z-10 bg-white ">سجل المواعيد</td></tr>
     <tr className="bg-[#fbfcfd] text-[#62748E] font-medium ">
       <td className="py-4 px-2  text-center  md:px-6">التاريخ</td>
       <td className="py-4 px-2 text-center md:px-6">الوقت</td>
@@ -200,7 +209,7 @@ let allAppointments = readAppointmentsFromLocalStorage();
 theRequiredAppointmentPerPerson?.map((appointment)=>{
   return <tr key={appointment.id}>
   <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-medium py-5  text-center md:px-6">{appointment.date}</td>
-  <td className=" text-[#45556C] text-[10px] md:text-[18px]  text-center py-5  md:px-6">{appointment.time}</td>
+  <td className=" text-[#45556C] text-[10px] md:text-[18px]  text-center py-5  md:px-6">{new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
   <td className=" text-[#45556C] text-[10px] md:text-[18px] text-center py-5  md:px-6">{appointment.procedure}</td>
   <td className=" py-5 px-2  md:px-6 text-center">
   <select value={appointment.status || "مجدول"} ref={statusOption}   onChange={(e) => handleChangeStatus(appointment, e.target.value)}

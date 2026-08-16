@@ -1,17 +1,29 @@
 'use client'
 import { Calendar, Calendar1, CheckCircle2, Trash, Users } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import { readAppointmentsFromLocalStorage } from '@/utils/storage';
 
 export default function page() {
   let oneOfTheGrid = " h-36.5 bg-white rounded-lg border border-[#E2E8F0] shadow-md p-6.25"
+
   const [patients, setPatients] = useState([])
+  const [appointments ,setAppointments]= useState([])
+
+
   useEffect(()=>{
+    // المرضي
   let isThereIsData=  localStorage.getItem('data');
     let patients = isThereIsData? setPatients(  JSON.parse(isThereIsData) ) : setPatients([])
-  
-
+    // لكن هنا المواعيد
+  let appointmentsHere = readAppointmentsFromLocalStorage();
+  setAppointments(appointmentsHere);
   },[])
-
+  // filter todays date
+  let todayDate = new Date().toISOString().split('T')[0];
+let todaysAppointments = appointments.filter((app) => app.date === todayDate);
+// يعني المفروض فكرتها تعمل اراي فيها فقط الحاجات المكتمله النهارده
+ let theCompeletedAppointmentsToday = todaysAppointments.filter((appointment)=>( appointment.status == "مكتمل"))
+    let numberOfTheAppointmentsCompeletedToday = theCompeletedAppointmentsToday.length
   return (
     <div className=' w-full h-full md:p-8 p-3 gap-8 flex flex-col '>
       {/* Top */}
@@ -23,7 +35,8 @@ export default function page() {
   <CheckCircle2 className='text-[#155DFC] rounded-lg bg-[#eff6ff] h-10 w-10 p-2' />
 </div>
 <p className=' text-[16px] text-[#62748e] text-end mt-3 mb-1 font-medium'>مكتمله اليوم</p>
-<p className=' text-end  text-black font-bold text-[30px]'>12</p>
+<p className=' text-end  text-black font-bold text-[30px]'>{numberOfTheAppointmentsCompeletedToday}
+  </p>
         </div>
         {/* appointments of the day */}
         <div className={oneOfTheGrid}>
@@ -32,7 +45,7 @@ export default function page() {
   <Calendar className='text-[#e17100] rounded-lg bg-[#fbf2ec] h-10 w-10 p-2' />
 </div>
 <p className=' text-[16px] text-[#62748e] text-end mt-3 mb-1 font-medium'>مواعيد اليوم</p>
-<p className=' text-end  text-black font-bold text-[30px]'>12</p>
+<p className=' text-end  text-black font-bold text-[30px]'>{todaysAppointments.length}</p>
         </div>
         {/*  the total of the patients */}
         <div className={`${oneOfTheGrid} `}>
@@ -49,41 +62,45 @@ export default function page() {
         <div className="appointmentsTable md:w-full   ">
  
 
-     <table  dir="rtl" className="bg-white shadow-md w-full   overflow-hidden   border border-[#E2E8F0] rounded-xl text-right ">
+  <div className="appointmentsTable md:w-full shadow-lg  overflow-auto flex flex-col grow max-h-[60vh] ">
+ 
+    <table dir="rtl" className="bg-white shadow-md w-full   overflow-hidden   border border-[#E2E8F0] rounded-xl text-right ">
   <thead>
-    <tr dir="rtl" className="  text-right"><td className=" text-[#0F172B] whitespace-nowrap font-bold py-4 pr-3 ">سجل المواعيد</td></tr>
+    <tr dir="rtl" className="  text-right"><td className=" text-[#0F172B] whitespace-nowrap font-bold py-4 pr-3 ">مواعيد اليوم القادمه</td></tr>
     <tr className="bg-[#fbfcfd] text-[#62748E] font-medium ">
-
-
-      <td className="py-4 px-2  text-center  md:px-6">المريض</td>
-      
+        <td className="py-4 px-2  text-center  md:px-6">المريض</td>
       <td className="py-4 px-2  text-center  md:px-6">التاريخ</td>
       <td className="py-4 px-2 text-center md:px-6">الوقت</td>
       <td className="py-4 px-2 text-center md:px-6">الاجراء</td>
-      <td className="py-4 px-2 text-center md:px-6">الحاله</td>
-       
+      <td className="py-4  px-2 text-center md:px-6">الحاله</td>
+  
     </tr>
   </thead>
   <tbody>
 {
-  patients.map((el)=>(<tr key={el.id}>
-
-  <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-medium py-5  text-center md:px-6">{el.name}</td>
-  <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-medium py-5  text-center md:px-6">2020</td>
-  <td className=" text-[#45556C] text-[10px] md:text-[18px]  text-center py-5  md:px-6">11:30</td>
-  <td className=" text-[#45556C] text-[10px] md:text-[18px] text-center py-5  md:px-6"> حشوعصب </td>
+todaysAppointments?.map((appointment)=>{ 
+  return <tr key={appointment.id} >
+    
+  <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-medium py-5  text-center md:px-6">{appointment.patientName}</td>
+    
+  <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-medium py-5  text-center md:px-6">{appointment.date}</td>
+  <td className=" text-[#45556C] text-[10px] md:text-[18px]  text-center py-5  md:px-6">{appointment.time}</td>
+  <td className=" text-[#45556C] text-[10px] md:text-[18px] text-center py-5  md:px-6">{appointment.procedure}</td>
   <td className=" py-5 px-2  md:px-6 text-center">
-    <span className="  py-0.5 px-1 text-[10px] md:text-[18px] md:px-2 text-[#008236] bg-[#F0FDF4] rounded-full">مكتمل</span>
+<span  className={` whitespace-nowrap px-2 text-[11px] py-0.5 font-bold shadow-md rounded-full outline-none ${
+  appointment.status === 'مكتمل' ? 'bg-[#ecfdf5] text-[#007A55]' :
+  appointment.status === 'في الانتظار' ? 'bg-[#fffbeb] text-[#BB4D00]' :
+  'bg-[#f8fafc] text-[#45556C]'
+}`}>{appointment.status}</span>
   </td>
-  <td className="   ">
-    <Trash className="text-[#90A1B9] " />
-  </td>
-</tr>))
+ 
+</tr>
+})
 }
-
 
   </tbody>
 </table>
+  </div>
 
   </div>
     </div>)
