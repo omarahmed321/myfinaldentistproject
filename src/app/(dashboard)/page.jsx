@@ -3,6 +3,7 @@ import { Calendar, Calendar1, CheckCircle2, Trash, Users } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { readAppointmentsFromLocalStorage } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function page() {
   let oneOfTheGrid = "  h-36.5 bg-white rounded-lg border border-[#E2E8F0] hover:scale-105 transition-shadow hover:shadow-md duration-500 transition-transform p-6.25"
@@ -63,11 +64,18 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
         <div className="appointmentsTable md:w-full   ">
  
 
-  <div className="appointmentsTable md:w-full shadow-lg  overflow-auto flex flex-col grow max-h-[60vh] ">
- 
-    <table dir="rtl" className="bg-white shadow-md w-full   overflow-hidden   border border-[#E2E8F0] rounded-xl text-right ">
+  <div className="appointmentsTable md:w-full shadow-lg bg-white  overflow-auto flex flex-col grow max-h-[60vh] rounded-lg ">
+
+ <div className="head w-full justify-between flex items-center px-6 rounded-lg  py-3 " dir="rtl">
+  <p className="text-[#0F172B] text-lg font-bold">مواعيد اليوم القادمة</p>
+  <Link href='/appointments' className="text-[#0D9488] font-bold text-sm">عرض كل المواعيد ←</Link>
+</div>
+    <table dir="rtl" className="bg-white shadow-md w-full   overflow-hidden   border-r border-b border-l border-[#E2E8F0] rounded-xl text-right ">
   <thead>
-    <tr dir="rtl" className="  text-right"><td className=" text-[#0F172B] whitespace-nowrap font-bold py-4 pr-3 ">مواعيد اليوم القادمه</td></tr>
+    <tr dir="rtl" className="     ">
+   
+   
+         </tr>
     <tr className="bg-[#fbfcfd] text-[#62748E] font-medium ">
         <td className="py-4 px-2  text-center  md:px-6">المريض</td>
       <td className="py-4 px-2  text-center  md:px-6">التاريخ</td>
