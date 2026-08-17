@@ -126,7 +126,7 @@ let handlePatientDetails =(id)=>{
               {el.name}  <p className=' whitespace-nowrap p-2 text-[#45556C] bg-[#F1F5F9] md:text-[16px]     rounded-full flex  justify-center items-center text-center text-[10px]  '>
 
 {
-  // انا واخدهم من الai
+
 (() => {
       let nameParts = el.name ? el.name.trim().split(' ') : [];
       let firstChar = nameParts[0] ? nameParts[0][0] : '';
