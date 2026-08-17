@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useRef } from 'react'
 import toast from 'react-hot-toast'
+import Skeleton from '../../../components/Skeletron'
 
  function AddPatient() {
  // lol مفكر انه لما يسميها searchparas كده معرفتش يعني يوجع 
@@ -215,7 +216,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
 
 export default function SuspenseFunction(){
 return (
-  <Suspense  fallback={<div className="p-8 text-center text-gray-500 font-semibold">بنحمل الصفحة...</div>}>
+  <Suspense  fallback={<Skeleton />}>
       <AddPatient />
     </Suspense>
 )

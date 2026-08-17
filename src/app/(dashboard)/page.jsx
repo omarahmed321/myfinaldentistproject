@@ -2,13 +2,14 @@
 import { Calendar, Calendar1, CheckCircle2, Trash, Users } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { readAppointmentsFromLocalStorage } from '@/utils/storage';
+import { useRouter } from 'next/navigation';
 
 export default function page() {
-  let oneOfTheGrid = " h-36.5 bg-white rounded-lg border border-[#E2E8F0] shadow-md p-6.25"
+  let oneOfTheGrid = "  h-36.5 bg-white rounded-lg border border-[#E2E8F0] hover:scale-105 transition-shadow hover:shadow-md duration-500 transition-transform p-6.25"
 
   const [patients, setPatients] = useState([])
   const [appointments ,setAppointments]= useState([])
-
+const router = useRouter()
 
   useEffect(()=>{
     // المرضي
@@ -29,9 +30,9 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
       {/* Top */}
       <div className='md:grid flex flex-col-reverse  md:grid-cols-3 w-full gap-4 md:gap-6   '>
         {/* compeleted  */}
-        <div className={`${oneOfTheGrid} text-[#155DFC]`}>
+        <div className={`${oneOfTheGrid} text-[#155DFC] `}>
 <div className='w-full flex justify-between items-center '>
-  <p className=' text-[12px] font-bold bg-[#eff6ff] px-1 py-0.75 rounded-full'>مكتمل</p>
+  <p className=' text-[12px] font-bold bg-[#eff6ff] px-1 py-0.75 rounded-full '>مكتمل</p>
   <CheckCircle2 className='text-[#155DFC] rounded-lg bg-[#eff6ff] h-10 w-10 p-2' />
 </div>
 <p className=' text-[16px] text-[#62748e] text-end mt-3 mb-1 font-medium'>مكتمله اليوم</p>
@@ -39,7 +40,7 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
   </p>
         </div>
         {/* appointments of the day */}
-        <div className={oneOfTheGrid}>
+        <div className={oneOfTheGrid} onClick={()=>{router.push('/appointments')}}>
 <div className='w-full flex justify-between items-center '>
   <p className=' text-[12px] font-bold text-[#90A1B9] px-1.5 py-0.75 rounded-full bg-[#F8FAFC]'>اليوم</p>
   <Calendar className='text-[#e17100] rounded-lg bg-[#fbf2ec] h-10 w-10 p-2' />
@@ -48,12 +49,12 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
 <p className=' text-end  text-black font-bold text-[30px]'>{todaysAppointments.length}</p>
         </div>
         {/*  the total of the patients */}
-        <div className={`${oneOfTheGrid} `}>
+        <div className={`${oneOfTheGrid} `} onClick={()=>{router.push('/patients')}}>
 <div className='w-full flex justify-between items-center '>
   <p className=' text-[12px] font-bold text-[#90A1B9] px-1.5 py-0.75 rounded-full bg-[#F8FAFC]'>اليوم</p>
   <Users className='text-[#009966] rounded-lg bg-[#ECFDF5] h-10 w-10 p-2' />
 </div>
-<p className=' text-[16px] text-[#62748E] text-end mt-3 mb-1 font-medium'>إجمالي المرضى</p>
+<p className=' text-[16px] text-[#62748E] text-end mt-3 mb-1 font-medium whitespace-nowrap'>إجمالي المرضى</p>
 <p className=' text-end  text-black font-bold text-[30px]'>{patients.length}</p>
         </div>
       </div>

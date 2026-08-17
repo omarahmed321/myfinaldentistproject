@@ -26,7 +26,7 @@ export default  function LoginBox() {
 
     }
     let handleSubmit =async(values,{setSubmitting,setFieldError})=>{
-        await new Promise((resolve)=>{setTimeout(resolve,1000)})
+       
         if(values.username === 'omar' && values.password === "Omar123*#"){
             const fakeToken = 'dummy-jwt-token-12345'
         //          if(values.remember){
@@ -40,9 +40,9 @@ export default  function LoginBox() {
         
         toast.success("تم تسجيل الدخول بنجاح")
       
-setTimeout(() => {
+
     router.push('/');
-}, 1000);
+
         }
         else{
             setFieldError('password', 'اسم المستخدم أو كلمة المرور غير صحيحة');

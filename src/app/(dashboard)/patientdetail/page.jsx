@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import Skeleton from "../../../components/Skeletron";
 
 
 
@@ -19,6 +20,7 @@ import toast from "react-hot-toast";
   // some hooks
   const router = useRouter()
   const paramsID= useSearchParams().get('id')
+
   // inputs Refrence
   const dateInput = useRef();
 const timeInput = useRef();
@@ -71,6 +73,9 @@ saveAppointmentsAndSync(allAppointments)
 // nah thats the use effect
   useEffect(()=>{
   // reading the data from localstorage and getting the required patient
+  if(!paramsID){router.push('/patients')
+    return ;
+  }
   let isPatients = localStorage.getItem('data')
   let patients =  isPatients? JSON.parse(isPatients) : []
   setTheRequiredPatient(patients.find((patient)=>{return patient.id === paramsID}))
@@ -242,7 +247,7 @@ theRequiredAppointmentPerPerson?.map((appointment)=>{
 }
 export default function SuspenseAddPatient() {
   return (
-    <Suspense  fallback={<div className="p-8 text-center text-gray-500 font-semibold">بنحمل الصفحة...</div>} >
+    <Suspense  fallback={<Skeleton />} >
       <PatientDetail />
     </Suspense>
   )

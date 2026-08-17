@@ -14,6 +14,7 @@ let todayNumber = new Date().toLocaleDateString('en-US', { day: '2-digit' });
 const router = useRouter()
 const [appointmentStatus,setAppointmentStatus] =useState('الكل')
 const [appointments,setAppointments] =useState()
+const [selectedDayDate, setSelectedDayDate] = useState(null);
 // دي بتخزن الاسابيع
 const [weekStartDate, setWeekStartDate] = useState(() => {
   let today = new Date();
@@ -29,6 +30,7 @@ let handleNextWeek = () => {
   let nextSat = new Date(weekStartDate);
   nextSat.setDate(weekStartDate.getDate() + 7);
   setWeekStartDate(nextSat);
+   setSelectedDayDate(null);
 };
 
 // ودي الاسبوع اللي فات
@@ -36,6 +38,7 @@ let handlePrevWeek = () => {
   let prevSat = new Date(weekStartDate);
   prevSat.setDate(weekStartDate.getDate() - 7);
   setWeekStartDate(prevSat);
+   setSelectedDayDate(null);
 };
 // اراي فيه الاسبوع الحالي 
 let currentWeekDays = Array.from({ length: 7 }, (_, i) => {
@@ -51,6 +54,9 @@ let currentWeekDays = Array.from({ length: 7 }, (_, i) => {
 
 // the appointments only in this week
 let appointmentsThisWeek = (appointments || []).filter((appointment) => {
+    if (selectedDayDate) {
+    return appointment.date === selectedDayDate;
+  }
   return currentWeekDays.some((day) => day.fullDate === appointment.date);
 });
 // filter buttons in the appointments this week
@@ -79,7 +85,7 @@ router.push(`/patientdetail?id=${appointmentPatientId}`)
 
 
 
-    <div className=' w-full h-full p-8  '>
+    <div className=' w-full h-full p-8 '>
 
 
 
@@ -94,11 +100,16 @@ router.push(`/patientdetail?id=${appointmentPatientId}`)
 
 
 </div>
-  <div className="filterByDaysBox flex gap-1 md:gap-3  overflow-auto w-full mb-6">
+  <div className="filterByDaysBox flex gap-1 md:gap-3  overflow-x-auto w-full mb-6">
 {currentWeekDays.map((day)=>{
-
- return <button  key={day.fullDate} className=' px-4.5 py-5.5 flex flex-col gap-1 border border-gray-300 hover:shadow-lg transition duration-100 hover:transition-transform hover:scale-102 bg-white rounded-xl text-[#62748E]'>{day.dayName}
-     <span className='text-[#0F172B] font-bold'> {day.dayNumber}</span>
+  let isSelected = selectedDayDate === day.fullDate;
+ return <button  onClick={() => setSelectedDayDate(isSelected ? null : day.fullDate)} key={day.fullDate} className={`px-4 py-3 flex flex-col gap-1 border border-gray-300 hover:shadow-md hover:border-0 transition duration-100 hover:transition-transform hover:scale-102  rounded-xl  ${isSelected? ' border-0 transition-transform scale-105 bg-[#ecf5f6] text-[#0D9488] shadow-lg ': 'text-[#62748E] bg-white '}`} >{day.dayName}
+     <span className={`${isSelected? 'text-[#139C89]':'text-[#0F172B]'} font-bold`}> {day.dayNumber}</span>
+     {
+     day.fullDate === new Date().toISOString().split('T')[0]? <span className=' text-[13px' >
+اليوم
+     </span> : <span></span>
+     }
     </button>
  
 })}

@@ -84,9 +84,9 @@ let handlePatientDetails =(id)=>{
           <tr className=" rounded-lg">
             <th className={`${headStyle} w-[10%]`}>إجراءات</th>
             <th className={`${headStyle} w-[15%]`}>الحالة</th>
-            <th className={`${headStyle} w-[20%]`}>آخر زيارة</th>
+            <th className={` whitespace-nowrap ${headStyle} w-[20%]`}>آخر زيارة</th>
             <th className={`${headStyle} w-[10%]`}>السن</th>
-            <th className={`${headStyle} w-[20%]`}>رقم الهاتف</th>
+            <th className={` whitespace-nowrap ${headStyle} w-[20%]`}>رقم الهاتف</th>
             <th className={`${headStyle}  w-1/4`}>المريض</th>
           </tr>
         </thead>

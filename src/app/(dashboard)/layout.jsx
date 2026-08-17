@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 export default function DashboardLayout({ children }) {
     const [modal ,setModal]= useState(false);
   return (
-  <div className=" w-full  flex bg-[#E2E8F0]  min-h-dvh ">
+  <div className=" w-full  flex bg-white/95  min-h-dvh ">
     <div className="flex-1 flex flex-col min-w-0">
             <Toaster position="top-center" reverseOrder={false} />
       <NavBar modal={modal} setModal={setModal} />
