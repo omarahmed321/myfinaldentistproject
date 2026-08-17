@@ -38,10 +38,11 @@ export default  function LoginBox() {
         const maxage = values.remember? 604801 : ''; 
             document.cookie=`token=${fakeToken}; path=/; max-age=${maxage};SameSite=Lax`
         
-        toast.success("تم تسجيل الدخول بنجاح")
+      
       
 
    window.location.href = '/'
+     toast.success("تم تسجيل الدخول بنجاح")
 
         }
         else{
