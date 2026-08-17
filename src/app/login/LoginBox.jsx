@@ -40,8 +40,9 @@ export default  function LoginBox() {
         
       
       
-
-   window.location.href = '/'
+setTimeout(() => {
+    window.location.href = '/';
+}, 500);
      toast.success("تم تسجيل الدخول بنجاح")
 
         }
