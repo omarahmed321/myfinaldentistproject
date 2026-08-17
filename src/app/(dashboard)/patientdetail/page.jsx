@@ -67,6 +67,7 @@ saveAppointmentsAndSync(allAppointments)
   timeInput.current.value = ''
   dateInput.current.value = ''
   operation.current.value = ''
+    toast.success('تم اضافه موعد جديد')
 }
 
 
@@ -191,7 +192,7 @@ saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
   <input required={true} type="text" ref={operation} className="py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"/>
 </label>
 
-<button className=" justify-center flex text-[16px] font-bold text-white bg-[#0D9488] rounded-lg py-3" onClick={handleNewAppointment}>تأكيد الحجز</button>
+<button className=" justify-center hover:shadow-md hover:scale-102 duration-300 transition  flex text-[16px] font-bold text-white bg-[#0D9488] rounded-lg py-3" onClick={handleNewAppointment}>تأكيد الحجز</button>
 </div>
 </div>
 
@@ -229,7 +230,7 @@ theRequiredAppointmentPerPerson?.map((appointment)=>{
 </select>
   </td>
   <td className="   ">
-    <Trash className="text-[#90A1B9] " onClick={()=>handleDeleteAppointment(appointment)}  />
+    <Trash className="text-[#90A1B9] hover:text-red-700 transition duration-300 " onClick={()=>handleDeleteAppointment(appointment)}  />
   </td>
 </tr>
 })

@@ -84,7 +84,7 @@ let handlePatientDetails =(id)=>{
           <tr className=" rounded-lg">
             <th className={`${headStyle} w-[10%]`}>إجراءات</th>
             <th className={`${headStyle} w-[15%]`}>الحالة</th>
-            <th className={` whitespace-nowrap ${headStyle} w-[20%]`}>آخر زيارة</th>
+           
             <th className={`${headStyle} w-[10%]`}>السن</th>
             <th className={` whitespace-nowrap ${headStyle} w-[20%]`}>رقم الهاتف</th>
             <th className={`${headStyle}  w-1/4`}>المريض</th>
@@ -119,7 +119,7 @@ let handlePatientDetails =(id)=>{
     <span className="text-gray-400 font-normal">غير محدد</span>
   )}
 </td>
-            <td className=" text-[#45556C] pr-5">{el.lastVisit || "لا يوجد"}</td>
+           
             <td className="text-[#45556C] text-end pr-7"> {el.age} </td>
             <td className="text-[#45556C] pr-5">{el.phone}</td>
             <td onClick={()=>handlePatientDetails(el.id)} className="whitespace-nowrap h-full items-center  flex justify-end gap-3  cursor-pointer hover:transition-transform hover:scale-103  transition duration-300 font-semibold text-[#0F172B] pr-6 text-[9px] md:text-[16px] lg:text-[20px]">

@@ -125,6 +125,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
     patients.push(newPatient)
   }
   localStorage.setItem('data', JSON.stringify(patients))
+  
   router.push('/patients')
   }
   
