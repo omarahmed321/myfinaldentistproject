@@ -41,7 +41,7 @@ export default  function LoginBox() {
         toast.success("تم تسجيل الدخول بنجاح")
       
 
-    router.push('/');
+   window.location.href = '/'
 
         }
         else{
