@@ -68,7 +68,7 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
 
  <div className="head w-full justify-between flex items-center px-6 rounded-lg  py-3 " dir="rtl">
   <p className="text-[#0F172B] text-lg font-bold">مواعيد اليوم القادمة</p>
-  <Link href='/appointments' className="text-[#0D9488] font-bold text-sm">عرض كل المواعيد ←</Link>
+  <Link href='/appointments' className="text-[#0D9488] font-bold text-sm whitespace-nowrap">عرض كل المواعيد ←</Link>
 </div>
     <table dir="rtl" className="bg-white shadow-md w-full   overflow-hidden   border-r border-b border-l border-[#E2E8F0] rounded-xl text-right ">
   <thead>

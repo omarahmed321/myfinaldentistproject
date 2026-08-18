@@ -205,7 +205,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
 
      <div className='mt-8 w-full border-t border-[#F1F5F9] gap-4 md:flex md:flex-row  flex flex-col-reverse   '>
 <button onClick={handleAddPatient}  className=' cursor-pointer hover:transition-transform hover:scale-105 md:mt-8 text-[14px] font-bold text-white py-3 px-14 bg-[#0D9488] rounded-lg'>حفظ المريض</button>
-<Link href='/patients' className=' cursor-pointer hover:transition-transform hover:scale-105 md:mt-8 text-[14px] font-bold text-[#45556C]  rounded-lg border border-[#E2E8F0] py-3 px-10 '  >إلغاء</Link>
+<Link href='/patients' className=' cursor-pointer hover:transition-transform hover:scale-105 md:mt-8 text-[14px] font-bold text-[#45556C]  rounded-lg border border-[#E2E8F0] py-3 px-10 text-center  '  >إلغاء</Link>
      </div>
       </main>
       
