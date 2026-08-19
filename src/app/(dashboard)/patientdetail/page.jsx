@@ -109,7 +109,7 @@ saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
   return (
     <div className=" md:px-5 md:py-5  py-10 px-4 w-full h-full flex flex-col gap-6 lg:gap-8" >
       {/* upper */}
-<div className="upper p-3 md:p-6.25 w-full flex-col h-46.5 bg-white rounded-xl shadow-md border-[#E2E8F0] border gap-3 flex md:flex-row-reverse">
+<div className="upper p-3 md:p-6.25 w-full flex-col h-auto md:h-46.5 bg-white rounded-xl shadow-md border-[#E2E8F0] border gap-3 flex md:flex-row-reverse">
 <div className="right md:w-3/4 w-full  md:flex-row lg:w-[36%] h-full ml-auto flex justify-end text-right gap-5">
       <div className="innerLeft flex flex-col gap-1 w-full items-end">
         {/* NAME */}
@@ -164,7 +164,7 @@ saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
 </div>
 
 {/* appointments and add new appointment */}
-<div className="flex w-full  justify-end gap-6 lg:gap-8 flex-col-reverse lg:flex-row ">
+<div className="flex w-full shadow-lg  justify-end gap-6 lg:gap-8 flex-col-reverse lg:flex-row ">
    
 <div className="md:w-full lg:w-1/3    bg-white shadow-md rounded-xl p-5 gap-6 flex-col" dir="rtl">
 <span className=" flex gap-2 items-center font-bold text-[18px] text-[#0F172B]"><PlusCircle className="text-[#0D9488]" /> حجز ميعاد جديد</span>
