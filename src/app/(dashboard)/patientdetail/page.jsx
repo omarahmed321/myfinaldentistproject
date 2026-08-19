@@ -116,7 +116,7 @@ saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
       <span className=" text-[24px] font-bold text-[#0F172B]">{theRequiredPatient?.name}</span>
       {/* info phonenumber / gender */}
       <div className=" info flex gap-4 ">
-        <span dir="rtl" className="Age flex gap-2 text-[14px] text-[#62748E] items-center   ">
+        <span dir="rtl" className="Age flex gap-2 text-[14px] text-[#62748E] items-center whitespace-nowrap   ">
             <Info className=" text-[#90A1B9] w-5 h-5" />
 {theRequiredPatient?.age} سنه 
 ( {theRequiredPatient?.gender} )

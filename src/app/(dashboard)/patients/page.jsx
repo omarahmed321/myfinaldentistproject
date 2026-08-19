@@ -112,7 +112,7 @@ let handlePatientDetails =(id)=>{
             </td>
   <td className="font-bold text-xs pr-5 py-2">
   {el.status ? (
-  <span className={` whitespace-nowrap ${el.status === "جديد"? 'text-[#1447E6] bg-[#EFF6FF] ':'' } ${el.status === "يحتاج متابعه"? 'text-[#BB4D00] bg-[#FFFBEB] ':'' } ${el.status === "منتظم"? 'text-[#008236] bg-[#f0fdf4] ':'' }  py-0.5 px-2.5  rounded-2xl  w-[15%]`}>
+  <span className={` shadow-md whitespace-nowrap ${el.status === "جديد"? 'text-[#1447E6] bg-[#EFF6FF] ':'' } ${el.status === "يحتاج متابعه"? 'text-[#BB4D00] bg-[#FFFBEB] ':'' } ${el.status === "منتظم"? 'text-[#008236] bg-[#f0fdf4] ':'' }  py-0.5 px-2.5  rounded-2xl  w-[15%]`}>
              {el.status}
               </span>
   ) : (
@@ -122,8 +122,8 @@ let handlePatientDetails =(id)=>{
            
             <td className="text-[#45556C] text-end pr-7"> {el.age} </td>
             <td className="text-[#45556C] pr-5">{el.phone}</td>
-            <td onClick={()=>handlePatientDetails(el.id)} className="whitespace-nowrap h-full items-center  flex justify-end gap-3  cursor-pointer hover:transition-transform hover:scale-103  transition duration-300 font-semibold text-[#0F172B] pr-6 text-[9px] md:text-[16px] lg:text-[20px]">
-              {el.name}  <p className=' whitespace-nowrap p-2 text-[#45556C] bg-[#F1F5F9] md:text-[16px]     rounded-full flex  justify-center items-center text-center text-[10px]  '>
+            <td onClick={()=>handlePatientDetails(el.id)} className="whitespace-nowrap    cursor-pointer hover:transition-transform hover:scale-103  transition duration-300 font-semibold text-[#0F172B] pr-6 text-[9px] md:text-[16px] lg:text-[20px]">
+           <div className="items-center flex  gap-3">   {el.name}  <p className=' whitespace-nowrap p-2 text-[#45556C] bg-[#F1F5F9] md:text-[16px]     rounded-full flex  justify-center items-center text-center text-[10px]  '>
 
 {
 
@@ -137,7 +137,7 @@ let handlePatientDetails =(id)=>{
           
 
 
-              </p>
+              </p></div>
             </td>
          
             

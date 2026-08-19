@@ -37,11 +37,20 @@ setTitle("نظرة عامة")
   {/* left Side */}
      <div className="leftSide flex gap-3"> 
    <p className=' text-[#62748E] h-10 w-10 flex justify-center items-center bg-gray-200 rounded-full border border-white/30'>o</p>
-        <Link href='/addpatient' className=' hover:transition-transform hover:scale-105 flex bg-[#0D9488]  text-white items-center rounded-md md:w-auto md:h-auto w-10 text-[12px]  md:py-2 md:px-4 md:text-[18px] h-8 font-semibold' > <span className='hidden md:flex'>إضافة مريض </span> <Plus className=' md:ml-2 mx-auto md:mx-0' /></Link>
+       
+       {pathName !== '/addpatient' && (
+  <Link
+    href="/addpatient"
+    className="flex bg-[#0D9488] text-white items-center justify-center rounded-lg p-2 md:py-2 md:px-4 text-xs md:text-sm font-semibold hover:scale-105 transition"
+  >
+    <span className="hidden md:inline">إضافة مريض</span>
+    <Plus className="w-4 h-4 md:w-5 md:h-5" />
+  </Link>
+)}
         </div> 
         {/* right side */}
 <div className="rightSide flex gap-2.5 md:gap-3 items-center md:text-[25px] text-[18px] ">
-  <span className=''>{title}</span>  
+  <span className=' whitespace-nowrap '>{title}</span>  
  <div className="smallAndMidSideBar pt-1 pr-4 lg:hidden">
       <button onClick={()=>{setModal(true)}}>    <Menu /></button>
   

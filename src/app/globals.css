@@ -6,7 +6,9 @@
   --background: #ffffff;
   --foreground: #171717;
 }
-
+:root, body, html {
+  color-scheme: light only !important;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
