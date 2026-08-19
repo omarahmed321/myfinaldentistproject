@@ -32,7 +32,7 @@ let optionClassname = ` flex w-fit ml-auto py-2.5 `;
 
 
   {/* Title and Logo */}
-  <button className=' lg:hidden ml-4 mt-2 ' onClick={()=>{setModal(false)}}><X/></button>
+  <button className=' lg:hidden ml-4 mt-2 ' onClick={()=>{setModal(false)}}><X className=' text-white' /></button>
   <div className="TitleandLogo lg:pt-3  pb-3  border-b border-[#0F172A]">
     <div className="titleAndLogo flex gap-3 mx-auto items-center w-fit ">
     <h1 className=' text-white font-bold md:text-[18px] lg:text-[18px] text-[18px] '>عيادة الأسنان</h1>
@@ -50,8 +50,8 @@ let optionClassname = ` flex w-fit ml-auto py-2.5 `;
 </div>
 {/*settings option   */}
 <div className="hover w-full   hover:rounded-2xl border-t border-[#0F172A] absolute lg:mt-auto bottom-0 right-0 p-3 ">
-  <div className="settings  flex  w-full transition duration-500  rounded-xl hover:bg-red-500/10 p-3  hover:text-red-500  cursor-pointer hover:transition-transform hover:scale-105 " onClick={handleSignOut}>
-تسجيل الخروج <LogOut className="ml-2  " />
+  <div className=" text-white settings  flex  w-full transition duration-500  rounded-xl hover:bg-red-500/10 p-3  hover:text-red-500  cursor-pointer hover:transition-transform hover:scale-105 " onClick={handleSignOut}>
+تسجيل الخروج <LogOut className="ml-2 text-white  " />
 </div>
 </div>
 

@@ -122,8 +122,8 @@ let handlePatientDetails =(id)=>{
            
             <td className="text-[#45556C] text-end pr-7"> {el.age} </td>
             <td className="text-[#45556C] pr-5">{el.phone}</td>
-            <td onClick={()=>handlePatientDetails(el.id)} className="whitespace-nowrap    cursor-pointer hover:transition-transform hover:scale-103  transition duration-300 font-semibold text-[#0F172B] pr-6 text-[9px] md:text-[16px] lg:text-[20px]">
-           <div className="items-center flex  gap-3">   {el.name}  <p className=' whitespace-nowrap p-2 text-[#45556C] bg-[#F1F5F9] md:text-[16px]     rounded-full flex  justify-center items-center text-center text-[10px]  '>
+            <td onClick={()=>handlePatientDetails(el.id)}  className="whitespace-nowrap    cursor-pointer hover:transition-transform hover:scale-103  transition duration-300 font-semibold text-[#0F172B] pr-6 text-[9px] md:text-[16px] lg:text-[20px]">
+           <div className=" w-full justify-end  items-center flex  gap-3">   {el.name}  <p className=' whitespace-nowrap p-2 text-[#45556C] bg-[#F1F5F9] md:text-[16px]     rounded-full flex  justify-center items-center text-center text-[10px]  '>
 
 {
 
