@@ -109,7 +109,7 @@ saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
   return (
     <div className=" md:px-5 md:py-5  py-10 px-4 w-full h-full flex flex-col gap-6 lg:gap-8" >
       {/* upper */}
-<div className="upper p-3 md:p-6.25 w-full flex-col h-auto md:h-46.5 bg-white rounded-xl shadow-md border-[#E2E8F0] border gap-3 flex md:flex-row-reverse">
+<div className="upper p-3 md:p-6.25 w-full flex-col h-auto md:h-auto bg-white rounded-xl shadow-md border-[#E2E8F0] border gap-3 flex md:flex-row-reverse">
 <div className="right md:w-3/4 w-full  md:flex-row lg:w-[36%] h-full ml-auto flex justify-end text-right gap-5">
       <div className="innerLeft flex flex-col gap-1 w-full items-end">
         {/* NAME */}
@@ -134,7 +134,7 @@ saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
       {/* notes */}
       <div className=" flex  notes w-full h-full pr-4 pt-2 bg-[#FDF1F1] border rounded-lg border-[#FFE2E2] text-[#E7000B] relative flex-col ">
 <span className="text-[#C10007] text-[16px] font-bold  flex gap-3 w-full justify-end ">ملاحظات طبية هامة <AlertCircle className=" text-[#FB2C36] h-5 w-5" /></span>
-<span className="w-full pr-8 ">{theRequiredPatient?.note}</span>
+<span className="w-full pr-8 pb-3 ">{theRequiredPatient?.note}</span>
       </div>
     </div>
    
