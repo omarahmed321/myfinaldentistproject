@@ -2,30 +2,30 @@
 import { Edit, Edit2, Eye, Search, Trash, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
+import { readPatientsFromLocalStorage, savePatientsToLocalStorage } from "@/utils/storage";
 export default function page() {
+  /////////////////////////// hooks
   const router = useRouter()
-
   const [data,setData]=useState([]) // ده بيدل علي ال patient 
+  const [today, setToday] = useState("");
+  // live search and controlled inputs and uncontrolled ones
+  const [searchTerm, setSearchTerm] = useState("");
+  const [buttonStatus, setbuttonStatus] = useState("الكل");
+  /////////////////////////// some styles
   let filterButtonStyle =
     "w-full md:w-1/4  px-3  font-md rounded-lg  text-center     ";
   let headStyle =
     " text-[12px] font-bold text-[#62748E] px-6 py-4 bg-[#f8fafc] ";
-  const [today, setToday] = useState("");
+  /////////////////////////// the useEffect
   useEffect(() => {
     setToday(new Date().toLocaleDateString("en-GB"));
  
-   const savedData = localStorage.getItem('data');
-   savedData? setData(JSON.parse( savedData)) : ''
+   const savedData = readPatientsFromLocalStorage();
+  
   }, []);
 
-// for live search
-// controlled / uncontrolled inputs
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [buttonStatus, setbuttonStatus] = useState("الكل");
+  /////////////////////////// continue the live search
 const filteredItems = data.filter((patient) => {
-
   const SearchBox =
     patient.phone.includes(searchTerm) ||
     patient.name.toLowerCase().trim().includes(searchTerm.trim().toLowerCase());
@@ -36,13 +36,15 @@ const filteredItems = data.filter((patient) => {
 
   return StatusAllOfThem && SearchBox;
 });
+
+
+  /////////////////////////// handleEdit
 let handleEdit = (id)=>{
   router.push(`/addpatient?id=${id}`)
 }
 
 
-
-// handle patient details
+  ////////////////////////////////////////////// handlePatientDetails
 let handlePatientDetails =(id)=>{
   router.push(`/patientdetail?id=${id}`)
 }
@@ -50,6 +52,7 @@ let handlePatientDetails =(id)=>{
     <div className="p-2 md:p-8 ">
       <div className="text-black  flex ">
         <div className=" w-full      flex flex-col md:flex-row-reverse gap-5 lg:gap-0 ">
+          {/* the search box */}
           <div className="searchBox  rounded-lg relative w-full lg:w-md ml-auto text-[#0F172B] ">
             <input
               type="text"
@@ -62,7 +65,7 @@ let handlePatientDetails =(id)=>{
             <Search className=" absolute right-3 top-3  text-gray-400 " />
           </div>
    
-
+{/* the buttons for the filter */}
   <div className="buttons border border-[#E2E8F0]  md:flex md:flex-row bg-white rounded-lg h-13 shadow-md w-full md:w-fit flex   py-1 relative gap-1 px-2">
     <div className={`absolute   w-1/4   transition-all duration-300 ease-in-out m-1 ml-3 top-1 rounded-lg h-9 bg-[#e7f5f4]  font-bold ${ buttonStatus === 'جديد' ? 'right-[72%]' :
     buttonStatus === 'منتظم' ? 'right-[47%]' :
@@ -99,7 +102,7 @@ let handlePatientDetails =(id)=>{
               <button onClick={()=>{
                 let dataAfterDelete=data.filter((patient) => patient.id !== el.id)
              setData(dataAfterDelete);
-             localStorage.setItem('data',JSON.stringify(dataAfterDelete))
+           savePatientsToLocalStorage(dataAfterDelete);
               }}>
                 <Trash2 className=" hover:transition-transform hover:scale-110 transition duration-200" />
               </button>

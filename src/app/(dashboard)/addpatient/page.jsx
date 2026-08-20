@@ -5,9 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useRef } from 'react'
 import toast from 'react-hot-toast'
 import Skeleton from '../../../components/Skeletron'
-
+import { readPatientsFromLocalStorage, savePatientsToLocalStorage } from "@/utils/storage";
  function AddPatient() {
  // lol مفكر انه لما يسميها searchparas كده معرفتش يعني يوجع 
+  /////////////////////////// Hooks
   let theParamId = useSearchParams().get('id')
   const router = useRouter()
   let PhoneInput =useRef()
@@ -16,10 +17,11 @@ import Skeleton from '../../../components/Skeletron'
   let noteInput =useRef()
 let maleInput = useRef()
 let femaleInput = useRef()
+let statusInput = useRef()
+  /////////////////////////// useEffect
 useEffect(() => {
   if (theParamId) {
-    let isTherePatients = localStorage.getItem('data')
-    let patients = isTherePatients ? JSON.parse(isTherePatients) : []
+let patients = readPatientsFromLocalStorage();
     let oldPatient = patients.find((patient) => patient.id == theParamId)
 
     if (oldPatient) {
@@ -43,15 +45,7 @@ useEffect(() => {
 
   }
 }, [theParamId])
-
-
-
-
-
-
-let statusInput = useRef()
-
-
+  /////////////////////////// ValidatePatientInputs
 let validatePatientInputs = () => {
   let name = nameInput.current?.value?.trim();
   let phone = PhoneInput.current?.value?.trim();
@@ -75,11 +69,10 @@ let validatePatientInputs = () => {
   }
   return true;
 }
-
+  /////////////////////////// handleAddPatient
   let handleAddPatient =()=>{
       if (!validatePatientInputs()) return;
-  let isTherePatients = localStorage.getItem('data')
-    let patients = isTherePatients ? JSON.parse(isTherePatients) : []
+let patients = readPatientsFromLocalStorage();
     let genderValue = maleInput.current.checked ? 'ذكر' : femaleInput.current.checked ? 'أنثى' : ''
     // بنجيب القديم عشان نعدله لو فيه اصلا
     if(theParamId){
@@ -124,7 +117,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
     }
     patients.push(newPatient)
   }
-  localStorage.setItem('data', JSON.stringify(patients))
+  savePatientsToLocalStorage(patients);
   
   router.push('/patients')
   }

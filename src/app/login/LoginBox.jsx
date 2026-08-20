@@ -9,22 +9,24 @@ import toast, { Toaster } from 'react-hot-toast'
 import * as Yup from 'yup'
 
 export default  function LoginBox() {
+ /////////////////////////// hooks
     const router = useRouter();
     const [showPass,setShowPass] = useState(false)
-   
+  
+ /////////////////////////// validation schema
     let validationSchemaWithYup = Yup.object().shape({
-        username:Yup.string().min(3,'اقل حاجه 3 حروف').max(30,'اكتر حاجه 30 حرف').required('اسم المستخدم لازم ينكتب').matches( /^[a-zA-Z0-9\u0600-\u06FF]+(?:[ _-][a-zA-Z0-9\u0600-\u06FF]+)*$/, `متستعملش رموز غريبه زي ( ' , " , -- , ; )`),
-        password:Yup.string().min(8,'اقل حاجه 8 حروف').required('كلمه السر مطلوبه').matches( /^(?=\S+$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#_-]).{8,64}$/,'كلمه السر لازم يكون فيها رمز مميز زي الشباك ومعاه رقم ومعاه حرف كابيتال وواحد سمول ومنغير مسافات'
-
-        ),
+        username:Yup.string().min(3,'اقل حاجه 3 حروف').max(30,'اكتر حاجه 30 حرف').required('اسم المستخدم لازم ينكتب'),
+        password:Yup.string().min(8,'اقل حاجه 8 حروف').required('كلمه السر مطلوبه'),
         remember: Yup.boolean()
     })
+ /////////////////////////// initialValues
     let mySchemaInitialValues={
         username:'',
         password:'',
         remember:false
 
     }
+ /////////////////////////// handle submit
     let handleSubmit =async(values,{setSubmitting,setFieldError})=>{
        
         if(values.username === 'omar' && values.password === "Omar123*#"){
@@ -96,7 +98,7 @@ toast.error('كلمه السر او اليوزر خاطئ')
     {/* remember me and forgot password */}
     <div className="rememberMe flex justify-between mb-6">
         {/* forgot password */}
-       <Link href="/" className=' text-[14px] text-[#0D9488] font-semibold'>نسيت كلمة المرور؟</Link>
+       <Link href="/signup" className=' text-[14px] text-[#0D9488] font-bold hover:underline'>أريد انشاء حساب</Link>
        {/* remember me  */}
        <div className=' w-fit gap-2 flex'>
         <label htmlFor="" className='text-[14px] text-[#4B5563] '>تذكرني</label>

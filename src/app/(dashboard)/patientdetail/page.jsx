@@ -7,44 +7,35 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import Skeleton from "../../../components/Skeletron";
-
+import { readPatientsFromLocalStorage, readAppointmentsFromLocalStorage, saveAppointmentsToLocalStorage } from "@/utils/storage";
 
 
 
  function PatientDetail() {
-  // some useState
+  /////////////////////////// some hooks
   const [appointments, setAppointments] = useState([]);
   const [theRequiredPatient , setTheRequiredPatient]=useState()
   const [theRequiredAppointmentPerPerson , setTheRequiredAppointmentPerPerson] = useState()
   const [timeValue, setTimeValue] = useState("");
-  // some hooks
   const router = useRouter()
   const paramsID= useSearchParams().get('id')
-
-  // inputs Refrence
   const dateInput = useRef();
 const timeInput = useRef();
 const operation = useRef();
 const statusOption =useRef()
-// function that reads from the local
-  let readAppointmentsFromLocalStorage = () => {
-  let isAppointments = localStorage.getItem('appointments');
-  return isAppointments ? JSON.parse(isAppointments) : [];
-}
-// function saves the data
+ /////////////////////////// saveAppointmentsAndSync
 let saveAppointmentsAndSync = (newAppointments) => {
-  localStorage.setItem('appointments', JSON.stringify(newAppointments));
+  // save to the local storge
+  saveAppointmentsToLocalStorage(newAppointments);
+  // useState for the gui
   setAppointments(newAppointments);
   setTheRequiredAppointmentPerPerson(newAppointments.filter((app) => app.patientId === paramsID));
 }
-
+ /////////////////////////// handleEdit
 let handleEdit =()=>{
 router.push(`/addpatient?id=${theRequiredPatient.id}`)
 }
-
-
-
-// handle the add new appointment
+ /////////////////////////// some hooks handle the add new appointment
 let handleNewAppointment =()=>{
     if (!dateInput.current?.value || !timeInput.current?.value || !operation.current?.value) {
     toast.error("! انت ليه سايب اماكن فاضيه ");
@@ -69,16 +60,13 @@ saveAppointmentsAndSync(allAppointments)
   operation.current.value = ''
     toast.success('تم اضافه موعد جديد')
 }
-
-
-// nah thats the use effect
+ /////////////////////////// useEffect
   useEffect(()=>{
   // reading the data from localstorage and getting the required patient
   if(!paramsID){router.push('/patients')
     return ;
   }
-  let isPatients = localStorage.getItem('data')
-  let patients =  isPatients? JSON.parse(isPatients) : []
+ let patients = readPatientsFromLocalStorage();
   setTheRequiredPatient(patients.find((patient)=>{return patient.id === paramsID}))
 
   // reading appointments data from the localStorage if there is 
@@ -87,7 +75,7 @@ saveAppointmentsAndSync(allAppointments)
     
   },[paramsID])
 
-// handle delete
+ /////////////////////////// handle delete
 let handleDeleteAppointment =(appointment)=>{
 let allAppointments = readAppointmentsFromLocalStorage()
 let filteredAppointments = allAppointments.filter((appointments)=>{return appointment.id !== appointments.id })
@@ -95,7 +83,7 @@ saveAppointmentsAndSync(filteredAppointments)
 
 
 }
-// handle change Status
+ /////////////////////////// handle change Status
 let handleChangeStatus =(appointment,newStatus)=>{
 let allAppointments = readAppointmentsFromLocalStorage();
 let updatedAppointmentsAfterNewStatus = allAppointments.map((appointmentInLoop)=>{
@@ -103,7 +91,6 @@ let updatedAppointmentsAfterNewStatus = allAppointments.map((appointmentInLoop)=
 })
 saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
 }
-
 
 
   return (

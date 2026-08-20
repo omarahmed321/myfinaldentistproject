@@ -4,23 +4,23 @@ import React, { useEffect, useState } from 'react'
 import { readAppointmentsFromLocalStorage } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-
+import { readPatientsFromLocalStorage } from "@/utils/storage";
 export default function page() {
-  let oneOfTheGrid = "  h-auto bg-white rounded-lg border border-[#E2E8F0] hover:scale-105 transition-shadow md:shadow-none shadow-md hover:shadow-md duration-500 transition-transform p-6.25"
-
+  /////////////////////////// some styles
+  let oneOfTheGrid = " pb-2  h-auto bg-white rounded-lg border border-[#E2E8F0] hover:scale-105 transition-shadow md:shadow-none shadow-md hover:shadow-md duration-500 transition-transform p-6.25"
+ /////////////////////////// some hooks
   const [patients, setPatients] = useState([])
   const [appointments ,setAppointments]= useState([])
 const router = useRouter()
-
+ /////////////////////////// useEffect
   useEffect(()=>{
     // المرضي
-  let isThereIsData=  localStorage.getItem('data');
-    let patients = isThereIsData? setPatients(  JSON.parse(isThereIsData) ) : setPatients([])
+  setPatients(readPatientsFromLocalStorage());
     // لكن هنا المواعيد
   let appointmentsHere = readAppointmentsFromLocalStorage();
   setAppointments(appointmentsHere);
   },[])
-  // filter todays date
+  /////////////////////////// filter todays date
   let todayDate = new Date().toISOString().split('T')[0];
 let todaysAppointments = appointments.filter((app) => app.date === todayDate);
 // يعني المفروض فكرتها تعمل اراي فيها فقط الحاجات المكتمله النهارده

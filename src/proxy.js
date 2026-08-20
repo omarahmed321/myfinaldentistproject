@@ -4,12 +4,12 @@ import { NextResponse } from 'next/server';
 export default function middleware(request) {
 const token = request.cookies.get('token')?.value;
 const pathName =request.nextUrl.pathname;
-const isLoginPage = pathName === "/login";
-if(!token && !isLoginPage){
+const isAuthPage = pathName === "/login" || pathName=="/signup";
+if(!token && !isAuthPage){
     return NextResponse.redirect(new URL('/login',request.url));
 
 }
-if(token && isLoginPage){
+if(token && isAuthPage){
     return NextResponse.redirect(new URL('/',request.url));
 }
 return NextResponse.next();

@@ -5,12 +5,12 @@ import { readAppointmentsFromLocalStorage } from '../../../utils/storage';
 import { useRouter } from 'next/navigation';
 
 export default function page() {
-  // just some repeatedStyles
+  /////////////////////////// just some repeatedStyles
  let filterButtonStyle =
     "w-full md:w-1/4  px-3  font-md rounded-lg  text-center     ";
-  // just to get the todays Number
+  /////////////////////////// just to get the todays Number
 let todayNumber = new Date().toLocaleDateString('en-US', { day: '2-digit' });
-//  the hooks
+  /////////////////////////// the hooks
 const router = useRouter()
 const [appointmentStatus,setAppointmentStatus] =useState('الكل')
 const [appointments,setAppointments] =useState()
@@ -25,7 +25,7 @@ const [weekStartDate, setWeekStartDate] = useState(() => {
   return sat;
 });
 
-// ودي الاسبوع الجاي
+  /////////////////////////// handleNextWeek
 let handleNextWeek = () => {
   let nextSat = new Date(weekStartDate);
   nextSat.setDate(weekStartDate.getDate() + 7);
@@ -33,14 +33,14 @@ let handleNextWeek = () => {
    setSelectedDayDate(null);
 };
 
-// ودي الاسبوع اللي فات
+  /////////////////////////// handlePrevWeek
 let handlePrevWeek = () => {
   let prevSat = new Date(weekStartDate);
   prevSat.setDate(weekStartDate.getDate() - 7);
   setWeekStartDate(prevSat);
    setSelectedDayDate(null);
 };
-// اراي فيه الاسبوع الحالي 
+  /////////////////////////// currentWeekDays
 let currentWeekDays = Array.from({ length: 7 }, (_, i) => {
   let d = new Date(weekStartDate);
   d.setDate(weekStartDate.getDate() + i);
@@ -52,14 +52,14 @@ let currentWeekDays = Array.from({ length: 7 }, (_, i) => {
 });
 
 
-// the appointments only in this week
+  /////////////////////////// appointmentsThisWeek
 let appointmentsThisWeek = (appointments || []).filter((appointment) => {
     if (selectedDayDate) {
     return appointment.date === selectedDayDate;
   }
   return currentWeekDays.some((day) => day.fullDate === appointment.date);
 });
-// filter buttons in the appointments this week
+  /////////////////////////// filter buttons in the appointments this week
 let filteredAppointmentsThisWeek = appointmentsThisWeek.filter((appointment)=>{
 
     if (appointmentStatus === 'الكل') return true; 
@@ -68,11 +68,11 @@ let filteredAppointmentsThisWeek = appointmentsThisWeek.filter((appointment)=>{
 
   
 )
-// useEffect 
+  /////////////////////////// useEffect 
 useEffect(()=>{
    setAppointments(readAppointmentsFromLocalStorage())
 },[])
-// handle edit
+  /////////////////////////// handle edit
 let handleEdit =(appointmentPatientId)=>{
 router.push(`/patientdetail?id=${appointmentPatientId}`)
 }
