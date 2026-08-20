@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function page() {
-  let oneOfTheGrid = "  h-36.5 bg-white rounded-lg border border-[#E2E8F0] hover:scale-105 transition-shadow md:shadow-none shadow-md hover:shadow-md duration-500 transition-transform p-6.25"
+  let oneOfTheGrid = " pb-7 h-36.5 bg-white rounded-lg border border-[#E2E8F0] hover:scale-105 transition-shadow md:shadow-none shadow-md hover:shadow-md duration-500 transition-transform p-6.25"
 
   const [patients, setPatients] = useState([])
   const [appointments ,setAppointments]= useState([])
