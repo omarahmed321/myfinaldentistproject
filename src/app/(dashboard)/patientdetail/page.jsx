@@ -164,40 +164,9 @@ saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
 </div>
 
 {/* appointments and add new appointment */}
-<div className="flex w-full shadow-lg  justify-end gap-6 lg:gap-8 flex-col-reverse lg:flex-row ">
+<div className="flex w-full    justify-end gap-6 lg:flex-row-reverse  lg:gap-8 flex-col  ">
    
-<div className="md:w-full lg:w-1/3    bg-white shadow-md rounded-xl p-5 gap-6 flex-col" dir="rtl">
-<span className=" flex gap-2 items-center font-bold text-[18px] text-[#0F172B]"><PlusCircle className="text-[#0D9488]" /> حجز ميعاد جديد</span>
-<div className="inputs flex flex-col gap-4 mt-6">
-
-<label htmlFor="" className=" text-[#314158] flex flex-col font-bold text-[14px] gap-1">
-  تاريخ الموعد
-  <input ref={dateInput} type="date" className="py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30" />
-</label>
-<label htmlFor="" className=" text-[#314158] flex flex-col font-bold text-[14px] gap-1">
-  الوقت
-  <input type="time"  ref={timeInput}   value={timeValue}   onChange={(e) => setTimeValue(e.target.value)} className="py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"/>
-  { !timeValue.trim() ? (
-    <span></span>
-  ) : appointments.some((app) => app.time === timeValue) ? (
-    <span className="text-red-500 font-normal">الموعد محجوز لمريض آخر</span>
-  ) : (
-    <span className="text-[#00A63E] font-normal">هذا الموعد متاح ولا يوجد تعارض</span>
-  )
-  }
-
-</label>
-<label htmlFor="" className=" text-[#314158] flex flex-col font-bold text-[14px] gap-1">
-  نوع الإجراء
-  <input required={true} type="text" ref={operation} className="py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"/>
-</label>
-
-<button className=" justify-center hover:shadow-md hover:scale-102 duration-300 transition  flex text-[16px] font-bold text-white bg-[#0D9488] rounded-lg py-3" onClick={handleNewAppointment}>تأكيد الحجز</button>
-</div>
-</div>
-
-
-  <div className="appointmentsTable md:w-full   lg:w-2/3 overflow-auto overflow-y-auto max-h-100 ">
+    <div className="appointmentsTable md:w-full rounded-xl     lg:w-2/3 overflow-auto overflow-y-auto max-h-100 ">
  
     <table dir="rtl" className="bg-white shadow-lg w-full  overflow-auto     border border-[#E2E8F0] rounded-xl text-right ">
  <thead className="">
@@ -239,6 +208,38 @@ theRequiredAppointmentPerPerson?.map((appointment)=>{
   </tbody>
 </table>
   </div>
+<div className="md:w-full lg:w-1/3 flex     bg-white shadow-md rounded-xl  p-5 gap-6 flex-col" dir="rtl">
+<span className=" flex gap-2 items-center font-bold text-[18px] text-[#0F172B]"><PlusCircle className="text-[#0D9488]" /> حجز ميعاد جديد</span>
+<div className="inputs flex flex-col gap-4 mt-6">
+
+<label htmlFor="" className=" w-full text-[#314158] flex flex-col font-bold text-[14px] gap-1">
+  تاريخ الموعد
+  <input ref={dateInput} type="date" className="py-2.5 w-full  bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30" />
+</label>
+<label htmlFor="" className=" w-full text-[#314158] flex flex-col font-bold text-[14px] gap-1">
+  الوقت
+  <input type="time"  ref={timeInput}   value={timeValue}   onChange={(e) => setTimeValue(e.target.value)} className=" w-full py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"/>
+  { !timeValue.trim() ? (
+    <span></span>
+  ) : appointments.some((app) => app.time === timeValue) ? (
+    <span className="text-red-500 font-normal">الموعد محجوز لمريض آخر</span>
+  ) : (
+    <span className="text-[#00A63E] font-normal">هذا الموعد متاح ولا يوجد تعارض</span>
+  )
+  }
+
+</label>
+<label htmlFor="" className=" text-[#314158] flex w-full flex-col font-bold text-[14px] gap-1">
+  نوع الإجراء
+  <input required={true} type="text" ref={operation} className=" w-full py-2.5 bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"/>
+</label>
+
+<button className=" justify-center hover:shadow-md hover:scale-102 duration-300 transition  flex text-[16px] font-bold text-white bg-[#0D9488] rounded-lg py-3 w-full" onClick={handleNewAppointment}>تأكيد الحجز</button>
+</div>
+</div>
+
+
+ 
 
 </div>
 
