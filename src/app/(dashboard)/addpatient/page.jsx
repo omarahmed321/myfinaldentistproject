@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useRef } from 'react'
 import toast from 'react-hot-toast'
 import Skeleton from '../../../components/Skeletron'
-import { readPatientsFromLocalStorage, savePatientsToLocalStorage } from "@/utils/storage";
+import { readPatientsFromLocalStorage, savePatientsToLocalStorage, readCurrentUserFromLocalStorage } from "@/utils/storage";
  function AddPatient() {
  // lol مفكر انه لما يسميها searchparas كده معرفتش يعني يوجع 
   /////////////////////////// Hooks
@@ -71,11 +71,15 @@ let validatePatientInputs = () => {
 }
   /////////////////////////// handleAddPatient
   let handleAddPatient =()=>{
+    // لو مفيش حاجه كامله اخرج اصلا
       if (!validatePatientInputs()) return;
+    // تعال نقرا اليوسر الحالي عشان نفلتر علي اساسه وبرضو نقرا الباشنتس
+let currentUser = readCurrentUserFromLocalStorage();
 let patients = readPatientsFromLocalStorage();
     let genderValue = maleInput.current.checked ? 'ذكر' : femaleInput.current.checked ? 'أنثى' : ''
     // بنجيب القديم عشان نعدله لو فيه اصلا
     if(theParamId){
+      // بنعدل في المريض اللي موجود في اللينك ولا مريض تاني 
 patients =patients.map((patient)=>{ if(patient.id == theParamId){
 
   return {
@@ -90,6 +94,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
   }
  
 }
+//  لو لا رجع النسخه الحاليه منه
  else{
     return patient
       
@@ -106,8 +111,10 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
   }
   else {
   // المفروض الفانكشن كانت دي بس لول يلا بقي جت من عند ربنا
+
     let newPatient = {
       id: crypto.randomUUID(),
+      userId: currentUser?.id,
       name: nameInput.current.value,
       phone: PhoneInput.current.value,
       age: ageInput.current.value,

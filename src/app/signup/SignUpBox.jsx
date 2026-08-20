@@ -3,10 +3,14 @@ import { Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import * as Yup from 'yup'
+import { useRouter } from 'next/navigation'
+import toast, { Toaster } from 'react-hot-toast'
+import { readUsersFromLocalStorage, saveUsersToLocalStorage ,  saveCurrentUserToLocalStorage } from '@/utils/storage'
 export default function SignUpBox() {
  /////////////////////////// hooks
-    const [showPass,setShowPass] = useState(false)
-    const [showConfirmPass, setShowConfirmPass] = useState(false);
+ const router = useRouter()
+ const [showPass,setShowPass] = useState(false)
+ const [showConfirmPass, setShowConfirmPass] = useState(false);
  /////////////////////////// validation schema
     let validationSchemaWithYup = Yup.object().shape({
         fullName: Yup.string()
@@ -31,7 +35,37 @@ export default function SignUpBox() {
         confirmPassword: ''
     }
  /////////////////////////// handleSubmit
-    let handleSubmit =()=>{}
+    let handleSubmit =(values, { setFieldError })=>{
+        let users = readUsersFromLocalStorage();
+        // هو انت موجود قبل كده ؟
+    let isExist = users.some((user) => user.fullName === values.fullName);
+    if (isExist) {
+        setFieldError('fullName', 'اسم المستخدم هذا مسجل بالفعل!');
+        toast.error('اسم المستخدم مسجل بالفعل!');
+        return;
+    }
+    //  تعال نعمل يوسر جديد
+    let newUser = {
+        id: crypto.randomUUID(),
+        fullName: values.fullName,
+        password: values.password
+    };
+    // تعال نعين اليوسر 
+     users.push(newUser);
+    //  نعينه في كل اليوسرز
+    saveUsersToLocalStorage(users);
+    //  نعينه في اوبجكت لوحده 
+    saveCurrentUserToLocalStorage(newUser);
+    // تعال نحط التوكن ونخش السستم 
+    const userToken = crypto.randomUUID(); 
+document.cookie = `token=${userToken}; path=/; max-age=604801; SameSite=Lax`;
+    toast.success('تم إنشاء الحساب بنجاح!');
+    setTimeout(() => {
+        window.location.href = '/';
+    }, 500);
+    }
+
+    
   return (
 <Formik initialValues={mySchemaInitialValues} validationSchema={validationSchemaWithYup} onSubmit={handleSubmit}>
     <Form>

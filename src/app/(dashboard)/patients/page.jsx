@@ -2,7 +2,7 @@
 import { Edit, Edit2, Eye, Search, Trash, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { readPatientsFromLocalStorage, savePatientsToLocalStorage } from "@/utils/storage";
+import { readPatientsFromLocalStorage, savePatientsToLocalStorage ,readMyPatientsFromLocalStorage  } from "@/utils/storage";
 export default function page() {
   /////////////////////////// hooks
   const router = useRouter()
@@ -21,6 +21,7 @@ export default function page() {
     setToday(new Date().toLocaleDateString("en-GB"));
  
    const savedData = readPatientsFromLocalStorage();
+   setData(readMyPatientsFromLocalStorage());
   
   }, []);
 

@@ -7,7 +7,7 @@ import { resolve } from 'path'
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import * as Yup from 'yup'
-
+import { readUsersFromLocalStorage ,saveCurrentUserToLocalStorage } from '@/utils/storage'
 export default  function LoginBox() {
  /////////////////////////// hooks
     const router = useRouter();
@@ -28,32 +28,28 @@ export default  function LoginBox() {
     }
  /////////////////////////// handle submit
     let handleSubmit =async(values,{setSubmitting,setFieldError})=>{
-       
-        if(values.username === 'omar' && values.password === "Omar123*#"){
-            const fakeToken = 'dummy-jwt-token-12345'
-        //          if(values.remember){
-        //     localStorage.setItem('token',fakeToken)
-        // }else{
-           
-        //     sessionStorage.setItem('token',fakeToken)
-        // }
-        const maxage = values.remember? 604801 : ''; 
-            document.cookie=`token=${fakeToken}; path=/; max-age=${maxage};SameSite=Lax`
-        
-      
-      
-setTimeout(() => {
-    window.location.href = '/';
-}, 500);
-     toast.success("تم تسجيل الدخول بنجاح")
-
-        }
-        else{
-            setFieldError('password', 'اسم المستخدم أو كلمة المرور غير صحيحة');
-toast.error('كلمه السر او اليوزر خاطئ')
-        }
-      
-   
+        // نقرا من اللوكال ستورج
+         let users = readUsersFromLocalStorage();
+        //  بنجيب الاوبجكت بتاع اليوسر
+       let foundUser = users.find(
+        (user) => user.fullName === values.username && user.password === values.password
+    );
+    // لوفيه اي حاجه مش undfined يعني تعمل كوكي وتعمل توست وتوديه علي الداشبورد
+    if (foundUser) {
+        saveCurrentUserToLocalStorage(foundUser);
+        const userToken = crypto.randomUUID();
+        const maxage = values.remember ? 604801 : ''; 
+        document.cookie = `token=${userToken}; path=/; max-age=${maxage}; SameSite=Lax`;
+        toast.success("تم تسجيل الدخول بنجاح");
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 500);
+    } 
+    // لو افترضنا بقي انه نصاب وراجل مش محترم  خلاص  اطلع برا يعااادل
+    else {
+        setFieldError('password', 'اسم المستخدم أو كلمة المرور غير صحيحة');
+        toast.error('اسم المستخدم أو كلمة المرور غير صحيحة');
+    }
     }
   return (
 <Formik initialValues={mySchemaInitialValues} validationSchema={validationSchemaWithYup} onSubmit={handleSubmit}  >

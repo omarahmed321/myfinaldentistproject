@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { readAppointmentsFromLocalStorage } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { readPatientsFromLocalStorage } from "@/utils/storage";
+import { readPatientsFromLocalStorage ,readCurrentUserFromLocalStorage ,readMyPatientsFromLocalStorage } from "@/utils/storage";
 export default function page() {
   /////////////////////////// some styles
   let oneOfTheGrid = " pb-2  h-auto bg-white rounded-lg border border-[#E2E8F0] hover:scale-105 transition-shadow md:shadow-none shadow-md hover:shadow-md duration-500 transition-transform p-6.25"
@@ -15,10 +15,15 @@ const router = useRouter()
  /////////////////////////// useEffect
   useEffect(()=>{
     // المرضي
-  setPatients(readPatientsFromLocalStorage());
+setPatients(readMyPatientsFromLocalStorage());
     // لكن هنا المواعيد
   let appointmentsHere = readAppointmentsFromLocalStorage();
+    // اليوسر الحالي
+  const currentUser = readCurrentUserFromLocalStorage();
+  // كل المرضي
+    const allPatients = readPatientsFromLocalStorage();
   setAppointments(appointmentsHere);
+
   },[])
   /////////////////////////// filter todays date
   let todayDate = new Date().toISOString().split('T')[0];
