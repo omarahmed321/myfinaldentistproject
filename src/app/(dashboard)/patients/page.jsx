@@ -71,6 +71,7 @@ if(isLoading)return <Skeleton />
               placeholder="البحث بالاسم أو رقم الهاتف..."
               value={searchTerm} onChange={(event)=>{
                 setSearchTerm(event.target.value);
+                setCurrentPage(1);
               }}
             />
             <Search className=" absolute right-3 top-3  text-gray-400 " />

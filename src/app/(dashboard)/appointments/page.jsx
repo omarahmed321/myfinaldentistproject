@@ -67,7 +67,7 @@ let appointmentsThisWeek = (appointments || []).filter((appointment) => {
 });
   /////////////////////////// filter buttons in the appointments this week
 let filteredAppointmentsThisWeek = appointmentsThisWeek.filter((appointment)=>{
-
+setCurrentPage(1);
     if (appointmentStatus === 'الكل') return true; 
   return appointment.status === appointmentStatus;
 }
