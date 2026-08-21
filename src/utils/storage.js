@@ -1,48 +1,52 @@
 // All of the localStorage Functions
 
 
+
+////////////////////////////////////////// فانكشن حمايه اللوكال ستورج وفانكشن عامه للكل
+function globalLocalStorageFunction(key,value){
+if( typeof window ==='undefined' || !window.localStorage){
+    return arguments.length === 1 ? null : false;}
+
+// arguments.length ===1 means there is key only = get 
+ if(arguments.length ===1){
+  const savedData = localStorage.getItem(key)
+  if(savedData === null){
+    return null;
+  }
+
+  try{return JSON.parse(savedData)}
+  catch(error){ throw new Error('failed to get the key ')}
+ }
+  // Set
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch {
+    return false;
+  }
+
+}
 ////////////////////////////////////////// Appointments functions 
 // read
-export let readAppointmentsFromLocalStorage = () => {
-  let isAppointments = localStorage.getItem('appointments');
-  return isAppointments ? JSON.parse(isAppointments) : [];
-}
+export let readAppointmentsFromLocalStorage = () => globalLocalStorageFunction('appointments') || [];
 // write
-export let saveAppointmentsToLocalStorage = (newAppointments) => {
-  localStorage.setItem('appointments', JSON.stringify(newAppointments));
-}
+export let saveAppointmentsToLocalStorage = (newAppointments) => globalLocalStorageFunction('appointments',newAppointments)
 ////////////////////////////////////////// Patients functions
 // read
-export let readPatientsFromLocalStorage = () => {
-  let isPatients = localStorage.getItem('patients');
-  return isPatients ? JSON.parse(isPatients) : [];
-   
-}
+export let readPatientsFromLocalStorage = () => globalLocalStorageFunction('patients') || [];
 // write
-export let savePatientsToLocalStorage = (newPatients) => {
-  localStorage.setItem('patients', JSON.stringify(newPatients));
-}
+export let savePatientsToLocalStorage = (newPatients) => globalLocalStorageFunction('patients',newPatients)
 ////////////////////////////////////////// Users functions
 // read
-export let readUsersFromLocalStorage = () => {
-  let isUsers = localStorage.getItem('users');
-  return isUsers ? JSON.parse(isUsers) : [];
-}
+export let readUsersFromLocalStorage = () => globalLocalStorageFunction('users') || [];
 // write
-export let saveUsersToLocalStorage = (newUsers) => {
-  localStorage.setItem('users', JSON.stringify(newUsers));
-}
+export let saveUsersToLocalStorage = (newUsers) => globalLocalStorageFunction('users',newUsers)
 ////////////////////////////////////////// specific Users functions / current user {its an object not array}
 // هي الفكره اني لازم اعمل اراي لليوسر الحالي
 // read
-export let readCurrentUserFromLocalStorage = () => {
-  let isCurrentUser = localStorage.getItem('currentUser');
-  return isCurrentUser ? JSON.parse(isCurrentUser) : null;
-}
+export let readCurrentUserFromLocalStorage = () => globalLocalStorageFunction('currentUser')
 // save 
-export let saveCurrentUserToLocalStorage = (user) => {
-  localStorage.setItem('currentUser', JSON.stringify(user));
-}
+export let saveCurrentUserToLocalStorage = (user) => globalLocalStorageFunction('currentUser',user)
 // remove {needed cuz when signout}
 export let clearCurrentUserFromLocalStorage = () => {
   localStorage.removeItem('currentUser');
