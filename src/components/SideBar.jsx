@@ -53,7 +53,7 @@ let optionClassname = ` flex w-fit ml-auto py-2.5 `;
 </div>
 {/*settings option   */}
 <div className="hover w-full   hover:rounded-2xl border-t border-[#0F172A] absolute lg:mt-auto bottom-0 right-0 p-3 ">
-  <div className=" text-white settings  flex  w-full transition duration-500  rounded-xl hover:bg-red-500/10 p-3  hover:text-red-500  cursor-pointer hover:transition-transform hover:scale-105 " onClick={handleSignOut}>
+  <div className=" text-white settings  flex  w-full transition duration-500  rounded-xl hover:bg-red-500/10 p-3  hover:text-red-500  cursor-pointer  " onClick={handleSignOut}>
 تسجيل الخروج <LogOut className="ml-2 text-white  " />
 </div>
 </div>
