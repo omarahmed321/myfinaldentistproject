@@ -57,3 +57,14 @@ export let readMyPatientsFromLocalStorage = () => {
   let allPatients = readPatientsFromLocalStorage();
   return allPatients.filter(patient => patient.userId === currentUser?.id);
 }
+////////////////////////////////////////// delete patient and his appointments
+export let deletePatientAndHisAppointments = (patientId) => {
+  // patient deletion
+  let allPatients = readPatientsFromLocalStorage();
+  let updatedPatients = allPatients.filter(patient => patient.id !== patientId);
+  savePatientsToLocalStorage(updatedPatients);
+  // appointments deletion
+  let allAppointments = readAppointmentsFromLocalStorage();
+  let updatedAppointments = allAppointments.filter(app => app.patientId !== patientId);
+  saveAppointmentsToLocalStorage(updatedAppointments);
+};

@@ -66,12 +66,19 @@ saveAppointmentsAndSync(allAppointments)
   if(!paramsID){router.push('/patients')
     return ;
   }
- let patients = readPatientsFromLocalStorage();
-  setTheRequiredPatient(patients.find((patient)=>{return patient.id === paramsID}))
+  // عشان مفيش حد غبي يدخل اي id فوق وخلاص 
+    let patients = readPatientsFromLocalStorage();
+  let foundPatient = patients.find((patient) => patient.id === paramsID);
 
-  // reading appointments data from the localStorage if there is 
-let allAppointments = readAppointmentsFromLocalStorage()
-saveAppointmentsAndSync(allAppointments)
+  if (!foundPatient) {
+    router.push('/patients');
+    return;
+  }
+
+  setTheRequiredPatient(foundPatient);
+  let allAppointments = readAppointmentsFromLocalStorage();
+  saveAppointmentsAndSync(allAppointments);
+
     
   },[paramsID])
 

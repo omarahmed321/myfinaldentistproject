@@ -20,29 +20,37 @@ let femaleInput = useRef()
 let statusInput = useRef()
   /////////////////////////// useEffect
 useEffect(() => {
-  if (theParamId) {
-let patients = readPatientsFromLocalStorage();
-    let oldPatient = patients.find((patient) => patient.id == theParamId)
-
+    if (theParamId) {
+    let patients = readPatientsFromLocalStorage();
+    let oldPatient = patients.find((patient) => patient.id == theParamId);
+    //  لو طلع اللي فوق في ال patients بعد الفايند يعني لو فيها حاجه وكان ممكن نستعمل some برضو عشان بترجع ترو او فالس
     if (oldPatient) {
-      nameInput.current.value = oldPatient.name || ''
-      PhoneInput.current.value = oldPatient.phone || ''
-      ageInput.current.value = oldPatient.age || ''
-      noteInput.current.value =oldPatient.note || ''
-   if (maleInput.current && femaleInput.current) {
-        maleInput.current.checked = oldPatient.gender === 'ذكر'
-        femaleInput.current.checked = oldPatient.gender === 'أنثى'
+      nameInput.current.value = oldPatient.name || '';
+      PhoneInput.current.value = oldPatient.phone || '';
+      ageInput.current.value = oldPatient.age || '';
+      noteInput.current.value = oldPatient.note || '';
+      if (maleInput.current && femaleInput.current) {
+        maleInput.current.checked = oldPatient.gender === 'ذكر';
+        femaleInput.current.checked = oldPatient.gender === 'أنثى';
       }
+    } 
+//  لو مش موجود بقي في الباشنتس
+    else {
+      toast.error("هذا المريض غير موجود، أدخل مريض جديد!");
+      router.push('/addpatient');
     }
-  }
-  else{
-    nameInput.current.value = ''
-    PhoneInput.current.value =''
-    ageInput.current.value ='' 
-    noteInput.current.value =''
-  if (maleInput.current) maleInput.current.checked = false 
-    if (femaleInput.current) femaleInput.current.checked = false
-
+  } 
+  
+  
+  // لو مفيش بارام اصلا فوق
+  else {
+    // تفريغ الحقول عند إضافة مريض جديد من الزيرو
+    nameInput.current.value = '';
+    PhoneInput.current.value = '';
+    ageInput.current.value = '';
+    noteInput.current.value = '';
+    if (maleInput.current) maleInput.current.checked = false;
+    if (femaleInput.current) femaleInput.current.checked = false;
   }
 }, [theParamId])
   /////////////////////////// ValidatePatientInputs

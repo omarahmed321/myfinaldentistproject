@@ -2,7 +2,7 @@
 import { Edit, Edit2, Eye, Search, Trash, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { readPatientsFromLocalStorage, savePatientsToLocalStorage ,readMyPatientsFromLocalStorage  } from "@/utils/storage";
+import { readPatientsFromLocalStorage, savePatientsToLocalStorage ,readMyPatientsFromLocalStorage ,deletePatientAndHisAppointments } from "@/utils/storage";
 export default function page() {
   /////////////////////////// hooks
   const router = useRouter()
@@ -101,9 +101,8 @@ let handlePatientDetails =(id)=>{
               return    <tr className=" transition duration-200 hover:bg-slate-50  border-b border-gray-200/70 " key={el.id}  >
             <td className=" flex py-5 justify-end text-[#90A1B9]  gap-2 w-full ">
               <button onClick={()=>{
-                let dataAfterDelete=data.filter((patient) => patient.id !== el.id)
-             setData(dataAfterDelete);
-           savePatientsToLocalStorage(dataAfterDelete);
+               deletePatientAndHisAppointments(el.id);
+          setData(readMyPatientsFromLocalStorage());
               }}>
                 <Trash2 className=" hover:transition-transform hover:scale-110 transition duration-200" />
               </button>

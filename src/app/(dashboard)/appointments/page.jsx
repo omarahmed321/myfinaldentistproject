@@ -146,11 +146,11 @@ router.push(`/patientdetail?id=${appointmentPatientId}`)
     </thead>
     <tbody className="divide-y divide-[#F1F5F9] text-sm">
       { filteredAppointmentsThisWeek.map((appointment)=>(  <tr key={appointment.id} className="hover:bg-slate-50 transition">
-        <td className="py-4 px-6 text-center font-bold text-[#0F172B]">{new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+        <td className="py-4 px-6 text-center font-bold text-[#0F172B] whitespace-nowrap">{new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
         <td className="py-4 px-6 text-right">
           <div className="flex items-center gap-3">
           
-            <span className="font-bold text-[#0F172B]">{appointment.patientName}</span>
+            <span className="font-bold text-[#0F172B] whitespace-nowrap ">{appointment.patientName}</span>
           </div>
         </td>
         <td className="py-4 px-6 text-center text-[#45556C]">{appointment.procedure}</td>
