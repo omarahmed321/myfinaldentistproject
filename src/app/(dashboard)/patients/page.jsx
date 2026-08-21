@@ -3,14 +3,20 @@ import { Edit, Edit2, Eye, Search, Trash, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { readPatientsFromLocalStorage, savePatientsToLocalStorage ,readMyPatientsFromLocalStorage ,deletePatientAndHisAppointments } from "@/utils/storage";
+  import Skeleton from "@/components/Skeletron";
+  import { paginate } from '@/utils/pagenation';
+  import PagenationButtons from '@/components/PagenationButtons';
 export default function page() {
+
   /////////////////////////// hooks
   const router = useRouter()
   const [data,setData]=useState([]) // ده بيدل علي ال patient 
   const [today, setToday] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   // live search and controlled inputs and uncontrolled ones
   const [searchTerm, setSearchTerm] = useState("");
   const [buttonStatus, setbuttonStatus] = useState("الكل");
+  const [currentPage, setCurrentPage] = useState(1);
   /////////////////////////// some styles
   let filterButtonStyle =
     "w-full md:w-1/4  px-3  font-md rounded-lg  text-center     ";
@@ -22,7 +28,7 @@ export default function page() {
  
    const savedData = readPatientsFromLocalStorage();
    setData(readMyPatientsFromLocalStorage());
-  
+  setIsLoading(false)
   }, []);
 
   /////////////////////////// continue the live search
@@ -37,7 +43,8 @@ const filteredItems = data.filter((patient) => {
 
   return StatusAllOfThem && SearchBox;
 });
-
+  /////////////////////////// paginate the filterd items 
+const { items: paginatedPatients, totalPages, from, to, total } = paginate(filteredItems, currentPage, 5);
 
   /////////////////////////// handleEdit
 let handleEdit = (id)=>{
@@ -49,6 +56,9 @@ let handleEdit = (id)=>{
 let handlePatientDetails =(id)=>{
   router.push(`/patientdetail?id=${id}`)
 }
+
+
+if(isLoading)return <Skeleton />
   return (
     <div className="p-2 md:p-8 ">
       <div className="text-black  flex ">
@@ -82,7 +92,7 @@ let handlePatientDetails =(id)=>{
         </div>
       </div>
       {/* the table */}
-      <div className=" overflow-auto h-[75vh] mt-6 ">
+      <div className=" overflow-auto h-auto mt-6 ">
          <table className=" border border-[#F1F5F9] w-full text-right shadow-lg rounded-lg  lg:table-fixed border-separate border-spacing-0 tab overflow-hidden text-sm md:text-[18px] lg:text-[20px]">
         <thead className=" bg-[#f8fafc] rounded-lg ">
           <tr className=" rounded-lg">
@@ -97,7 +107,7 @@ let handlePatientDetails =(id)=>{
         <tbody className="w-full bg-white  ">
 
           {
-            filteredItems.map((el,index)=>{
+            paginatedPatients.map((el,index)=>{
               return    <tr className=" transition duration-200 hover:bg-slate-50  border-b border-gray-200/70 " key={el.id}  >
             <td className=" flex py-5 justify-end text-[#90A1B9]  gap-2 w-full ">
               <button onClick={()=>{
@@ -151,8 +161,17 @@ let handlePatientDetails =(id)=>{
        
         </tbody>
       </table>
+      
       </div>
-     
+<PagenationButtons
+  currentPage={currentPage}
+  setCurrentPage={setCurrentPage}
+  totalPages={totalPages}
+  from={from}
+  to={to}
+  total={total}
+  unitName="مريض"
+/>
     </div>
   );
 }

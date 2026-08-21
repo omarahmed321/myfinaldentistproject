@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useRef } from 'react'
 import toast from 'react-hot-toast'
-import Skeleton from '../../../components/Skeletron'
+  import Skeleton from "@/components/Skeletron";
 import { readPatientsFromLocalStorage, savePatientsToLocalStorage, readCurrentUserFromLocalStorage } from "@/utils/storage";
  function AddPatient() {
  // lol مفكر انه لما يسميها searchparas كده معرفتش يعني يوجع 

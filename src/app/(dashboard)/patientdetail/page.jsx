@@ -9,10 +9,12 @@ import toast from "react-hot-toast";
 import Skeleton from "../../../components/Skeletron";
 import { readPatientsFromLocalStorage, readAppointmentsFromLocalStorage, saveAppointmentsToLocalStorage } from "@/utils/storage";
 
-
+import { paginate } from '@/utils/pagenation';
+import PagenationButtons from '@/components/PagenationButtons';
 
  function PatientDetail() {
   /////////////////////////// some hooks
+  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [appointments, setAppointments] = useState([]);
   const [theRequiredPatient , setTheRequiredPatient]=useState()
@@ -91,6 +93,8 @@ saveAppointmentsAndSync(filteredAppointments)
 
 
 }
+ /////////////////////////// pagination
+const { items: paginatedData, totalPages, from, to, total } = paginate(theRequiredAppointmentPerPerson || [], currentPage, 5)
  /////////////////////////// handle change Status
 let handleChangeStatus =(appointment,newStatus)=>{
 let allAppointments = readAppointmentsFromLocalStorage();
@@ -163,7 +167,8 @@ if (isLoading) {
 {/* appointments and add new appointment */}
 <div className="flex w-full    justify-end gap-6 lg:flex-row-reverse  lg:gap-8 flex-col  ">
    
-    <div className="appointmentsTable md:w-full rounded-xl     lg:w-2/3 overflow-auto overflow-y-auto max-h-100 ">
+<div className="flex-col flex w-full">
+      <div className="appointmentsTable md:w-full rounded-xl      overflow-auto overflow-y-auto  ">
  
     <table dir="rtl" className="bg-white shadow-lg w-full  overflow-auto     border border-[#E2E8F0] rounded-xl text-right ">
  <thead className="">
@@ -178,7 +183,7 @@ if (isLoading) {
   </thead>
   <tbody>
 {
-theRequiredAppointmentPerPerson?.map((appointment)=>{
+paginatedData?.map((appointment)=>{
   return <tr key={appointment.id} className="transition duration-200 hover:bg-slate-50  border-b border-gray-200/70">
   <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-medium py-5  text-center md:px-6">{appointment.date}</td>
   <td className=" text-[#45556C] text-[10px] md:text-[18px]  text-center py-5  md:px-6">{new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
@@ -204,7 +209,19 @@ theRequiredAppointmentPerPerson?.map((appointment)=>{
 
   </tbody>
 </table>
+
+
   </div>
+  <PagenationButtons
+  currentPage={currentPage}
+  setCurrentPage={setCurrentPage}
+  totalPages={totalPages}
+  from={from}
+  to={to}
+  total={total}
+  unitName="موعد"
+/>
+</div>
 <div className="md:w-full lg:w-1/3 flex     bg-white shadow-md rounded-xl  p-5 gap-6 flex-col" dir="rtl">
 <span className=" flex gap-2 items-center font-bold text-[18px] text-[#0F172B]"><PlusCircle className="text-[#0D9488]" /> حجز ميعاد جديد</span>
 <div className="inputs flex flex-col gap-4 mt-6">

@@ -3,18 +3,24 @@ import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { readAppointmentsFromLocalStorage } from '../../../utils/storage';
 import { useRouter } from 'next/navigation';
-
+import { paginate } from '@/utils/pagenation';
+  import Skeleton from "@/components/Skeletron";
+import PagenationButtons from '@/components/PagenationButtons';
 export default function page() {
+
   /////////////////////////// just some repeatedStyles
  let filterButtonStyle =
     "w-full md:w-1/4  px-3  font-md rounded-lg  text-center     ";
   /////////////////////////// just to get the todays Number
 let todayNumber = new Date().toLocaleDateString('en-US', { day: '2-digit' });
+
   /////////////////////////// the hooks
 const router = useRouter()
+const [isLoading, setIsLoading] = useState(true);
 const [appointmentStatus,setAppointmentStatus] =useState('الكل')
 const [appointments,setAppointments] =useState()
 const [selectedDayDate, setSelectedDayDate] = useState(null);
+const [currentPage, setCurrentPage] = useState(1);
 // دي بتخزن الاسابيع
 const [weekStartDate, setWeekStartDate] = useState(() => {
   let today = new Date();
@@ -68,15 +74,19 @@ let filteredAppointmentsThisWeek = appointmentsThisWeek.filter((appointment)=>{
 
   
 )
+  /////////////////////////// helper function
+const { items: paginatedAppointments, totalPages, from, to, total } = paginate(filteredAppointmentsThisWeek, currentPage, 5);
+
   /////////////////////////// useEffect 
 useEffect(()=>{
    setAppointments(readAppointmentsFromLocalStorage())
+    setIsLoading(false);
 },[])
   /////////////////////////// handle edit
 let handleEdit =(appointmentPatientId)=>{
 router.push(`/patientdetail?id=${appointmentPatientId}`)
 }
-
+if (isLoading) return <Skeleton />;
   return (
 
 
@@ -145,7 +155,7 @@ router.push(`/patientdetail?id=${appointmentPatientId}`)
       </tr>
     </thead>
     <tbody className="divide-y divide-[#F1F5F9] text-sm">
-      { filteredAppointmentsThisWeek.map((appointment)=>(  <tr key={appointment.id} className="hover:bg-slate-50 transition">
+      { paginatedAppointments.map((appointment)=>(  <tr key={appointment.id} className="hover:bg-slate-50 transition">
         <td className="py-4 px-6 text-center font-bold text-[#0F172B] whitespace-nowrap">{new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
         <td className="py-4 px-6 text-right">
           <div className="flex items-center gap-3">
@@ -172,6 +182,16 @@ router.push(`/patientdetail?id=${appointmentPatientId}`)
     </tbody>
   </table>
 </div>
+
+<PagenationButtons
+  currentPage={currentPage}
+  setCurrentPage={setCurrentPage}
+  totalPages={totalPages}
+  from={from}
+  to={to}
+  total={total}
+  unitName="موعد"
+/>
 
 
 

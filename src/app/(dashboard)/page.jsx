@@ -5,14 +5,19 @@ import { readAppointmentsFromLocalStorage } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { readPatientsFromLocalStorage ,readCurrentUserFromLocalStorage ,readMyPatientsFromLocalStorage } from "@/utils/storage";
+import Skeleton from "@/components/Skeletron";
+import { paginate } from '@/utils/pagenation';
+import PagenationButtons from '@/components/PagenationButtons';
 export default function page() {
   /////////////////////////// some styles
   let oneOfTheGrid = " pb-2  h-auto bg-white rounded-lg border border-[#E2E8F0] hover:scale-105 transition-shadow md:shadow-none shadow-md hover:shadow-md duration-500 transition-transform p-6.25"
  /////////////////////////// some hooks
+ const [currentPage, setCurrentPage] = useState(1);
   const [patients, setPatients] = useState([])
   const [appointments ,setAppointments]= useState([])
 const router = useRouter()
   const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
  /////////////////////////// useEffect
   useEffect(()=>{
     // اليوسر الحالي
@@ -26,7 +31,7 @@ setPatients(readMyPatientsFromLocalStorage());
   // كل المرضي
     const allPatients = readPatientsFromLocalStorage();
   setAppointments(appointmentsHere);
-
+setIsLoading(false)
   },[])
   /////////////////////////// filter todays date
   let todayDate = new Date().toISOString().split('T')[0];
@@ -34,6 +39,11 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
 // يعني المفروض فكرتها تعمل اراي فيها فقط الحاجات المكتمله النهارده
  let theCompeletedAppointmentsToday = todaysAppointments.filter((appointment)=>( appointment.status == "مكتمل"))
     let numberOfTheAppointmentsCompeletedToday = theCompeletedAppointmentsToday.length
+ /////////////////////////// pagination
+const { items: paginatedData, totalPages, from, to, total } = paginate(todaysAppointments, currentPage, 5);
+
+
+    if(isLoading)return <Skeleton />
   return (
     <div className=' w-full h-full md:p-8 p-3 gap-8 flex flex-col '>
       {/* Top */}
@@ -73,7 +83,7 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
         <div className="appointmentsTable md:w-full   ">
  
 
-  <div className="appointmentsTable md:w-full shadow-lg bg-white  overflow-auto flex flex-col grow max-h-[60vh] rounded-lg ">
+  <div className="appointmentsTable md:w-full shadow-lg bg-white  overflow-auto flex flex-col grow h-auto rounded-lg ">
 
  <div className="head w-full justify-between flex items-center px-2  md:px-6 rounded-t-lg   py-3 " dir="rtl">
   <p className="text-[#0F172B] text-lg font-bold whitespace-nowrap text-[16px]">مواعيد اليوم القادمة</p>
@@ -96,7 +106,7 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
   </thead>
   <tbody>
 {
-todaysAppointments?.map((appointment)=>{ 
+paginatedData?.map((appointment)=>{ 
   return <tr key={appointment.id} className='  transition duration-200 hover:bg-slate-50  border-b border-gray-200/70' >
     
   <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-bold py-5  text-center md:px-6 ">{appointment.patientName}</td>
@@ -118,6 +128,15 @@ todaysAppointments?.map((appointment)=>{
 
   </tbody>
 </table>
+<PagenationButtons
+  currentPage={currentPage}
+  setCurrentPage={setCurrentPage}
+  totalPages={totalPages}
+  from={from}
+  to={to}
+  total={total}
+  unitName="موعد"
+/>
   </div>
 
   </div>
