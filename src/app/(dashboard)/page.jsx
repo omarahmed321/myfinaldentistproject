@@ -12,8 +12,11 @@ export default function page() {
   const [patients, setPatients] = useState([])
   const [appointments ,setAppointments]= useState([])
 const router = useRouter()
+  const [currentUser, setCurrentUser] = useState(null);
  /////////////////////////// useEffect
   useEffect(()=>{
+    // اليوسر الحالي
+      setCurrentUser(readCurrentUserFromLocalStorage());
     // المرضي
 setPatients(readMyPatientsFromLocalStorage());
     // لكن هنا المواعيد
@@ -34,6 +37,7 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
   return (
     <div className=' w-full h-full md:p-8 p-3 gap-8 flex flex-col '>
       {/* Top */}
+      <p className=' w-full font-bold text-[25px] ' dir='rtl'>أهلا يا {currentUser?.fullName}</p>
       <div className='md:grid flex flex-col-reverse  md:grid-cols-3 w-full gap-4 md:gap-6   '>
         {/* compeleted  */}
         <div className={`  ${oneOfTheGrid} text-[#155DFC] `}>
@@ -93,7 +97,7 @@ let todaysAppointments = appointments.filter((app) => app.date === todayDate);
   <tbody>
 {
 todaysAppointments?.map((appointment)=>{ 
-  return <tr key={appointment.id} className=' flex  transition duration-200 hover:bg-slate-50  border-b border-gray-200/70' >
+  return <tr key={appointment.id} className='  transition duration-200 hover:bg-slate-50  border-b border-gray-200/70' >
     
   <td className=" text-[#0F172B] text-[10px] md:text-[18px]  font-bold py-5  text-center md:px-6 ">{appointment.patientName}</td>
     

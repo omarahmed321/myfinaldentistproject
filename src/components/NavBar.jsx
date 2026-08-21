@@ -3,11 +3,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-
+import { readCurrentUserFromLocalStorage } from '@/utils/storage'
 
 export default function NavBar({modal,setModal}) {
+    /////////////////////////// some hooks
   const pathName =usePathname();
 const [title,setTitle]=useState('')
+  const [currentUser, setCurrentUser] = useState(null);
+  /////////////////////////// useEffect
   useEffect(()=>{
     if(pathName === '/'){
 setTitle("نظرة عامة")
@@ -31,12 +34,22 @@ setTitle("نظرة عامة")
       setTitle("إدارة المواعيد")
     }
   },[pathName])
-
+    /////////////////////////// for the username
+useEffect(() => {
+  setCurrentUser(readCurrentUserFromLocalStorage());
+}, []);
   return (
 <div className='w-full py-2 px-2 md:py-4 md:px-8 flex justify-between  items-center bg-white border-b border-[#45556C]/20 text-[#0F172B] font-bold text-[20px]'>
   {/* left Side */}
      <div className="leftSide flex gap-3"> 
-   <p className=' text-[#62748E] h-10 w-10 flex justify-center items-center bg-gray-200 rounded-full border border-white/30'>o</p>
+  <p className='text-[#62748E] h-10 w-10 flex justify-center items-center bg-gray-200 rounded-full border border-white/30 text-[14px]'>
+  {(() => {
+      let nameParts = currentUser?.fullName ? currentUser.fullName.trim().split(' ') : [];
+      let firstChar = nameParts[0] ? nameParts[0][0] : 'د';
+      let secondChar = nameParts[1] ? nameParts[1][0] : '';
+      return `${firstChar} ${secondChar}`.trim();
+  })()}
+</p>
        
        {pathName !== '/addpatient' && (
   <Link
