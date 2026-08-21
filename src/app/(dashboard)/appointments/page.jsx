@@ -100,7 +100,7 @@ router.push(`/patientdetail?id=${appointmentPatientId}`)
 
 
 </div>
-  <div className="filterByDaysBox flex gap-1 md:gap-3  overflow-x-auto w-full mb-6">
+  <div className="filterByDaysBox flex gap-1 md:gap-3  overflow-x-auto w-full mb-6 py-2 ">
 {currentWeekDays.map((day)=>{
   let isSelected = selectedDayDate === day.fullDate;
  return <button  onClick={() => setSelectedDayDate(isSelected ? null : day.fullDate)} key={day.fullDate} className={`px-4 py-3 flex flex-col gap-1 border border-gray-300 hover:shadow-md hover:border-0 transition duration-100 hover:transition-transform hover:scale-102  rounded-xl  ${isSelected? ' border-0 transition-transform scale-105 bg-[#ecf5f6] text-[#0D9488] shadow-lg ': 'text-[#62748E] bg-white '}`} >{day.dayName}
