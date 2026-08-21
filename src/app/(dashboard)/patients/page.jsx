@@ -84,10 +84,10 @@ if(isLoading)return <Skeleton />
     buttonStatus === 'يحتاج متابعه' ? 'right-[21%]' :
     'right-0  '} `}>
     </div>
-            <button onClick={()=>{setbuttonStatus('جديد')}} className={` z-10 ${filterButtonStyle} ${buttonStatus == 'جديد'? '  text-[#0d9488] font-bold ': 'text-[#45556C]'} `}>جديد</button>
-            <button onClick={()=>{setbuttonStatus('منتظم')}} className={` z-10 ${filterButtonStyle} ${buttonStatus == 'منتظم'? ' text-[#0d9488] font-bold': 'text-[#45556C]'}`}>منتظم</button>
-            <button onClick={()=>{setbuttonStatus('يحتاج متابعه')}} className={` whitespace-nowrap  z-10 ${filterButtonStyle} ${buttonStatus == 'يحتاج متابعه'? ' text-[#0d9488] font-bold': 'text-[#45556C]'}`}>متابعه</button>
-            <button onClick={()=>{setbuttonStatus('الكل')}} className={` z-10 ${filterButtonStyle} ${buttonStatus == 'الكل'? ' text-[#0d9488] font-bold': 'text-[#45556C]'}`}>الكل</button>
+            <button onClick={()=>{setbuttonStatus('جديد'); setCurrentPage(1)}} className={` z-10 ${filterButtonStyle} ${buttonStatus == 'جديد'? '  text-[#0d9488] font-bold ': 'text-[#45556C]'} `}>جديد</button>
+            <button onClick={()=>{setbuttonStatus('منتظم') ;setCurrentPage(1);}} className={` z-10 ${filterButtonStyle} ${buttonStatus == 'منتظم'? ' text-[#0d9488] font-bold': 'text-[#45556C]'}`}>منتظم</button>
+            <button onClick={()=>{setbuttonStatus('يحتاج متابعه'); setCurrentPage(1);}} className={` whitespace-nowrap  z-10 ${filterButtonStyle} ${buttonStatus == 'يحتاج متابعه'? ' text-[#0d9488] font-bold': 'text-[#45556C]'}`}>متابعه</button>
+            <button onClick={()=>{setbuttonStatus('الكل') ;setCurrentPage(1);}} className={` z-10 ${filterButtonStyle} ${buttonStatus == 'الكل'? ' text-[#0d9488] font-bold': 'text-[#45556C]'}`}>الكل</button>
             
           </div>
         </div>

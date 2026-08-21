@@ -37,6 +37,7 @@ let handleNextWeek = () => {
   nextSat.setDate(weekStartDate.getDate() + 7);
   setWeekStartDate(nextSat);
    setSelectedDayDate(null);
+   setCurrentPage(1);
 };
 
   /////////////////////////// handlePrevWeek
@@ -45,6 +46,7 @@ let handlePrevWeek = () => {
   prevSat.setDate(weekStartDate.getDate() - 7);
   setWeekStartDate(prevSat);
    setSelectedDayDate(null);
+   setCurrentPage(1);
 };
   /////////////////////////// currentWeekDays
 let currentWeekDays = Array.from({ length: 7 }, (_, i) => {
@@ -113,7 +115,10 @@ if (isLoading) return <Skeleton />;
   <div className="filterByDaysBox flex gap-1 md:gap-3  overflow-x-auto w-full mb-6 py-2 ">
 {currentWeekDays.map((day)=>{
   let isSelected = selectedDayDate === day.fullDate;
- return <button  onClick={() => setSelectedDayDate(isSelected ? null : day.fullDate)} key={day.fullDate} className={`px-4 py-3 flex flex-col gap-1 border border-gray-300 hover:shadow-md hover:border-0 transition duration-100 hover:transition-transform hover:scale-102  rounded-xl  ${isSelected? ' border-0 transition-transform scale-105 bg-[#ecf5f6] text-[#0D9488] shadow-lg ': 'text-[#62748E] bg-white '}`} >{day.dayName}
+ return <button  onClick={() => {
+  setSelectedDayDate(isSelected ? null : day.fullDate);
+  setCurrentPage(1); 
+}} key={day.fullDate} className={`px-4 py-3 flex flex-col gap-1 border border-gray-300 hover:shadow-md hover:border-0 transition duration-100 hover:transition-transform hover:scale-102  rounded-xl  ${isSelected? ' border-0 transition-transform scale-105 bg-[#ecf5f6] text-[#0D9488] shadow-lg ': 'text-[#62748E] bg-white '}`} >{day.dayName}
      <span className={`${isSelected? 'text-[#139C89]':'text-[#0F172B]'} font-bold`}> {day.dayNumber}</span>
      {
      day.fullDate === new Date().toISOString().split('T')[0]? <span className=' text-[13px' >
@@ -136,10 +141,10 @@ if (isLoading) return <Skeleton />;
     'right-[72%]'
   }`}>
   </div>
-  <button onClick={() => setAppointmentStatus('مكتمل')} className={`z-10 ${filterButtonStyle} ${appointmentStatus === 'مكتمل' ? 'text-[#0d9488] font-bold' : 'text-[#45556C]'}`}>مكتمل</button>
-  <button onClick={() => setAppointmentStatus('في الانتظار')} className={`whitespace-nowrap z-10 ${filterButtonStyle} ${appointmentStatus === 'في الانتظار' ? 'text-[#0d9488] font-bold' : 'text-[#45556C]'}`}>انتظار</button>
-  <button onClick={() => setAppointmentStatus('مجدول')} className={`z-10 ${filterButtonStyle} ${appointmentStatus === 'مجدول' ? 'text-[#0d9488] font-bold' : 'text-[#45556C]'}`}>مجدول</button>
-  <button onClick={() => setAppointmentStatus('الكل')} className={`z-10 ${filterButtonStyle} ${appointmentStatus === 'الكل' ? 'text-[#0d9488] font-bold' : 'text-[#45556C]'}`}>الكل</button>
+  <button onClick={() => { setAppointmentStatus('مكتمل'); setCurrentPage(1); }} className={`z-10 ${filterButtonStyle} ${appointmentStatus === 'مكتمل' ? 'text-[#0d9488] font-bold' : 'text-[#45556C]'}`}>مكتمل</button>
+  <button onClick={() => { setAppointmentStatus('في الانتظار'); setCurrentPage(1); }} className={`whitespace-nowrap z-10 ${filterButtonStyle} ${appointmentStatus === 'في الانتظار' ? 'text-[#0d9488] font-bold' : 'text-[#45556C]'}`}>انتظار</button>
+  <button onClick={() => { setAppointmentStatus('مجدول'); setCurrentPage(1); }} className={`z-10 ${filterButtonStyle} ${appointmentStatus === 'مجدول' ? 'text-[#0d9488] font-bold' : 'text-[#45556C]'}`}>مجدول</button>
+  <button onClick={() => { setAppointmentStatus('الكل'); setCurrentPage(1); }} className={`z-10 ${filterButtonStyle} ${appointmentStatus === 'الكل' ? 'text-[#0d9488] font-bold' : 'text-[#45556C]'}`}>الكل</button>
 </div>
 </div>
 {/* table */}
