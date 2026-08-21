@@ -10,6 +10,7 @@ import { readPatientsFromLocalStorage, savePatientsToLocalStorage, readCurrentUs
  // lol مفكر انه لما يسميها searchparas كده معرفتش يعني يوجع 
   /////////////////////////// Hooks
   let theParamId = useSearchParams().get('id')
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter()
   let PhoneInput =useRef()
   let ageInput =useRef()
@@ -52,6 +53,7 @@ useEffect(() => {
     if (maleInput.current) maleInput.current.checked = false;
     if (femaleInput.current) femaleInput.current.checked = false;
   }
+  setIsLoading(false)
 }, [theParamId])
   /////////////////////////// ValidatePatientInputs
 let validatePatientInputs = () => {
@@ -137,6 +139,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
   router.push('/patients')
   }
   
+  if (isLoading) return <Skeleton />;
   return (
     <div className=' px-4 pt-4 mt-12 lg:mt-0 w-full lg:w-[50%] mx-auto pb-4 '>
       {/* back to Home */}

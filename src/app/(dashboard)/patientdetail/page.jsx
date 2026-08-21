@@ -13,6 +13,7 @@ import { readPatientsFromLocalStorage, readAppointmentsFromLocalStorage, saveApp
 
  function PatientDetail() {
   /////////////////////////// some hooks
+  const [isLoading, setIsLoading] = useState(true);
   const [appointments, setAppointments] = useState([]);
   const [theRequiredPatient , setTheRequiredPatient]=useState()
   const [theRequiredAppointmentPerPerson , setTheRequiredAppointmentPerPerson] = useState()
@@ -79,7 +80,7 @@ saveAppointmentsAndSync(allAppointments)
   let allAppointments = readAppointmentsFromLocalStorage();
   saveAppointmentsAndSync(allAppointments);
 
-    
+     setIsLoading(false);
   },[paramsID])
 
  /////////////////////////// handle delete
@@ -98,7 +99,9 @@ let updatedAppointmentsAfterNewStatus = allAppointments.map((appointmentInLoop)=
 })
 saveAppointmentsAndSync(updatedAppointmentsAfterNewStatus);
 }
-
+if (isLoading) {
+  return <Skeleton />
+}
 
   return (
     <div className=" md:px-5 md:py-5  py-10 px-4 w-full h-full flex flex-col gap-6 lg:gap-8" >
