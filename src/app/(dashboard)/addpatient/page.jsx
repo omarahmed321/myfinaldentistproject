@@ -2,7 +2,7 @@
 import { ArrowRight, NotepadText } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { Suspense, useEffect, useRef } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
   import Skeleton from "@/components/Skeletron";
 import { readPatientsFromLocalStorage, savePatientsToLocalStorage, readCurrentUserFromLocalStorage } from "@/utils/storage";
@@ -10,7 +10,7 @@ import { readPatientsFromLocalStorage, savePatientsToLocalStorage, readCurrentUs
  // lol مفكر انه لما يسميها searchparas كده معرفتش يعني يوجع 
   /////////////////////////// Hooks
   let theParamId = useSearchParams().get('id')
-  const [isLoading, setIsLoading] = useState(true);
+
   const router = useRouter()
   let PhoneInput =useRef()
   let ageInput =useRef()
@@ -25,35 +25,35 @@ useEffect(() => {
     let patients = readPatientsFromLocalStorage();
     let oldPatient = patients.find((patient) => patient.id == theParamId);
     //  لو طلع اللي فوق في ال patients بعد الفايند يعني لو فيها حاجه وكان ممكن نستعمل some برضو عشان بترجع ترو او فالس
-    if (oldPatient) {
-      nameInput.current.value = oldPatient.name || '';
-      PhoneInput.current.value = oldPatient.phone || '';
-      ageInput.current.value = oldPatient.age || '';
-      noteInput.current.value = oldPatient.note || '';
-      if (maleInput.current && femaleInput.current) {
-        maleInput.current.checked = oldPatient.gender === 'ذكر';
-        femaleInput.current.checked = oldPatient.gender === 'أنثى';
-      }
-    } 
-//  لو مش موجود بقي في الباشنتس
-    else {
-      toast.error("هذا المريض غير موجود، أدخل مريض جديد!");
-      router.push('/addpatient');
-    }
+if (oldPatient) {
+  if (nameInput.current) nameInput.current.value = oldPatient.name || '';
+  if (PhoneInput.current) PhoneInput.current.value = oldPatient.phone || '';
+  if (ageInput.current) ageInput.current.value = oldPatient.age || '';
+  if (noteInput.current) noteInput.current.value = oldPatient.note || '';
+  if (maleInput.current && femaleInput.current) {
+    maleInput.current.checked = oldPatient.gender === 'ذكر';
+    femaleInput.current.checked = oldPatient.gender === 'أنثى';
+  }
+  //  لو مش موجود بقي في الباشنتس
+} else {
+  toast.error("هذا المريض غير موجود، أدخل مريض جديد!");
+  router.push('/addpatient');
+}
+
+
   } 
   
   
   // لو مفيش بارام اصلا فوق
-  else {
-    // تفريغ الحقول عند إضافة مريض جديد من الزيرو
-    nameInput.current.value = '';
-    PhoneInput.current.value = '';
-    ageInput.current.value = '';
-    noteInput.current.value = '';
-    if (maleInput.current) maleInput.current.checked = false;
-    if (femaleInput.current) femaleInput.current.checked = false;
-  }
-  setIsLoading(false)
+else {
+  if (nameInput.current) nameInput.current.value = '';
+  if (PhoneInput.current) PhoneInput.current.value = '';
+  if (ageInput.current) ageInput.current.value = '';
+  if (noteInput.current) noteInput.current.value = '';
+  if (maleInput.current) maleInput.current.checked = false;
+  if (femaleInput.current) femaleInput.current.checked = false;
+}
+ 
 }, [theParamId])
   /////////////////////////// ValidatePatientInputs
 let validatePatientInputs = () => {
@@ -139,7 +139,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
   router.push('/patients')
   }
   
-  if (isLoading) return <Skeleton />;
+
   return (
     <div className=' px-4 pt-4 mt-12 lg:mt-0 w-full lg:w-[50%] mx-auto pb-4 '>
       {/* back to Home */}
