@@ -3,7 +3,7 @@
 
 
 ////////////////////////////////////////// فانكشن حمايه اللوكال ستورج وفانكشن عامه للكل
-function globalLocalStorageFunction(key,value){
+function globalLocalStorage(key,value){
 if( typeof window ==='undefined' || !window.localStorage){
     return arguments.length === 1 ? null : false;}
 
@@ -28,43 +28,43 @@ if( typeof window ==='undefined' || !window.localStorage){
 }
 ////////////////////////////////////////// Appointments functions 
 // read
-export let readAppointmentsFromLocalStorage = () => globalLocalStorageFunction('appointments') || [];
+export let readAppointments = () => globalLocalStorage('appointments') || [];
 // write
-export let saveAppointmentsToLocalStorage = (newAppointments) => globalLocalStorageFunction('appointments',newAppointments)
+export let saveAppointments= (newAppointments) => globalLocalStorage('appointments',newAppointments)
 ////////////////////////////////////////// Patients functions
 // read
-export let readPatientsFromLocalStorage = () => globalLocalStorageFunction('patients') || [];
+export let readPatients = () => globalLocalStorage('patients') || [];
 // write
-export let savePatientsToLocalStorage = (newPatients) => globalLocalStorageFunction('patients',newPatients)
+export let savePatients = (newPatients) => globalLocalStorage('patients',newPatients)
 ////////////////////////////////////////// Users functions
 // read
-export let readUsersFromLocalStorage = () => globalLocalStorageFunction('users') || [];
+export let readUsers = () => globalLocalStorage('users') || [];
 // write
-export let saveUsersToLocalStorage = (newUsers) => globalLocalStorageFunction('users',newUsers)
+export let saveUsers= (newUsers) => globalLocalStorage('users',newUsers)
 ////////////////////////////////////////// specific Users functions / current user {its an object not array}
 // هي الفكره اني لازم اعمل اراي لليوسر الحالي
 // read
-export let readCurrentUserFromLocalStorage = () => globalLocalStorageFunction('currentUser')
+export let readCurrentUser= () => globalLocalStorage('currentUser')
 // save 
-export let saveCurrentUserToLocalStorage = (user) => globalLocalStorageFunction('currentUser',user)
+export let saveCurrentUser= (user) => globalLocalStorage('currentUser',user)
 // remove {needed cuz when signout}
-export let clearCurrentUserFromLocalStorage = () => {
+export let clearCurrentUser = () => {
   localStorage.removeItem('currentUser');
 }
 ////////////////////////////////////////// filter /current user 
-export let readMyPatientsFromLocalStorage = () => {
-  let currentUser = readCurrentUserFromLocalStorage();
-  let allPatients = readPatientsFromLocalStorage();
+export let readMyPatients= () => {
+  let currentUser = readCurrentUser();
+  let allPatients = readPatients();
   return allPatients.filter(patient => patient.userId === currentUser?.id);
 }
 ////////////////////////////////////////// delete patient and his appointments
-export let deletePatientAndHisAppointments = (patientId) => {
+export let deletePatients = (patientId) => {
   // patient deletion
-  let allPatients = readPatientsFromLocalStorage();
+  let allPatients = readPatients();
   let updatedPatients = allPatients.filter(patient => patient.id !== patientId);
-  savePatientsToLocalStorage(updatedPatients);
+  savePatients(updatedPatients);
   // appointments deletion
-  let allAppointments = readAppointmentsFromLocalStorage();
+  let allAppointments = readAppointments();
   let updatedAppointments = allAppointments.filter(app => app.patientId !== patientId);
-  saveAppointmentsToLocalStorage(updatedAppointments);
+  saveAppointments(updatedAppointments);
 };

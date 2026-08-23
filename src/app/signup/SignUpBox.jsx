@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast'
-import { readUsersFromLocalStorage, saveUsersToLocalStorage ,  saveCurrentUserToLocalStorage } from '@/utils/storage'
+import { readUsers, saveUsers,  saveCurrentUser} from '@/utils/storage'
 export default function SignUpBox() {
  /////////////////////////// hooks
  const router = useRouter()
@@ -36,7 +36,7 @@ export default function SignUpBox() {
     }
  /////////////////////////// handleSubmit
     let handleSubmit =(values, { setFieldError })=>{
-        let users = readUsersFromLocalStorage();
+        let users = readUsers();
         // هو انت موجود قبل كده ؟
     let isExist = users.some((user) => user.fullName === values.fullName);
     if (isExist) {
@@ -55,7 +55,7 @@ export default function SignUpBox() {
     //  نعينه في كل اليوسرز
     saveUsersToLocalStorage(users);
     //  نعينه في اوبجكت لوحده 
-    saveCurrentUserToLocalStorage(newUser);
+    saveCurrentUser(newUser);
     // تعال نحط التوكن ونخش السستم 
     const userToken = crypto.randomUUID(); 
 document.cookie = `token=${userToken}; path=/; max-age=604801; SameSite=Lax`;

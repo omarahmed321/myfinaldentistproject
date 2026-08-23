@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { readCurrentUserFromLocalStorage } from '@/utils/storage'
+import { readCurrentUser} from '@/utils/storage'
 
 export default function NavBar({modal,setModal}) {
     /////////////////////////// some hooks
@@ -36,7 +36,7 @@ setTitle("نظرة عامة")
   },[pathName])
     /////////////////////////// for the username
 useEffect(() => {
-  setCurrentUser(readCurrentUserFromLocalStorage());
+  setCurrentUser(readCurrentUser());
 }, []);
   return (
 <div className='w-full py-2 px-2 md:py-4 md:px-8 flex justify-between  items-center bg-white border-b border-[#45556C]/20 text-[#0F172B] font-bold text-[20px]'>

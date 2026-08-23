@@ -1,10 +1,10 @@
 'use client'
 import { Calendar, Calendar1, CheckCircle2, Trash, Users } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-import { readAppointmentsFromLocalStorage } from '@/utils/storage';
+import { readAppointments } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { readPatientsFromLocalStorage ,readCurrentUserFromLocalStorage ,readMyPatientsFromLocalStorage } from "@/utils/storage";
+import { readPatients ,readCurrentUser,readMyPatients} from "@/utils/storage";
 import Skeleton from "@/components/Skeletron";
 import { paginate } from '@/utils/pagenation';
 import PagenationButtons from '@/components/PagenationButtons';
@@ -21,15 +21,15 @@ const router = useRouter()
  /////////////////////////// useEffect
   useEffect(()=>{
     // اليوسر الحالي
-      setCurrentUser(readCurrentUserFromLocalStorage());
+      setCurrentUser(readCurrentUser());
     // المرضي
-setPatients(readMyPatientsFromLocalStorage());
+setPatients(readMyPatients());
     // لكن هنا المواعيد
-  let appointmentsHere = readAppointmentsFromLocalStorage();
+  let appointmentsHere = readAppointments();
     // اليوسر الحالي
-  const currentUser = readCurrentUserFromLocalStorage();
+  const currentUser = readCurrentUser();
   // كل المرضي
-    const allPatients = readPatientsFromLocalStorage();
+    const allPatients = readPatients();
   setAppointments(appointmentsHere);
 setIsLoading(false)
   },[])

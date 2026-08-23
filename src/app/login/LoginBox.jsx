@@ -7,20 +7,20 @@ import { resolve } from 'path'
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import * as Yup from 'yup'
-import { readUsersFromLocalStorage ,saveCurrentUserToLocalStorage } from '@/utils/storage'
+import { readUsers ,saveCurrentUser} from '@/utils/storage'
 export default  function LoginBox() {
  /////////////////////////// hooks
     const router = useRouter();
     const [showPass,setShowPass] = useState(false)
   
  /////////////////////////// validation schema
-    let validationSchemaWithYup = Yup.object().shape({
-        username:Yup.string().min(3,'اقل حاجه 3 حروف').max(30,'اكتر حاجه 30 حرف').required('اسم المستخدم لازم ينكتب'),
-        password:Yup.string().min(8,'اقل حاجه 8 حروف').required('كلمه السر مطلوبه'),
+    let validationSchema = Yup.object().shape({
+        username:Yup.string().required('اسم المستخدم لازم ينكتب'),
+        password:Yup.string().required('كلمه السر مطلوبه'),
         remember: Yup.boolean()
     })
  /////////////////////////// initialValues
-    let mySchemaInitialValues={
+    let SchemaInitialValues={
         username:'',
         password:'',
         remember:false
@@ -29,14 +29,14 @@ export default  function LoginBox() {
  /////////////////////////// handle submit
     let handleSubmit =async(values,{setSubmitting,setFieldError})=>{
         // نقرا من اللوكال ستورج
-         let users = readUsersFromLocalStorage();
+         let users = readUsers();
         //  بنجيب الاوبجكت بتاع اليوسر
        let foundUser = users.find(
         (user) => user.fullName === values.username && user.password === values.password
     );
     // لوفيه اي حاجه مش undfined يعني تعمل كوكي وتعمل توست وتوديه علي الداشبورد
     if (foundUser) {
-        saveCurrentUserToLocalStorage(foundUser);
+        saveCurrentUser(foundUser);
         const userToken = crypto.randomUUID();
         const maxage = values.remember ? 604801 : ''; 
         document.cookie = `token=${userToken}; path=/; max-age=${maxage}; SameSite=Lax`;
@@ -52,7 +52,7 @@ export default  function LoginBox() {
     }
     }
   return (
-<Formik initialValues={mySchemaInitialValues} validationSchema={validationSchemaWithYup} onSubmit={handleSubmit}  >
+<Formik initialValues={SchemaInitialValues} validationSchema={validationSchema} onSubmit={handleSubmit}  >
    
     <Form >
         {/* Toaster  */}

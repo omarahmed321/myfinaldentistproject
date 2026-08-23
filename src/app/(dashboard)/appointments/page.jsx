@@ -1,7 +1,7 @@
 'use client'
 import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
-import { readAppointmentsFromLocalStorage } from '../../../utils/storage';
+import { readAppointments } from '../../../utils/storage';
 import { useRouter } from 'next/navigation';
 import { paginate } from '@/utils/pagenation';
   import Skeleton from "@/components/Skeletron";
@@ -81,7 +81,7 @@ const { items: paginatedAppointments, totalPages, from, to, total } = paginate(f
 
   /////////////////////////// useEffect 
 useEffect(()=>{
-   setAppointments(readAppointmentsFromLocalStorage())
+   setAppointments(readAppointments())
     setIsLoading(false);
 },[])
   /////////////////////////// handle edit

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
   import Skeleton from "@/components/Skeletron";
-import { readPatientsFromLocalStorage, savePatientsToLocalStorage, readCurrentUserFromLocalStorage } from "@/utils/storage";
+import { readPatients, savePatients, readCurrentUser} from "@/utils/storage";
  function AddPatient() {
  // lol مفكر انه لما يسميها searchparas كده معرفتش يعني يوجع 
   /////////////////////////// Hooks
@@ -22,7 +22,7 @@ let statusInput = useRef()
   /////////////////////////// useEffect
 useEffect(() => {
     if (theParamId) {
-    let patients = readPatientsFromLocalStorage();
+    let patients = readPatients();
     let oldPatient = patients.find((patient) => patient.id == theParamId);
     //  لو طلع اللي فوق في ال patients بعد الفايند يعني لو فيها حاجه وكان ممكن نستعمل some برضو عشان بترجع ترو او فالس
 if (oldPatient) {
@@ -84,8 +84,8 @@ let validatePatientInputs = () => {
     // لو مفيش حاجه كامله اخرج اصلا
       if (!validatePatientInputs()) return;
     // تعال نقرا اليوسر الحالي عشان نفلتر علي اساسه وبرضو نقرا الباشنتس
-let currentUser = readCurrentUserFromLocalStorage();
-let patients = readPatientsFromLocalStorage();
+let currentUser = readCurrentUser();
+let patients = readPatients();
     let genderValue = maleInput.current.checked ? 'ذكر' : femaleInput.current.checked ? 'أنثى' : ''
     // بنجيب القديم عشان نعدله لو فيه اصلا
     if(theParamId){
@@ -134,7 +134,7 @@ patients =patients.map((patient)=>{ if(patient.id == theParamId){
     }
     patients.push(newPatient)
   }
-  savePatientsToLocalStorage(patients);
+  savePatients(patients);
   
   router.push('/patients')
   }

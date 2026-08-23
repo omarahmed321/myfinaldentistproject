@@ -2,7 +2,7 @@
 import { Edit, Edit2, Eye, Search, Trash, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { readPatientsFromLocalStorage, savePatientsToLocalStorage ,readMyPatientsFromLocalStorage ,deletePatientAndHisAppointments } from "@/utils/storage";
+import { readPatients, savePatients ,readMyPatients,deletePatients } from "@/utils/storage";
   import Skeleton from "@/components/Skeletron";
   import { paginate } from '@/utils/pagenation';
   import PagenationButtons from '@/components/PagenationButtons';
@@ -26,8 +26,8 @@ export default function page() {
   useEffect(() => {
     setToday(new Date().toLocaleDateString("en-GB"));
  
-   const savedData = readPatientsFromLocalStorage();
-   setData(readMyPatientsFromLocalStorage());
+   const savedData = readPatients();
+   setData(readMyPatients());
   setIsLoading(false)
   }, []);
 
@@ -112,8 +112,8 @@ if(isLoading)return <Skeleton />
               return    <tr className=" transition duration-200 hover:bg-slate-50  border-b border-gray-200/70 " key={el.id}  >
             <td className=" flex py-5 justify-end text-[#90A1B9]  gap-2 w-full ">
               <button onClick={()=>{
-               deletePatientAndHisAppointments(el.id);
-          setData(readMyPatientsFromLocalStorage());
+               deletePatients(el.id);
+          setData(readMyPatients());
               }}>
                 <Trash2 className=" hover:transition-transform hover:scale-110 transition duration-200" />
               </button>

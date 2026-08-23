@@ -6,13 +6,13 @@ import { Calendar, ChartColumn, LayoutDashboard, LogOut, Menu, Settings, Users, 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import {  clearCurrentUserFromLocalStorage} from '@/utils/storage.js'
+import {  clearCurrentUser} from '@/utils/storage.js'
 export default function SideBar({modal,setModal}) {
   const router = useRouter()
 let handleSignOut =()=>{
 document.cookie = "token=;path=/;max-age=0"
 // امسح الاوبجكت بتاع الدكتور 
-  clearCurrentUserFromLocalStorage();
+  clearCurrentUser();
 setModal(false);
 router.push('/login');
 }

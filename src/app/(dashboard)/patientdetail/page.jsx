@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import Skeleton from "../../../components/Skeletron";
-import { readPatientsFromLocalStorage, readAppointmentsFromLocalStorage, saveAppointmentsToLocalStorage } from "@/utils/storage";
+import { readPatients, readAppointments, saveAppointments} from "@/utils/storage";
 
 import { paginate } from '@/utils/pagenation';
 import PagenationButtons from '@/components/PagenationButtons';
@@ -29,7 +29,7 @@ const statusOption =useRef()
  /////////////////////////// saveAppointmentsAndSync
 let saveAppointmentsAndSync = (newAppointments) => {
   // save to the local storge
-  saveAppointmentsToLocalStorage(newAppointments);
+  saveAppointments(newAppointments);
   // useState for the gui
   setAppointments(newAppointments);
   setTheRequiredAppointmentPerPerson(newAppointments.filter((app) => app.patientId === paramsID));
@@ -54,7 +54,7 @@ let handleNewAppointment =()=>{
     procedure : operation.current.value
 
   }
-let allAppointments = readAppointmentsFromLocalStorage()
+let allAppointments = readAppointments()
 allAppointments.push(newAppointment);
 
 saveAppointmentsAndSync(allAppointments)
@@ -70,7 +70,7 @@ saveAppointmentsAndSync(allAppointments)
     return ;
   }
   // عشان مفيش حد غبي يدخل اي id فوق وخلاص 
-    let patients = readPatientsFromLocalStorage();
+    let patients = readPatients();
   let foundPatient = patients.find((patient) => patient.id === paramsID);
 
   if (!foundPatient) {
@@ -79,7 +79,7 @@ saveAppointmentsAndSync(allAppointments)
   }
 
   setTheRequiredPatient(foundPatient);
-  let allAppointments = readAppointmentsFromLocalStorage();
+  let allAppointments = readAppointments();
   saveAppointmentsAndSync(allAppointments);
 
      setIsLoading(false);
@@ -87,7 +87,7 @@ saveAppointmentsAndSync(allAppointments)
 
  /////////////////////////// handle delete
 let handleDeleteAppointment =(appointment)=>{
-let allAppointments = readAppointmentsFromLocalStorage()
+let allAppointments = readAppointments()
 let filteredAppointments = allAppointments.filter((appointments)=>{return appointment.id !== appointments.id })
 saveAppointmentsAndSync(filteredAppointments)
 
@@ -97,7 +97,7 @@ saveAppointmentsAndSync(filteredAppointments)
 const { items: paginatedData, totalPages, from, to, total } = paginate(theRequiredAppointmentPerPerson || [], currentPage, 5)
  /////////////////////////// handle change Status
 let handleChangeStatus =(appointment,newStatus)=>{
-let allAppointments = readAppointmentsFromLocalStorage();
+let allAppointments = readAppointments();
 let updatedAppointmentsAfterNewStatus = allAppointments.map((appointmentInLoop)=>{
   return appointment.id === appointmentInLoop.id ? { ...appointmentInLoop, status: newStatus } : appointmentInLoop;
 })
