@@ -1,12 +1,13 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
-:root, body, html {
+:root,
+body,
+html {
   color-scheme: light only !important;
 }
 @theme inline {
@@ -16,10 +17,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-
 body {
-  font-family: "Cairo", sans-serif;
+  font-family: 'Cairo', sans-serif;
   background: var(--background);
   color: var(--foreground);
-  
 }
