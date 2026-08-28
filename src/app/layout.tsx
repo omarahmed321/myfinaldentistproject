@@ -12,6 +12,8 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+
+
 export const metadata: Metadata = {
   title: 'نظام إدارة عيادة الأسنان',
   description: 'نظام إدارة ذكي وشامل لعيادات الأسنان',
@@ -19,6 +21,9 @@ export const metadata: Metadata = {
     icon: '/favicon.svg',
   },
 };
+
+
+
 
 export default function RootLayout({
   children,

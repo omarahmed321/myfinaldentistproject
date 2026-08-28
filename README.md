@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dental Clinic Management System (PMS)
 
-## Getting Started
+A **staff-only PMS (Patient Management System)** that replaces paper records and Excel sheets for dental clinics. **Receptionists** and **doctors** manage **patients** and **appointments** from one dashboard.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js) ![React](https://img.shields.io/badge/React-20232A?logo=react) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?logo=tailwind-css) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+
+---
+
+## Table of Contents
+
+- [About](#about)
+- [Data Storage](#data-storage)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Tech Stack](#tech-stack)
+- [Run Locally](#run-locally)
+- [Project Structure](#project-structure)
+
+---
+
+## About
+
+Small dental clinics often manage patients and appointments on paper or in Excel, which leads to lost files, double bookings, and no easy way to search a patient's history. This app gives the front desk one simple place to do all of that.
+
+## Data Storage
+
+This app stores all data in the **browser's local storage**. There is no shared database. Data is private to whoever is using the browser, and it stays only on that device. Local storage was used to keep the project **self-contained**, no backend setup or hosting needed to run it.
+
+## Features
+
+- **Login / Sign Up**: staff account creation and login
+- **Dashboard**: quick overview of clinic activity
+- **Patients List**: searchable, paginated table of all patients
+- **Add / Edit Patient**: name, phone, age, gender, and a **note** field (for allergies or medical conditions)
+- **Patient Details**: full record view for a single patient
+- **Appointments**: book and view appointments by date and time
+
+## Screenshots
+
+**Login**
+
+![Login](screenshots/login.png)
+
+**Sign Up**
+
+![Sign Up](screenshots/signup.png)
+
+**Dashboard**
+
+![Dashboard](screenshots/dashboard.png)
+
+**Patients List**
+
+![Patients List](screenshots/patients-list.png)
+
+**Add Patient**
+
+![Add Patient](screenshots/add-patient.png)
+
+**Appointments**
+
+![Appointments](screenshots/appointments.png)
+
+**Patient Details**
+
+![Patient Details](screenshots/patient-detail.png)
+
+## Tech Stack
+
+- **Framework:** [Next.js](https://nextjs.org)
+- **UI:** React + [Tailwind CSS](https://tailwindcss.com)
+- **Language:** JavaScript
+- **Storage:** Browser local storage (no backend database)
+
+## Run Locally
+
+### Prerequisites
+
+- Node.js installed
+- npm (or yarn / pnpm / bun)
+
+### Installation
 
 ```bash
+# clone the repo
+git clone https://github.com/omarahmed321/myfinaldentistproject.git
+cd myfinaldentistproject
+
+# install dependencies
+npm install
+
+# run the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see it running.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+myfinaldentistproject/
+├── public/                 # icons and static assets
+├── src/
+│   ├── app/
+│   │   ├── (dashboard)/
+│   │   │   ├── addpatient/     # add / edit patient form
+│   │   │   ├── appointments/   # weekly appointments view
+│   │   │   ├── patientdetail/  # single patient view + booking
+│   │   │   ├── patients/       # patients list
+│   │   │   ├── layout.jsx      # dashboard layout (nav + sidebar)
+│   │   │   └── page.jsx        # dashboard home
+│   │   ├── login/
+│   │   ├── signup/
+│   │   └── layout.tsx
+│   ├── components/         # NavBar, SideBar, and other shared UI
+│   └── utils/
+│       ├── storage.js      # local storage read/write functions
+│       └── pagenation.js
+├── package.json
+└── tsconfig.json
+```
