@@ -1,5 +1,5 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { Eye, EyeOff } from 'lucide-react';
+import { Building2, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
@@ -21,7 +21,14 @@ export default function SignUpBox() {
         /^[a-zA-Z0-9\u0600-\u06FF]+(?:[ _-][a-zA-Z0-9\u0600-\u06FF]+)*$/,
         `متستعملش رموز غريبه زي ( ' , " , -- , ; )`
       ),
-
+    clinicName:Yup.string()
+      .min(3, 'اقل حاجه 3 حروف')
+      .max(30, 'اكتر حاجه 30 حرف')
+      .required('اسم العياده لازم ينكتب')
+      .matches(
+        /^[a-zA-Z0-9\u0600-\u06FF]+(?:[ _-][a-zA-Z0-9\u0600-\u06FF]+)*$/,
+        `متستعملش رموز غريبه زي ( ' , " , -- , ; )`
+      ),
     password: Yup.string()
       .min(8, 'اقل حاجه 8 حروف')
       .required('كلمه السر مطلوبه')
@@ -37,6 +44,7 @@ export default function SignUpBox() {
   /////////////////////////// initialValues
   let SchemaInitialValues = {
     fullName: '',
+    clinicName:'',
     password: '',
     confirmPassword: '',
   };
@@ -54,6 +62,7 @@ export default function SignUpBox() {
     let newUser = {
       id: crypto.randomUUID(),
       fullName: values.fullName,
+      clinicName: values.clinicName,
       password: values.password,
     };
     // تعال نعين اليوسر
@@ -83,6 +92,7 @@ router.push('/');
           <label
             htmlFor=""
             className="text-[14px] font-semibold text-[#374151] mb-2"
+            dir='rtl'
           >
             الاسم بالكامل
           </label>
@@ -116,11 +126,35 @@ router.push('/');
           />
         </div>
 
+
+{/* اسم العياده */}
+ <div className="fullName flex flex-col mt-4  w-full">
+          <label
+            htmlFor=""
+            className="text-[14px] font-semibold text-[#374151] mb-2" dir='rtl'
+          >
+           اسم العياده
+          </label>
+          <div className="inputWithIcon w-full relative">
+        <Building2 className="absolute right-0 -translate-1/2 top-1/2 text-gray-400" />
+            <Field
+              name="clinicName"
+              type="text"
+              className="outline-none focus:border-black/40 transition w-full text-[16px] text-[#111827] border border-[#E2E8F0] rounded-lg py-2.5 pr-10 pl-2 text-end"
+              placeholder="مثال: الرحمن"
+            />
+          </div>
+          <ErrorMessage
+            name="clinicName"
+            component="p"
+            className="text-red-500 text-xs mt-1"
+          />
+        </div>
         {/* كلمة المرور */}
         <div className="password flex flex-col w-full mt-8 mb-6">
           <label
             htmlFor=""
-            className="text-[14px] font-semibold text-[#374151] mb-2"
+            className="text-[14px] font-semibold text-[#374151] mb-2"   dir='rtl'
           >
             كلمة المرور
           </label>
@@ -166,6 +200,7 @@ router.push('/');
           <label
             htmlFor=""
             className="text-[14px] font-semibold text-[#374151] mb-2"
+              dir='rtl'
           >
             تأكيد كلمة المرور
           </label>

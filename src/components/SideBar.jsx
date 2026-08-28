@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-
+import {  readCurrentUser } from '@/utils/storage';
 import TitleAndLogo from '@/components/TitleAndLogo.jsx';
 import {
   Calendar,
@@ -16,8 +16,17 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { clearCurrentUser } from '@/utils/storage.js';
+import Skeleton from '@/components/Skeletron';
 export default function SideBar({ modal, setModal }) {
+  /////////////////////////// hooks
+  const [currentUser, setCurrentUser] = useState(null);
   const router = useRouter();
+  const pathName = usePathname();
+  /////////////////////////// styles
+  let optionElse =
+    'hover:bg-[#0D9488]/5 hover:text-[#0D9488]/50 transition rounded-xl ';
+  let optionClassname = ` flex w-fit ml-auto py-2.5 `;
+  /////////////////////////// handle sign out
   let handleSignOut = () => {
     document.cookie = 'token=;path=/;max-age=0';
     // امسح الاوبجكت بتاع الدكتور
@@ -25,13 +34,9 @@ export default function SideBar({ modal, setModal }) {
     setModal(false);
     router.push('/login');
   };
-
-  let optionElse =
-    'hover:bg-[#0D9488]/5 hover:text-[#0D9488]/50 transition rounded-xl ';
-
-  const pathName = usePathname();
-  useEffect(() => {}, []);
+  /////////////////////////// useEffect
   useEffect(() => {
+    setCurrentUser(readCurrentUser())
     modal
       ? ((document.body.style.overflow = 'hidden'),
         (document.documentElement.style.overflow = 'hidden'))
@@ -39,8 +44,8 @@ export default function SideBar({ modal, setModal }) {
         (document.documentElement.style.overflow = 'unset'));
   }, [modal]);
 
-  let optionClassname = ` flex w-fit ml-auto py-2.5 `;
 
+  if (!currentUser) return <Skeleton />;
   return (
     <>
       <div
@@ -58,7 +63,7 @@ export default function SideBar({ modal, setModal }) {
         <div className="TitleandLogo lg:pt-3  pb-3  border-b border-[#0F172A]">
           <div className="titleAndLogo flex gap-3 mx-auto items-center w-fit ">
             <h1 className=" text-white font-bold md:text-[18px] lg:text-[18px] text-[18px] ">
-              عيادة الأسنان
+              عيادة {currentUser?.clinicName}
             </h1>
             <div className="logo bg-[#0D9488] rounded-xl md:h-8 md:w-8 lg:h-8 h-8 w-8 lg:w-8 flex justify-center items-center ">
               <svg
