@@ -35,7 +35,10 @@ let handleSignOut = async () => {
   /////////////////////////// useEffect
   useEffect(() => {
     getCurrentUser().then((user) =>
-  setCurrentUser({ fullName: user?.user_metadata?.fullName })
+  setCurrentUser({
+    fullName: user?.user_metadata?.fullName,
+    clinicName: user?.user_metadata?.clinicName,
+  })
 );
     modal
       ? ((document.body.style.overflow = 'hidden'),
