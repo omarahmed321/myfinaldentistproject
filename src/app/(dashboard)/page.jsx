@@ -190,7 +190,9 @@ export default function page() {
               })}
             </tbody>
           </table>
-          <PagenationButtons
+          
+        </div>
+        <PagenationButtons
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalPages={totalPages}
@@ -199,7 +201,6 @@ export default function page() {
             total={total}
             unitName="موعد"
           />
-        </div>
       </div>
     </div>
   );
