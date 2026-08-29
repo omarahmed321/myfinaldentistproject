@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import * as Yup from 'yup';
 import { readUsers, saveCurrentUser } from '@/utils/storage';
+import { createClient } from '@/utils/supabase/client';
 export default function LoginBox() {
   /////////////////////////// hooks
   const router = useRouter();
@@ -15,42 +16,34 @@ export default function LoginBox() {
 
   /////////////////////////// validation schema
   let validationSchema = Yup.object().shape({
-    username: Yup.string().required('اسم المستخدم لازم ينكتب'),
+  email: Yup.string().email('الإيميل غير صحيح').required('الإيميل مطلوب'),
     password: Yup.string().required('كلمه السر مطلوبه'),
     remember: Yup.boolean(),
   });
   /////////////////////////// initialValues
   let SchemaInitialValues = {
-    username: '',
+email: '',
     password: '',
     remember: false,
   };
   /////////////////////////// handle submit
-  let handleSubmit = async (values, { setSubmitting, setFieldError }) => {
-    // نقرا من اللوكال ستورج
-    let users = readUsers();
-    //  بنجيب الاوبجكت بتاع اليوسر
-    let foundUser = users.find(
-      (user) =>
-        user.fullName === values.username && user.password === values.password
-    );
-    // لوفيه اي حاجه مش undfined يعني تعمل كوكي وتعمل توست وتوديه علي الداشبورد
-    if (foundUser) {
-      saveCurrentUser(foundUser);
-      const userToken = crypto.randomUUID();
-      const maxage = values.remember ? 604801 : '';
-      document.cookie = `token=${userToken}; path=/; max-age=${maxage}; SameSite=Lax`;
-      toast.success('تم تسجيل الدخول بنجاح');
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 500);
-    }
-    // لو افترضنا بقي انه نصاب وراجل مش محترم  خلاص  اطلع برا يعااادل
-    else {
-      setFieldError('password', 'اسم المستخدم أو كلمة المرور غير صحيحة');
-      toast.error('اسم المستخدم أو كلمة المرور غير صحيحة');
-    }
-  };
+let handleSubmit = async (values, { setFieldError }) => {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: values.email,
+    password: values.password,
+  });
+
+  if (error) {
+    setFieldError('password', 'الإيميل أو كلمة المرور غير صحيحة');
+    toast.error('بيانات الدخول غير صحيحة');
+    return;
+  }
+
+  toast.success('تم تسجيل الدخول بنجاح');
+  window.location.href = '/';
+};
   return (
     <Formik
       initialValues={SchemaInitialValues}
@@ -95,14 +88,14 @@ export default function LoginBox() {
               <circle cx="12" cy="7" r="4" />
             </svg>
             <Field
-              name="username"
+              name="email"
               type="text"
               className="outline-none focus:border-black/40 transition w-full text-[16px] text-[#111827] border border-[#E2E8F0] rounded-lg py-2.5 pr-10 pl-2 p text-end"
               placeholder="أدخل اسم المستخدم"
             />
           </div>
           <ErrorMessage
-            name="username"
+            name="email"
             component="p"
             className="text-red-500 text-xs mt-1"
           />

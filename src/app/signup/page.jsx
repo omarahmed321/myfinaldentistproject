@@ -5,7 +5,7 @@ import TitleAndLogo from '@/components/TitleAndLogo.jsx';
 import SignUpBox from './SignUpBox';
 export default function page() {
   return (
-    <div className=" bg-[#F8FAFC] w-full min-h-dvh flex justify-center items-center flex-col gap-4 py-4 md:py-0">
+    <div className=" bg-[#F8FAFC] w-full min-h-dvh flex justify-center items-center flex-col gap-4 py-4  md:py-0">
       <TitleAndLogo />
       <h1 className=" text-[22px] md:text-[26px] text-[#111827] font-bold my-1 md:my-2">
         إنشاء حساب جديد

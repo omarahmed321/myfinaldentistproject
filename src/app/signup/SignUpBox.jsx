@@ -1,11 +1,12 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { Building2, Eye, EyeOff } from 'lucide-react';
+import { Building2, Eye, EyeOff, Mail } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { readUsers, saveUsers, saveCurrentUser } from '@/utils/storage';
+import { createClient } from '@/utils/supabase/client';
 export default function SignUpBox() {
   /////////////////////////// hooks
   const router = useRouter();
@@ -21,6 +22,11 @@ export default function SignUpBox() {
         /^[a-zA-Z0-9\u0600-\u06FF]+(?:[ _-][a-zA-Z0-9\u0600-\u06FF]+)*$/,
         `متستعملش رموز غريبه زي ( ' , " , -- , ; )`
       ),
+      email: Yup.string()
+
+  .email('الإيميل غير صحيح')
+
+  .required('الإيميل مطلوب'),
     clinicName:Yup.string()
       .min(3, 'اقل حاجه 3 حروف')
       .max(30, 'اكتر حاجه 30 حرف')
@@ -44,38 +50,32 @@ export default function SignUpBox() {
   /////////////////////////// initialValues
   let SchemaInitialValues = {
     fullName: '',
+     email: '',  
     clinicName:'',
     password: '',
     confirmPassword: '',
   };
   /////////////////////////// handleSubmit
-  let handleSubmit = (values, { setFieldError }) => {
-    let users = readUsers();
-    // هو انت موجود قبل كده ؟
-    let isExist = users.some((user) => user.fullName === values.fullName);
-    if (isExist) {
-      setFieldError('fullName', 'اسم المستخدم هذا مسجل بالفعل!');
-      toast.error('اسم المستخدم مسجل بالفعل!');
-      return;
-    }
-    //  تعال نعمل يوسر جديد
-    let newUser = {
-      id: crypto.randomUUID(),
+  let handleSubmit = async (values, { setFieldError }) => {
+    const supabase = createClient();
+
+const { data, error } = await supabase.auth.signUp({
+  email: values.email,
+  password: values.password,
+  options: {
+    data: {
       fullName: values.fullName,
       clinicName: values.clinicName,
-      password: values.password,
-    };
-    // تعال نعين اليوسر
-    users.push(newUser);
-    //  نعينه في كل اليوسرز
-   saveUsers(users);
-    //  نعينه في اوبجكت لوحده
-    saveCurrentUser(newUser);
-    // تعال نحط التوكن ونخش السستم
-    const userToken = crypto.randomUUID();
-    document.cookie = `token=${userToken}; path=/; max-age=604801; SameSite=Lax`;
-    toast.success('تم إنشاء الحساب بنجاح!');
-  
+    },
+  },
+});
+
+if (error) {
+  toast.error(error.message);
+  return;
+}
+
+toast.success('تم إنشاء الحساب بنجاح!');
 router.push('/');
 
   };
@@ -88,7 +88,7 @@ router.push('/');
     >
       <Form>
         {/* الاسم كامل*/}
-        <div className="fullName flex flex-col  w-full">
+        <div className="fullName flex flex-col mt-1   w-full">
           <label
             htmlFor=""
             className="text-[14px] font-semibold text-[#374151] mb-2"
@@ -125,10 +125,33 @@ router.push('/');
             className="text-red-500 text-xs mt-1"
           />
         </div>
-
+{/* الإيميل */}
+<div className="email flex flex-col mt-1 w-full">
+  <label
+    htmlFor=""
+    className="text-[14px] font-semibold text-[#374151] mb-2"
+    dir="rtl"
+  >
+    الإيميل
+  </label>
+  <div className="inputWithIcon w-full relative">
+    <Mail className="absolute right-0 -translate-1/2 top-1/2 text-gray-400" />
+    <Field
+      name="email"
+      type="email"
+      className="outline-none focus:border-black/40 transition w-full text-[16px] text-[#111827] border border-[#E2E8F0] rounded-lg py-2.5 pr-10 pl-2 text-end"
+      placeholder="example@email.com"
+    />
+  </div>
+  <ErrorMessage
+    name="email"
+    component="p"
+    className="text-red-500 text-xs mt-1"
+  />
+</div>
 
 {/* اسم العياده */}
- <div className="fullName flex flex-col mt-4  w-full">
+ <div className="fullName flex flex-col mt-1  w-full">
           <label
             htmlFor=""
             className="text-[14px] font-semibold text-[#374151] mb-2" dir='rtl'
@@ -151,7 +174,7 @@ router.push('/');
           />
         </div>
         {/* كلمة المرور */}
-        <div className="password flex flex-col w-full mt-8 mb-6">
+        <div className="password flex flex-col mt-1 w-full ">
           <label
             htmlFor=""
             className="text-[14px] font-semibold text-[#374151] mb-2"   dir='rtl'
@@ -196,7 +219,7 @@ router.push('/');
         </div>
 
         {/* تأكيد كلمة المرور */}
-        <div className="confirmPassword flex flex-col mt-8 mb-6">
+        <div className="confirmPassword flex mt-1 flex-col ">
           <label
             htmlFor=""
             className="text-[14px] font-semibold text-[#374151] mb-2"
@@ -243,7 +266,7 @@ router.push('/');
             className="text-red-500 text-xs mt-1"
           />
         </div>
-        <div className="terms flex items-center justify-end gap-2 mb-6 text-[14px]">
+        <div className="terms flex items-center justify-end gap-2 mt-1 mb-6 text-[14px]">
           <label
             htmlFor="terms"
             className="text-[#4B5563] cursor-pointer"
