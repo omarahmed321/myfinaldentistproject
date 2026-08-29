@@ -103,3 +103,18 @@ export async function getCurrentUser() {
 export async function logout() {
   await getSupabase().auth.signOut();
 }
+
+//////////////////////// تواريخ بالتوقيت المحلي 
+// مبنستخدمش toISOString عشان بيحوّل ل UTC وبيغلط في التاريخ بالليل
+// دي بتاخد اي تاريخ وترجعه بشكل YYYY-MM-DD بتوقيت جهاز المستخدم
+export function toLocalDateString(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// تاريخ النهارده بس
+export function getTodayLocal() {
+  return toLocalDateString(new Date());
+}

@@ -1,7 +1,7 @@
 'use client';
 import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { readAppointments } from '@/utils/storage';
+import { readAppointments, toLocalDateString, getTodayLocal } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
 import { paginate } from '@/utils/pagenation';
 import Skeleton from '@/components/Skeletron';
@@ -56,7 +56,7 @@ export default function Page() {
     let day = new Date(weekStartDate);
     day.setDate(weekStartDate.getDate() + i);
     return {
-      fullDate: day.toISOString().split('T')[0],
+     fullDate: toLocalDateString(day),
       dayName: day.toLocaleDateString('ar-EG', { weekday: 'long' }),
       dayNumber: day.toLocaleDateString('en-US', { day: '2-digit' }),
     };
@@ -114,7 +114,7 @@ useEffect(() => {
             >
               <ChevronRight />
             </button>
-            <span>{weekStartDate.toISOString().split('T')[0]}</span>
+         <span>{toLocalDateString(weekStartDate)}</span>
             <button
               className=" p-1 bg-white border  border-gray-300  rounded-lg text-[#45556C]"
               onClick={()=>handleWeek(true)}
@@ -142,7 +142,7 @@ useEffect(() => {
                   {' '}
                   {day.dayNumber}
                 </span>
-                {day.fullDate === new Date().toISOString().split('T')[0] ? (
+             {day.fullDate === getTodayLocal() ? (
                   <span className=" text-[13px">اليوم</span>
                 ) : (
                   <span></span>

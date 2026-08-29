@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { readAppointments, readMyPatients, getCurrentUser } from '@/utils/storage';
+
 import Skeleton from '@/components/Skeletron';
 import { paginate } from '@/utils/pagenation';
 import PagenationButtons from '@/components/PagenationButtons';
+import { readAppointments, readMyPatients, getCurrentUser, getTodayLocal } from '@/utils/storage';
 export default function page() {
   /////////////////////////// some styles
   let oneOfTheGrid =
@@ -36,7 +37,7 @@ export default function page() {
  
   }, []);
   /////////////////////////// filter todays date
-  let todayDate = new Date().toISOString().split('T')[0];
+let todayDate = getTodayLocal();
   let todaysAppointments = appointments.filter((app) => app.date === todayDate);
   // يعني المفروض فكرتها تعمل اراي فيها فقط الحاجات المكتمله النهارده
   let theCompeletedAppointmentsToday = todaysAppointments.filter(
