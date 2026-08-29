@@ -69,7 +69,7 @@ let handleSubmit = async (values, { setFieldError }) => {
             htmlFor=""
             className=" text-[14px] font-[semibold text-[#374151] mb-2"
           >
-            اسم المستخدم
+            الايميل
           </label>
           <div className="inputWithIcon w-full relative ">
             <svg
