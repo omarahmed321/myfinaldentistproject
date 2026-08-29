@@ -4,6 +4,10 @@ A **staff-only PMS (Patient Management System)** that replaces paper records and
 
 ![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js) ![React](https://img.shields.io/badge/React-20232A?logo=react) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?logo=tailwind-css) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 
+**Live demo:** [clinic-saas-webapp.vercel.app](https://clinic-saas-webapp.vercel.app/login)
+
+This is the **local storage** version, data lives only in your own browser. For the version with a real backend, see the [Supabase branch](https://github.com/omarahmed321/myfinaldentistproject/tree/supabase) ([live demo](https://clinic-webapp-supabase.vercel.app/)).
+
 ---
 
 ## Table of Contents
