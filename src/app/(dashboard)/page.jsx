@@ -192,7 +192,9 @@ let todayDate = getTodayLocal();
               })}
             </tbody>
           </table>
-          <PagenationButtons
+         
+        </div>
+         <PagenationButtons
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalPages={totalPages}
@@ -201,7 +203,6 @@ let todayDate = getTodayLocal();
             total={total}
             unitName="موعد"
           />
-        </div>
       </div>
     </div>
   );
