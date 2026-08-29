@@ -24,12 +24,12 @@ function PatientDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [appointments, setAppointments] = useState([]);
   const [theRequiredPatient, setTheRequiredPatient] = useState();
-  const [RequiredAppointment,setRequiredAppointments] =
-    useState();
+  const [RequiredAppointment,setRequiredAppointments] = useState();
   const [timeValue, setTimeValue] = useState('');
+  const [dateValue, setDateValue] = useState('');
   const router = useRouter();
   const parameterId = useSearchParams().get('id');
-  const dateInput = useRef();
+
   const timeInput = useRef();
   const operation = useRef();
   const statusOption = useRef();
@@ -43,10 +43,11 @@ let syncAppointments = async () => {
   let handleEdit = () => {
     router.push(`/addpatient?id=${theRequiredPatient.id}`);
   };
+
   /////////////////////////// some hooks handle the add new appointment
 let handleNewAppointment = async () => {
   if (
-    !dateInput.current?.value ||
+    !dateValue ||
     !timeInput.current?.value ||
     !operation.current?.value
   ) {
@@ -56,10 +57,10 @@ let handleNewAppointment = async () => {
    if (
   appointments.some((appointment) =>
       appointment.time === timeValue &&
-      appointment.date === dateInput.current?.value )) { 
+      appointment.date === dateValue )) { 
     toast.error(' الموعد محجوز لمريض اخر ');
     setTimeValue('');
-    dateInput.current.value = '';
+    setDateValue('');
     operation.current.value = '';
     return;
   }
@@ -68,13 +69,13 @@ let handleNewAppointment = async () => {
     patient_name: theRequiredPatient.name,
     status: 'مجدول',
     time: timeInput.current.value,
-    date: dateInput.current.value,
+    date: dateValue,
     procedure: operation.current.value,
   };
   await addAppointment(newAppointment);
   await syncAppointments();
   setTimeValue('');
-  dateInput.current.value = '';
+  setDateValue('');
   operation.current.value = '';
   toast.success('تم اضافه موعد جديد');
 };
@@ -275,9 +276,10 @@ let handleDeleteAppointment = async (appointment) => {
               className=" w-full text-[#314158] flex flex-col font-bold text-[14px] gap-1"
             >
               تاريخ الموعد
-              <input
-                ref={dateInput}
+                          <input
                 type="date"
+                value={dateValue}
+                onChange={(e) => setDateValue(e.target.value)}
                 className="py-2.5 w-full  bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"
               />
             </label>
@@ -298,7 +300,7 @@ let handleDeleteAppointment = async (appointment) => {
      ) : appointments.some(
     (appointment) =>
       appointment.time === timeValue &&
-      appointment.date === dateInput.current?.value
+          appointment.date === dateValue
   ) ? (
                 <span className="text-red-500 font-normal">
                   الموعد محجوز لمريض آخر
