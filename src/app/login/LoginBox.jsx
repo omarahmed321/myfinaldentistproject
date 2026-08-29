@@ -3,7 +3,7 @@ import { Field, Form, Formik, ErrorMessage } from 'formik';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { resolve } from 'path';
+
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import * as Yup from 'yup';
