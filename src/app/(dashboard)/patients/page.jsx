@@ -2,12 +2,7 @@
 import { Edit,  Eye, Search, Trash, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import {
-  readPatients,
-  savePatients,
-  readMyPatients,
-  deletePatients,
-} from '@/utils/storage';
+import { readMyPatients, deletePatient } from '@/utils/storage';
 import Skeleton from '@/components/Skeletron';
 import { paginate } from '@/utils/pagenation';
 import PagenationButtons from '@/components/PagenationButtons';
@@ -29,10 +24,11 @@ export default function page() {
   /////////////////////////// the useEffect
   useEffect(() => {
     setToday(new Date().toLocaleDateString('en-GB'));
-
-    const savedData = readPatients();
-    setData(readMyPatients());
+     async function load() {
+    setData(await readMyPatients());
     setIsLoading(false);
+  }
+  load();
   }, []);
 
   /////////////////////////// continue the live search
@@ -164,10 +160,10 @@ export default function page() {
                 >
                   <td className=" flex py-5 justify-end text-[#90A1B9]  gap-2 w-full ">
                     <button
-                      onClick={() => {
-                        deletePatients(el.id);
-                        setData(readMyPatients());
-                      }}
+                      onClick={async () => {
+  await deletePatient(el.id);
+  setData(await readMyPatients());
+}}
                     >
                       <Trash2 className=" hover:transition-transform hover:scale-110 transition duration-200" />
                     </button>

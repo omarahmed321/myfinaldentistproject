@@ -7,7 +7,7 @@ import { resolve } from 'path';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import * as Yup from 'yup';
-import { readUsers, saveCurrentUser } from '@/utils/storage';
+
 import { createClient } from '@/utils/supabase/client';
 export default function LoginBox() {
   /////////////////////////// hooks

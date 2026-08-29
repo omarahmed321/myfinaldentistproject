@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import Skeleton from '@/components/Skeletron';
-import { readPatients, savePatients, readCurrentUser } from '@/utils/storage';
+import { getPatientById, addPatient, updatePatient } from '@/utils/storage';
 function AddPatient() {
 
   /////////////////////////// Hooks
@@ -20,10 +20,12 @@ function AddPatient() {
   let statusInput = useRef();
   /////////////////////////// useEffect
   useEffect(() => {
+ 
+  async function loadPatient() {
+    // لو فيه باراميتر فوق
     if (theParameterId) {
-      let patients = readPatients();
-      let oldPatient = patients.find((patient) => patient.id ==theParameterId);
-      //  لو طلع اللي فوق في ال patients بعد الفايند يعني لو فيها حاجه وكان ممكن نستعمل some برضو عشان بترجع ترو او فالس
+      let oldPatient = await getPatientById(theParameterId);
+      // بنشيك من الداتا بيز لو الشخص ده فيها لو موجود بنحط الداتا بتاعته لو لا بكل بساطه اطلع برا 
       if (oldPatient) {
         if (nameInput.current) nameInput.current.value = oldPatient.name || '';
         if (PhoneInput.current)
@@ -34,23 +36,28 @@ function AddPatient() {
           maleInput.current.checked = oldPatient.gender === 'ذكر';
           femaleInput.current.checked = oldPatient.gender === 'أنثى';
         }
+        if (statusInput.current)
+          statusInput.current.value = oldPatient.status || 'جديد';
         //  لو مش موجود بقي في الباشنتس
       } else {
-        toast.error('هذا المريض غير موجود، أدخل مريض جديد!');
+        toast.error('هذا المريض غير موجود، أدخل مريض جديد');
         router.push('/addpatient');
       }
     }
 
     // لو مفيش بارام اصلا فوق
     else {
-nameInput.current && (nameInput.current.value = ''); // short circuit evaluation
+      nameInput.current && (nameInput.current.value = ''); // short circuit evaluation
       if (PhoneInput.current) PhoneInput.current.value = '';
       if (ageInput.current) ageInput.current.value = '';
       if (noteInput.current) noteInput.current.value = '';
       if (maleInput.current) maleInput.current.checked = false;
       if (femaleInput.current) femaleInput.current.checked = false;
     }
-  }, [theParameterId]);
+  }
+  loadPatient();
+}, [theParameterId]);
+ 
   /////////////////////////// ValidatePatientInputs
   let validatePatientInputs = () => {
     let name = nameInput.current?.value?.trim();
@@ -79,60 +86,46 @@ nameInput.current && (nameInput.current.value = ''); // short circuit evaluation
     }
     return true;
   };
-  /////////////////////////// handleAddPatient
-  let handleAddPatient = () => {
-    // لو مفيش حاجه كامله اخرج اصلا
-    if (!validatePatientInputs()) return;
-    // تعال نقرا اليوسر الحالي عشان نفلتر علي اساسه وبرضو نقرا الباشنتس
-    let currentUser = readCurrentUser();
-    let patients = readPatients();
-    let genderValue = maleInput.current.checked
-      ? 'ذكر'
-      : femaleInput.current.checked
-        ? 'أنثى'
-        : '';
-    // بنجيب القديم عشان نعدله لو فيه اصلا
-    if (theParameterId) {
-      // بنعدل في المريض اللي موجود في اللينك ولا مريض تاني
-      patients = patients.map((patient) => {
-        if (patient.id ==theParameterId) {
-           toast.success("تم تعديل المريض")
-          return {
-            ...patient,
-            name: nameInput.current.value,
-            phone: PhoneInput.current.value,
-            age: ageInput.current.value,
-            note: noteInput.current.value,
-            gender: genderValue,
-            status: statusInput.current.value,
-          };
-         
-        }
-        //  لو لا رجع النسخه الحاليه منه
-        else {
-          return patient;
-        }
-      });
-    } else {
-      // المفروض الفانكشن كانت دي بس لول يلا بقي جت من عند ربنا
 
-      let newPatient = {
-        id: crypto.randomUUID(),
-        userId: currentUser?.id,
-        name: nameInput.current.value,
-        phone: PhoneInput.current.value,
-        age: ageInput.current.value,
-        note: noteInput.current.value,
-        gender: genderValue,
-        status: statusInput.current.value,
-      };
-      patients.push(newPatient);
-      toast.success("تم اضافه مريض جديد")
-    }
-    savePatients(patients);
+/////////////////////////// handleAddPatient
+let handleAddPatient = async () => {
+  // لو مفيش حاجه كامله اخرج اصلا
+  if (!validatePatientInputs()) return;
 
-    router.push('/patients');
+  let genderValue = maleInput.current.checked
+    ? 'ذكر'
+    : femaleInput.current.checked
+      ? 'أنثى'
+      : '';
+
+  // البيانات اللي هنحفظها (نفسها في الاضافه والتعديل)
+  let patientData = {
+    name: nameInput.current.value,
+    phone: PhoneInput.current.value,
+    age: ageInput.current.value,
+    note: noteInput.current.value,
+    gender: genderValue,
+    status: statusInput.current.value,
   };
+
+  let success;
+  // بنجيب القديم عشان نعدله لو فيه اصلا
+  if (theParameterId) {
+    success = await updatePatient(theParameterId, patientData);
+    if (success) toast.success('تم تعديل المريض');
+  } else {
+    success = await addPatient(patientData);
+    if (success) toast.success('تم اضافه مريض جديد');
+  }
+
+  // لو حصل غلط في الحفظ
+  if (!success) {
+    toast.error('حصل خطأ، حاول تاني');
+    return;
+  }
+
+  router.push('/patients');
+};
 
   return (
     <div className=" px-4 pt-4 mt-12 lg:mt-0 w-full lg:w-[50%] mx-auto pb-4 ">

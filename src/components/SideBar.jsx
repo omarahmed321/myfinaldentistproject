@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import {  readCurrentUser } from '@/utils/storage';
+import { getCurrentUser, logout } from '@/utils/storage';
 import TitleAndLogo from '@/components/TitleAndLogo.jsx';
 import {
   Calendar,
@@ -27,16 +27,16 @@ export default function SideBar({ modal, setModal }) {
     'hover:bg-[#0D9488]/5 hover:text-[#0D9488]/50 transition rounded-xl ';
   let optionClassname = ` flex w-fit ml-auto py-2.5 `;
   /////////////////////////// handle sign out
-  let handleSignOut = () => {
-    document.cookie = 'token=;path=/;max-age=0';
-    // امسح الاوبجكت بتاع الدكتور
-    clearCurrentUser();
-    setModal(false);
-    router.push('/login');
-  };
+let handleSignOut = async () => {
+  await logout();
+  setModal(false);
+  window.location.href = '/login';
+};
   /////////////////////////// useEffect
   useEffect(() => {
-    setCurrentUser(readCurrentUser())
+    getCurrentUser().then((user) =>
+  setCurrentUser({ fullName: user?.user_metadata?.fullName })
+);
     modal
       ? ((document.body.style.overflow = 'hidden'),
         (document.documentElement.style.overflow = 'hidden'))

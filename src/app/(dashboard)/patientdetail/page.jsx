@@ -7,9 +7,12 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import Skeleton from '../../../components/Skeletron';
 import {
-  readPatients,
+  getPatientById,
   readAppointments,
-  saveAppointments,
+  readPatientAppointments,
+  addAppointment,
+  updateAppointmentStatus,
+  deleteAppointment,
 } from '@/utils/storage';
 
 import { paginate } from '@/utils/pagenation';
@@ -30,89 +33,72 @@ function PatientDetail() {
   const timeInput = useRef();
   const operation = useRef();
   const statusOption = useRef();
-  /////////////////////////// saveAppointmentsAndSync
-  let saveAppointmentsAndSync = (newAppointments) => {
-    // save to the local storge
-    saveAppointments(newAppointments);
-    // useState for the gui
-    setAppointments(newAppointments);
-   setRequiredAppointments(
-      newAppointments.filter((appointment) => appointment.patientId === parameterId)
-    );
-  };
+  /////////////////////////// syncAppointments
+let syncAppointments = async () => {
+  let all = await readAppointments();
+  setAppointments(all);
+  setRequiredAppointments(all.filter((a) => a.patientId === parameterId));
+};
   /////////////////////////// handleEdit
   let handleEdit = () => {
     router.push(`/addpatient?id=${theRequiredPatient.id}`);
   };
   /////////////////////////// some hooks handle the add new appointment
-  let handleNewAppointment = () => {
-    if (
-      !dateInput.current?.value ||
-      !timeInput.current?.value ||
-      !operation.current?.value
-    ) {
-      toast.error('! انت ليه سايب اماكن فاضيه ');
-      return;
-    }
-    let newAppointment = {
-      id: crypto.randomUUID(),
-      patientId: theRequiredPatient.id,
-      patientName: theRequiredPatient.name,
-      status: 'مجدول',
-      time: timeInput.current.value,
-      date: dateInput.current.value,
-      procedure: operation.current.value,
-    };
-    if(appointments.some((appointment) => appointment.time === timeValue) ){
-      toast.error(' الموعد محجوز لمريض اخر ')
-      
-       setTimeValue('');// controlled input 
-   
+let handleNewAppointment = async () => {
+  if (
+    !dateInput.current?.value ||
+    !timeInput.current?.value ||
+    !operation.current?.value
+  ) {
+    toast.error('! انت ليه سايب اماكن فاضيه ');
+    return;
+  }
+  if (appointments.some((appointment) => appointment.time === timeValue)) {
+    toast.error(' الموعد محجوز لمريض اخر ');
+    setTimeValue('');
     dateInput.current.value = '';
     operation.current.value = '';
-      return ;
-    }
-    let allAppointments = readAppointments();
-    allAppointments.push(newAppointment);
-
-    saveAppointmentsAndSync(allAppointments);
-    setTimeValue('');// controlled input 
-   
-    dateInput.current.value = '';
-    operation.current.value = '';
-    toast.success('تم اضافه موعد جديد');
+    return;
+  }
+  let newAppointment = {
+    patient_id: theRequiredPatient.id,
+    patient_name: theRequiredPatient.name,
+    status: 'مجدول',
+    time: timeInput.current.value,
+    date: dateInput.current.value,
+    procedure: operation.current.value,
   };
+  await addAppointment(newAppointment);
+  await syncAppointments();
+  setTimeValue('');
+  dateInput.current.value = '';
+  operation.current.value = '';
+  toast.success('تم اضافه موعد جديد');
+};
   /////////////////////////// useEffect
-  useEffect(() => {
-    // reading the data from localstorage and getting the required patient
+useEffect(() => {
+  async function load() {
+    // معوش id يطلع برا
     if (!parameterId) {
       router.push('/patients');
       return;
     }
-    // عشان مفيش حد غبي يدخل اي id فوق وخلاص
-    let patients = readPatients();
-    let foundPatient = patients.find((patient) => patient.id === parameterId);
-
+    let foundPatient = await getPatientById(parameterId);
     if (!foundPatient) {
       router.push('/patients');
       return;
     }
-
     setTheRequiredPatient(foundPatient);
-    let allAppointments = readAppointments();
-    saveAppointmentsAndSync(allAppointments);
-
+    await syncAppointments();
     setIsLoading(false);
-  }, [parameterId]);
-
+  }
+  load();
+}, [parameterId]);
   /////////////////////////// handle delete
-  let handleDeleteAppointment = (appointment) => {
-    let allAppointments = readAppointments();
-    let filteredAppointments = allAppointments.filter((appointments) => {
-      return appointment.id !== appointments.id;
-    });
-    saveAppointmentsAndSync(filteredAppointments);
-  };
+let handleDeleteAppointment = async (appointment) => {
+  await deleteAppointment(appointment.id);
+  await syncAppointments();
+};
   /////////////////////////// pagination
   const {
     items: paginatedData,
@@ -122,17 +108,10 @@ function PatientDetail() {
     total,
   } = paginate(RequiredAppointment || [], currentPage, 5);
   /////////////////////////// handle change Status
-  let handleChangeStatus = (appointment, newStatus) => {
-    let allAppointments = readAppointments();
-    let updatedAppointments = allAppointments.map(
-      (appointmentInLoop) => {
-        return appointment.id === appointmentInLoop.id
-          ? { ...appointmentInLoop, status: newStatus }
-          : appointmentInLoop;
-      }
-    );
-    saveAppointmentsAndSync(updatedAppointments);
-  };
+ let handleChangeStatus = async (appointment, newStatus) => {
+  await updateAppointmentStatus(appointment.id, newStatus);
+  await syncAppointments();
+};
   if (isLoading) {
     return <Skeleton />;
   }

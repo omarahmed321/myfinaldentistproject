@@ -1,10 +1,10 @@
 'use client';
 import { Calendar, Calendar1, CheckCircle2, Trash, Users } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { readAppointments } from '@/utils/storage';
+
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { readPatients, readCurrentUser, readMyPatients } from '@/utils/storage';
+import { readAppointments, readMyPatients, getCurrentUser } from '@/utils/storage';
 import Skeleton from '@/components/Skeletron';
 import { paginate } from '@/utils/pagenation';
 import PagenationButtons from '@/components/PagenationButtons';
@@ -21,18 +21,19 @@ export default function page() {
   const [isLoading, setIsLoading] = useState(true);
   /////////////////////////// useEffect
   useEffect(() => {
-    // اليوسر الحالي
-    setCurrentUser(readCurrentUser());
-    // المرضي
-    setPatients(readMyPatients());
-    // لكن هنا المواعيد
-    let appointmentsHere = readAppointments();
-    // اليوسر الحالي
-    const currentUser = readCurrentUser();
-    // كل المرضي
-    const allPatients = readPatients();
-    setAppointments(appointmentsHere);
+    // الفكره من اني بعمل async عشان اقدر استعمل ال await لانه متقدرش تخلي ال useEffect async
+   async function load() {
+    // هات ام اليوسر
+    const user = await getCurrentUser();
+    // اسمه الموجود في الميتا داتا
+    setCurrentUser({ fullName: user?.user_metadata?.fullName });
+    // هات الباشنتس
+    setPatients(await readMyPatients());
+    setAppointments(await readAppointments());
     setIsLoading(false);
+  }
+  load();
+ 
   }, []);
   /////////////////////////// filter todays date
   let todayDate = new Date().toISOString().split('T')[0];

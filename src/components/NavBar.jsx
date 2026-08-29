@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { readCurrentUser } from '@/utils/storage';
+import { getCurrentUser } from '@/utils/storage';
 
 export default function NavBar({ modal, setModal }) {
   /////////////////////////// some hooks
@@ -45,9 +45,11 @@ export default function NavBar({ modal, setModal }) {
     }
   }, [pathName]);
   /////////////////////////// for the username
-  useEffect(() => {
-    setCurrentUser(readCurrentUser());
-  }, []);
+useEffect(() => {
+  getCurrentUser().then((user) =>
+    setCurrentUser({ fullName: user?.user_metadata?.fullName })
+  );
+}, []);
   return (
     <div className="w-full py-2 px-2 md:py-4 md:px-8 flex justify-between  items-center bg-white border-b border-[#45556C]/20 text-[#0F172B] font-bold text-[20px]">
       {/* left Side */}

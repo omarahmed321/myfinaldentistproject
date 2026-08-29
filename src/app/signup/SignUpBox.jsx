@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
-import { readUsers, saveUsers, saveCurrentUser } from '@/utils/storage';
+
 import { createClient } from '@/utils/supabase/client';
-export default function SignUpBox() {
+export default function SignUpBox({ sentEmail, setSentEmail }) {
   /////////////////////////// hooks
   const router = useRouter();
   const [showPass, setShowPass] = useState(false);
@@ -74,11 +74,32 @@ if (error) {
   toast.error(error.message);
   return;
 }
+if (data.user && data.user.identities && data.user.identities.length === 0) {
+  setFieldError('email', 'الإيميل ده مستخدم قبل كده');
+  toast.error('الإيميل ده مسجّل بالفعل، جرّب تسجّل دخول');
+  return;
+}
 
+
+if (!data.session) {
+   setSentEmail(values.email); 
+     return;  }
 toast.success('تم إنشاء الحساب بنجاح!');
-router.push('/');
+window.location.href = '/';  
 
   };
+
+if (sentEmail) {
+  return (
+    <div className="text-center p-4">
+      <p className="text-2xl mb-4"> افتح إيميلك</p>
+      <p>بعتنالك رسالة تأكيد على <b>{sentEmail}</b></p>
+      <p className="text-gray-500 mt-2">اضغط اللينك اللي في الإيميل عشان تفعّل حسابك وتقدر تسجّل دخول.</p>
+    </div>
+  );
+}
+
+
 
   return (
     <Formik

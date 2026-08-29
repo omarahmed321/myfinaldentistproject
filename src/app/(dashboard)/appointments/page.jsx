@@ -1,7 +1,7 @@
 'use client';
 import { ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { readAppointments } from '../../../utils/storage';
+import { readAppointments } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
 import { paginate } from '@/utils/pagenation';
 import Skeleton from '@/components/Skeletron';
@@ -87,10 +87,13 @@ export default function Page() {
   } = paginate(filteredAppointmentsThisWeek, currentPage, 5);
 
   /////////////////////////// useEffect
-  useEffect(() => {
-    setAppointments(readAppointments());
+useEffect(() => {
+  async function load() {
+    setAppointments(await readAppointments());
     setIsLoading(false);
-  }, []);
+  }
+  load();
+}, []);
   /////////////////////////// handle edit
   let handleEdit = (appointmentPatientId) => {
     router.push(`/patientdetail?id=${appointmentPatientId}`);

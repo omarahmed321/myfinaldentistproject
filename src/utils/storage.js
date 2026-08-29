@@ -1,77 +1,100 @@
-// All of the localStorage Functions
+// storage.js — دلوقتي بيتكلم مع Supabase بدل localStorage
+import { createClient } from '@/utils/supabase/client';
 
-////////////////////////////////////////// فانكشن حمايه اللوكال ستورج وفانكشن عامه للكل
-function globalLocalStorage(key, value) {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return arguments.length === 1 ? null : false;
-  }
+const supabase = createClient();
 
-  // arguments.length ===1 means there is key only = get
-  if (arguments.length === 1) {
-    const savedData = localStorage.getItem(key);
-    if (savedData === null) {
-      return null;
-    }
+//////////////////////// المرضى 
 
-    try {
-      return JSON.parse(savedData);
-    } catch (error) {
-      throw new Error('failed to get the key ');
-    }
+// هات كل المرضي الدكتور الحالي ده ليه علاقه مباشره ب RLS الي في supabase 
+// حته انه يجيب المرضي بتوع اليوزر اللي فاتح حاليا مخصوص
+export async function readMyPatients() {
+  const { data, error } = await supabase
+    .from('patients')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) {
+    console.error(error);
+    return [];
   }
-  // Set
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-    return true;
-  } catch {
-    return false;
-  }
+  return data;
 }
-////////////////////////////////////////// Appointments functions
-// read
-export let readAppointments = () => globalLocalStorage('appointments') || [];
-// write
-export let saveAppointments = (newAppointments) =>
-  globalLocalStorage('appointments', newAppointments);
-////////////////////////////////////////// Patients functions
-// read
-export let readPatients = () => globalLocalStorage('patients') || [];
-// write
-export let savePatients = (newPatients) =>
-  globalLocalStorage('patients', newPatients);
-////////////////////////////////////////// Users functions
-// read
-export let readUsers = () => globalLocalStorage('users') || [];
-// write
-export let saveUsers = (newUsers) => globalLocalStorage('users', newUsers);
-////////////////////////////////////////// specific Users functions / current user {its an object not array}
-// هي الفكره اني لازم اعمل اراي لليوسر الحالي
-// read
-export let readCurrentUser = () => globalLocalStorage('currentUser');
-// save
-export let saveCurrentUser = (user) => globalLocalStorage('currentUser', user);
-// remove {needed cuz when signout}
-export let clearCurrentUser = () => {
-  localStorage.removeItem('currentUser');
-};
-////////////////////////////////////////// read patients for current user 
-export let readMyPatients = () => {
-  let currentUser = readCurrentUser();
-  let allPatients = readPatients();
-  return allPatients.filter((patient) => patient.userId === currentUser?.id);
-};
-////////////////////////////////////////// delete patient and his appointments
-export let deletePatients = (patientId) => {
-  // patient deletion
-  let allPatients = readPatients();
-  let updatedPatients = allPatients.filter(
-    (patient) => patient.id !== patientId
-  );
-  savePatients(updatedPatients);
-  // appointments deletion
-  let allAppointments = readAppointments();
-  let updatedAppointments = allAppointments.filter(
-    (appointment) => appointment.patientId !== patientId
-  );
-  saveAppointments(updatedAppointments);
-};
+
+// جيب مريض بال id بتاعه 
+// used specificly for patientdetail and addpatient
+export async function getPatientById(id) {
+  const { data, error } = await supabase
+    .from('patients')
+    .select('*')
+    .eq('id', id)
+    .single();
+  if (error) return null; 
+  // بيرجع نل عشان هو patient واحد مش كل المرضي عشان ارجعله اراي فاضي مثلا
+  return data;
+}
+
+// إضافة مريض جديد
+export async function addPatient(patient) {
+  const { error } = await supabase.from('patients').insert(patient);
+  return !error;
+}
+
+// تعديل مريض
+export async function updatePatient(id, patient) {
+  const { error } = await supabase.from('patients').update(patient).eq('id', id);
+  return !error;
+}
+
+// مسح مريض بمواعيده
+export async function deletePatient(id) {
+  const { error } = await supabase.from('patients').delete().eq('id', id);
+  return !error;
+}
+
+//////////////////////// المواعيد 
+
+// كل مواعيد الدكتور 
+export async function readAppointments() {
+  const { data, error } = await supabase
+    .from('appointments')
+    .select('id, status, date, time, procedure, patientId:patient_id, patientName:patient_name');
+  if (error) return [];
+  return data;
+}
+
+// مواعيد مريض معيّن
+export async function readPatientAppointments(patientId) {
+  const { data, error } = await supabase
+    .from('appointments')
+    .select('id, status, date, time, procedure, patientId:patient_id, patientName:patient_name')
+    .eq('patient_id', patientId);
+  if (error) return [];
+  return data;
+}
+
+// إضافة موعد
+export async function addAppointment(appointment) {
+  const { error } = await supabase.from('appointments').insert(appointment);
+  return !error;
+}
+
+// تعديل حالة موعد
+export async function updateAppointmentStatus(id, status) {
+  const { error } = await supabase.from('appointments').update({ status }).eq('id', id);
+  return !error;
+}
+
+// مسح موعد
+export async function deleteAppointment(id) {
+  const { error } = await supabase.from('appointments').delete().eq('id', id);
+  return !error;
+}
+
+//////////////////////// اليوزر الحالي 
+export async function getCurrentUser() {
+  const { data } = await supabase.auth.getUser();
+  return data.user;
+}
+//////////////////////// تسجيل خروج 
+export async function logout() {
+  await supabase.auth.signOut();
+}
