@@ -33,12 +33,12 @@ export default function page() {
 
   /////////////////////////// continue the live search
   const filteredItems = data.filter((patient) => {
-    const SearchBox =
-      patient.phone.includes(searchTerm) ||
-      patient.name
-        .toLowerCase()
-        .trim()
-        .includes(searchTerm.trim().toLowerCase());
+   const SearchBox =
+  (patient.phone || '').includes(searchTerm) ||
+  (patient.name || '')
+    .toLowerCase()
+    .trim()
+    .includes(searchTerm.trim().toLowerCase());
 
     const StatusAllOfThem =
       buttonStatus === 'الكل' || patient.status === buttonStatus;

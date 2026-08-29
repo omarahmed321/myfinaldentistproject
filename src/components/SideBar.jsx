@@ -15,7 +15,7 @@ import {
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { clearCurrentUser } from '@/utils/storage.js';
+
 import Skeleton from '@/components/Skeletron';
 export default function SideBar({ modal, setModal }) {
   /////////////////////////// hooks

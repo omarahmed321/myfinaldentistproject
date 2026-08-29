@@ -9,7 +9,7 @@ import Skeleton from '../../../components/Skeletron';
 import {
   getPatientById,
   readAppointments,
-  readPatientAppointments,
+
   addAppointment,
   updateAppointmentStatus,
   deleteAppointment,
@@ -53,7 +53,10 @@ let handleNewAppointment = async () => {
     toast.error('! انت ليه سايب اماكن فاضيه ');
     return;
   }
-  if (appointments.some((appointment) => appointment.time === timeValue)) {
+   if (
+  appointments.some((appointment) =>
+      appointment.time === timeValue &&
+      appointment.date === dateInput.current?.value )) { 
     toast.error(' الموعد محجوز لمريض اخر ');
     setTimeValue('');
     dateInput.current.value = '';
@@ -292,7 +295,11 @@ let handleDeleteAppointment = async (appointment) => {
               />
               {!timeValue.trim() ? (
                 <span></span>
-              ) : appointments.some((appointment) => appointment.time === timeValue) ? (
+     ) : appointments.some(
+    (appointment) =>
+      appointment.time === timeValue &&
+      appointment.date === dateInput.current?.value
+  ) ? (
                 <span className="text-red-500 font-normal">
                   الموعد محجوز لمريض آخر
                 </span>
