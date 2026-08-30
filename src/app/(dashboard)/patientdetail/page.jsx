@@ -46,7 +46,7 @@ function PatientDetail() {
   /////////////////////////// some hooks handle the add new appointment
   let handleNewAppointment = () => {
     if (
-      !dateValue?.value ||
+      !dateValue ||
       !timeInput.current?.value ||
       !operation.current?.value
     ) {
@@ -62,22 +62,24 @@ function PatientDetail() {
       date: dateValue,
       procedure: operation.current.value,
     };
-    if(appointments.some((appointment) => appointment.time === timeValue && appointment.date === dateValue)) {
-      toast.error(' الموعد محجوز لمريض اخر ')
-      
-       setTimeValue('');// controlled input 
-   
-    dateValue = '';
-    operation.current.value = '';
-      return ;
+    if (
+      appointments.some(
+        (appointment) =>
+          appointment.time === timeValue && appointment.date === dateValue
+      )
+    ) {
+      toast.error(' الموعد محجوز لمريض اخر ');
+      setTimeValue('');
+      setDateValue('');
+      operation.current.value = '';
+      return;
     }
     let allAppointments = readAppointments();
     allAppointments.push(newAppointment);
 
     saveAppointmentsAndSync(allAppointments);
-    setTimeValue('');// controlled input 
-   
-    dateValue = '';
+    setTimeValue('');
+    setDateValue('');
     operation.current.value = '';
     toast.success('تم اضافه موعد جديد');
   };
