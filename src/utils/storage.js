@@ -123,7 +123,7 @@ export async function signInWithGoogle() {
   const { error } = await getSupabase().auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}/`,
+      redirectTo: `${window.location.origin}/auth/callback`,
     },
   });
   return !error;
