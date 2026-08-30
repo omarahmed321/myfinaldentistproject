@@ -48,7 +48,12 @@ let handleSignOut = async () => {
   }, [modal]);
 
 
-  if (!currentUser) return <Skeleton />;
+if (!currentUser)
+  return (
+    <div className="hidden lg:block lg:w-[13%] min-h-dvh bg-[#1D293D] shrink-0 p-3">
+      <Skeleton />
+    </div>
+  );
   return (
     <>
       <div
