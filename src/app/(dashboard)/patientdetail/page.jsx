@@ -21,12 +21,11 @@ function PatientDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [appointments, setAppointments] = useState([]);
   const [theRequiredPatient, setTheRequiredPatient] = useState();
-  const [RequiredAppointment,setRequiredAppointments] =
-    useState();
+  const [RequiredAppointment,setRequiredAppointments] =useState();
+  const [dateValue, setDateValue] = useState('');
   const [timeValue, setTimeValue] = useState('');
   const router = useRouter();
   const parameterId = useSearchParams().get('id');
-  const dateInput = useRef();
   const timeInput = useRef();
   const operation = useRef();
   const statusOption = useRef();
@@ -47,7 +46,7 @@ function PatientDetail() {
   /////////////////////////// some hooks handle the add new appointment
   let handleNewAppointment = () => {
     if (
-      !dateInput.current?.value ||
+      !dateValue?.value ||
       !timeInput.current?.value ||
       !operation.current?.value
     ) {
@@ -60,15 +59,15 @@ function PatientDetail() {
       patientName: theRequiredPatient.name,
       status: 'مجدول',
       time: timeInput.current.value,
-      date: dateInput.current.value,
+      date: dateValue,
       procedure: operation.current.value,
     };
-    if(appointments.some((appointment) => appointment.time === timeValue) ){
+    if(appointments.some((appointment) => appointment.time === timeValue && appointment.date === dateValue)) {
       toast.error(' الموعد محجوز لمريض اخر ')
       
        setTimeValue('');// controlled input 
    
-    dateInput.current.value = '';
+    dateValue = '';
     operation.current.value = '';
       return ;
     }
@@ -78,7 +77,7 @@ function PatientDetail() {
     saveAppointmentsAndSync(allAppointments);
     setTimeValue('');// controlled input 
    
-    dateInput.current.value = '';
+    dateValue = '';
     operation.current.value = '';
     toast.success('تم اضافه موعد جديد');
   };
@@ -293,11 +292,12 @@ function PatientDetail() {
               className=" w-full text-[#314158] flex flex-col font-bold text-[14px] gap-1"
             >
               تاريخ الموعد
-              <input
-                ref={dateInput}
-                type="date"
-                className="py-2.5 w-full  bg-[#F8FAFC] font-normal text-[#0F172B] px-4 outline-0 border rounded-lg border-[#E2E8F0] focus:border-black/30"
-              />
+           <input
+  type="date"
+  value={dateValue}
+  onChange={(e) => setDateValue(e.target.value)}
+  className="..."
+/>
             </label>
             <label
               htmlFor=""
@@ -313,7 +313,7 @@ function PatientDetail() {
               />
               {!timeValue.trim() ? (
                 <span></span>
-              ) : appointments.some((appointment) => appointment.time === timeValue) ? (
+              ) : appointments.some((appointment) => appointment.time === timeValue && appointment.date === dateValue) ? (
                 <span className="text-red-500 font-normal">
                   الموعد محجوز لمريض آخر
                 </span>

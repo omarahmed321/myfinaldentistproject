@@ -52,7 +52,7 @@ export default function page() {
     total,
   } = paginate(todaysAppointments, currentPage, 5);
 
-  if (isLoading) return <Skeleton />;
+  if (isLoading) return <Skeleton  />;
   return (
     <div className=" w-full h-full md:p-8 p-3 gap-8 flex flex-col ">
       {/* Top */}
