@@ -118,3 +118,13 @@ export function toLocalDateString(date) {
 export function getTodayLocal() {
   return toLocalDateString(new Date());
 }
+//////////////////////// الدخول بجوجل 
+export async function signInWithGoogle() {
+  const { error } = await getSupabase().auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${window.location.origin}/`,
+    },
+  });
+  return !error;
+}
