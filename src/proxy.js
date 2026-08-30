@@ -35,7 +35,19 @@ const isAuthPage =
     return NextResponse.redirect(new URL('/', request.url));
   }
 
+    // لو معملش clinic name وديه علي الصفحه يعمل 
+  const hasClinic = user?.user_metadata?.clinicName;
+  if (user && !hasClinic && pathName !== '/onboarding') {
+    return NextResponse.redirect(new URL('/onboarding', request.url));
+  }
+  // لو عامل اصلا خلاص باي روح عادي 
+  if (user && hasClinic && pathName === '/onboarding') {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
   return response;
+
+
 }
 
 export const config = {

@@ -47,7 +47,13 @@ export default function NavBar({ modal, setModal }) {
   /////////////////////////// for the username
 useEffect(() => {
   getCurrentUser().then((user) =>
-    setCurrentUser({ fullName: user?.user_metadata?.fullName })
+setCurrentUser({
+  fullName:
+    user?.user_metadata?.fullName ||
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name,
+  clinicName: user?.user_metadata?.clinicName,
+})
   );
 }, []);
   return (

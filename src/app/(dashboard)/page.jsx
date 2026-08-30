@@ -26,8 +26,14 @@ export default function page() {
    async function load() {
     // هات ام اليوسر
     const user = await getCurrentUser();
-    // اسمه الموجود في الميتا داتا
-    setCurrentUser({ fullName: user?.user_metadata?.fullName });
+    // اسمه الموجود في الميتا داتا او حساب جوجل 
+    setCurrentUser({
+  fullName:
+    user?.user_metadata?.fullName ||
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name,
+  clinicName: user?.user_metadata?.clinicName,
+});
     // هات الباشنتس
     setPatients(await readMyPatients());
     setAppointments(await readAppointments());
