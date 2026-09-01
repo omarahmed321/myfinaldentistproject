@@ -77,6 +77,7 @@ export async function readPatientAppointments(patientId) {
 }
 
 // إضافة موعد
+
 export async function addAppointment(appointment) {
   const { error } = await getSupabase().from('appointments').insert(appointment);
   return !error;
@@ -94,7 +95,7 @@ export async function deleteAppointment(id) {
   return !error;
 }
 
-//////////////////////// اليوزر الحالي 
+//////////////////////// اليوزر الحالي  
 export async function getCurrentUser() {
   const { data } = await getSupabase().auth.getUser();
   return data.user;

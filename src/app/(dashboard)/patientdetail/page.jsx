@@ -13,6 +13,7 @@ import {
   addAppointment,
   updateAppointmentStatus,
   deleteAppointment,
+  readPatientAppointments,
 } from '@/utils/storage';
 
 import { paginate } from '@/utils/pagenation';
@@ -29,7 +30,6 @@ function PatientDetail() {
   const [dateValue, setDateValue] = useState('');
   const router = useRouter();
   const parameterId = useSearchParams().get('id');
-
   const timeInput = useRef();
   const operation = useRef();
   const statusOption = useRef();
@@ -37,7 +37,7 @@ function PatientDetail() {
 let syncAppointments = async () => {
   let all = await readAppointments();
   setAppointments(all);
-  setRequiredAppointments(all.filter((a) => a.patientId === parameterId));
+  setRequiredAppointments(await readPatientAppointments(parameterId));
 };
   /////////////////////////// handleEdit
   let handleEdit = () => {

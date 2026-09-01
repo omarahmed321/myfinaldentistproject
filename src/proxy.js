@@ -21,6 +21,15 @@ export default async function middleware(request) {
     }
   );
 
+
+
+
+
+
+
+
+  
+
   const { data: { user } } = await supabase.auth.getUser();
 
   const pathName = request.nextUrl.pathname;

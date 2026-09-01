@@ -16,13 +16,13 @@ export default function LoginBox() {
 
   /////////////////////////// validation schema
   let validationSchema = Yup.object().shape({
-  email: Yup.string().email('الإيميل غير صحيح').required('الإيميل مطلوب'),
+    email: Yup.string().email('الإيميل غير صحيح').required('الإيميل مطلوب'),
     password: Yup.string().required('كلمه السر مطلوبه'),
     remember: Yup.boolean(),
   });
   /////////////////////////// initialValues
   let SchemaInitialValues = {
-email: '',
+    email: '',
     password: '',
     remember: false,
   };
@@ -30,7 +30,7 @@ email: '',
 let handleSubmit = async (values, { setFieldError }) => {
   const supabase = createClient();
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { _ , error } = await supabase.auth.signInWithPassword({
     email: values.email,
     password: values.password,
   });

@@ -9,8 +9,8 @@ export default function OnboardingPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     if (!clinicName.trim()) {
       toast.error('اكتب اسم العيادة');
       return;

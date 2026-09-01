@@ -21,7 +21,7 @@ export default function page() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   /////////////////////////// useEffect
-  useEffect(() => {
+  useEffect( () => {
     // الفكره من اني بعمل async عشان اقدر استعمل ال await لانه متقدرش تخلي ال useEffect async
    async function load() {
     // هات ام اليوسر
@@ -44,7 +44,7 @@ export default function page() {
   }, []);
   /////////////////////////// filter todays date
 let todayDate = getTodayLocal();
-  let todaysAppointments = appointments.filter((app) => app.date === todayDate);
+  let todaysAppointments = appointments.filter((appointment) => appointment.date === todayDate);
   // يعني المفروض فكرتها تعمل اراي فيها فقط الحاجات المكتمله النهارده
   let theCompeletedAppointmentsToday = todaysAppointments.filter(
     (appointment) => appointment.status == 'مكتمل'
