@@ -1,0 +1,25 @@
+{
+  "name": "نظام عياده",
+  "short_name": "عيادتي",
+  "description": "سستم عياده كامل اضافه مرضي ومواعيد وتعديلها وفلاتر",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d9488",
+  "dir": "rtl",
+  "lang": "ar",
+  "orientation": "any",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icons/launchericon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/launchericon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -18,6 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'نظام إدارة عيادة الأسنان',
   description: 'نظام إدارة ذكي وشامل لعيادات الأسنان',
+    manifest: '/manifest.json',
   icons: {
     icon: '/favicon.svg',
   },
