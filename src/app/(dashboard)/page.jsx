@@ -1,6 +1,6 @@
 'use client';
 import { Calendar, Calendar1, CheckCircle2, Trash, Users } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -14,7 +14,11 @@ export default function page() {
   let oneOfTheGrid =
     ' pb-2  h-auto bg-white rounded-lg border border-[#E2E8F0] hover:scale-105 transition-shadow md:shadow-none shadow-md hover:shadow-md duration-500 transition-transform p-6.25';
   /////////////////////////// some hooks
-  const [currentPage, setCurrentPage] = useState(1);
+  // نظام الباجيناشن القديم 
+  // const [currentPage, setCurrentPage] = useState(1);
+
+  const [visibleCount, setVisibleCount] = useState(5);
+  const bottomRef = useRef(null);
   const [patients, setPatients] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const router = useRouter();
@@ -51,15 +55,44 @@ let todayDate = getTodayLocal();
   );
   let numberOfTheAppointmentsCompeletedToday =
     theCompeletedAppointmentsToday.length;
-  /////////////////////////// pagination
-  const {
-    items: paginatedData,
-    totalPages,
-    from,
-    to,
-    total,
-  } = paginate(todaysAppointments, currentPage, 5);
+  /////////////////////////// old pagination
+  // const {
+  //   items: paginatedData,
+  //   totalPages,
+  //   from,
+  //   to,
+  //   total,
+  // } = paginate(todaysAppointments, currentPage, 5);
 
+
+
+  /////////////////////////// incremental loading / infinite scrolling / new system replaced pagination using intersectionobserver 
+  // intersectionobserver حاجه بتراقب الصفحه وبنستعملها عشان نكون عارفين لو وصلنا لاخر الصفحه ولا لا 
+const displayedAppointments = todaysAppointments.slice(0, visibleCount);
+useEffect(() => {
+  const observer = new IntersectionObserver(
+    // الcall back function 
+    (entries) => {
+  //  entries[0] means that one element will be observed
+      if (entries[0].isIntersecting) {
+        setVisibleCount((prev) => prev + 5); // زوّد 5 مواعيد جداد
+      }
+    },
+    // نسبه ظهور العنصر عشان يبدا يشغل ال call back function الي فوق هتكون 20في الميه عشان اليوسر ميحسش بتقل او تاخير
+    { threshold: 0.2 }
+  );
+// العنصر بقي بذاته اللي هيتراقب اهو 
+  if (bottomRef.current) {
+    observer.observe(bottomRef.current);
+  }
+
+  return () => observer.disconnect();
+}, [todaysAppointments]);
+
+
+
+
+  // spinner
   if (isLoading) return <Skeleton />;
   return (
     <div className=" w-full h-full md:p-8 p-3 gap-8 flex flex-col ">
@@ -156,7 +189,8 @@ let todayDate = getTodayLocal();
               </tr>
             </thead>
             <tbody>
-              {paginatedData?.map((appointment) => {
+              {/* if u wanna the pagination back just type paginatedData instead of displayed appointments */}
+       {displayedAppointments?.map((appointment) => {
                 return (
                   <tr
                     key={appointment.id}
@@ -200,7 +234,14 @@ let todayDate = getTodayLocal();
           </table>
          
         </div>
-         <PagenationButtons
+{/* بنشيك لو الكونتنت لسا مخلصش */}
+        {visibleCount < todaysAppointments.length && (
+  <div ref={bottomRef} className="py-4 text-center text-xs text-[#90A1B9]">
+بيحمل زياده اهو استني
+  </div>
+)}
+        {/* old pagination system */}
+         {/* <PagenationButtons
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalPages={totalPages}
@@ -208,7 +249,7 @@ let todayDate = getTodayLocal();
             to={to}
             total={total}
             unitName="موعد"
-          />
+          /> */}
       </div>
     </div>
   );
