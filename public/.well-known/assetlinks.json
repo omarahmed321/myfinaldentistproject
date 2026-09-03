@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.vercel.clinic_webapp_supabase.twa",
+        "sha256_cert_fingerprints": ["CB:2B:3C:2A:01:1C:A0:5B:84:C1:46:7C:29:B2:8F:B9:FC:C4:AC:13:63:DE:F7:3E:4E:8C:10:D3:36:22:96:8E"]
+      }
+    }]
