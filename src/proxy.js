@@ -34,9 +34,13 @@ export default async function middleware(request) {
 
   const pathName = request.nextUrl.pathname;
 // if any one want the manifest for me i'll use it for PWA Builder by microsoft opensource project
- if (pathName === '/manifest.json' || pathName.startsWith('/icons/')) {
-    return response;
-  }
+if (
+  pathName === '/manifest.json' || 
+  pathName.startsWith('/icons/') || 
+  pathName.startsWith('/.well-known/')
+) {
+  return response;
+}
   
 
 
