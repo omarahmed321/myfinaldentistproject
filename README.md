@@ -29,6 +29,10 @@ Small dental clinics often manage patients and appointments on paper or in Excel
 
 This version replaces local storage with **Supabase**: a hosted Postgres database plus real authentication. Each doctor signs up with an email and password, and **Row Level Security (RLS)** on the `patients` and `appointments` tables makes sure a doctor only ever sees their own data, enforced by the database itself, not just the app code. Auth state is checked in Next.js middleware before any page loads, so the same route protection from the local storage version still applies here.
 
+![Database schema](screenshots/db-schema.png)
+
+> The `patients` and `appointments` tables live in Postgres and are filtered per-doctor by **Row Level Security**. `auth.users` is managed by Supabase Auth. Schema inferred from the queries in `storage.js` — there are no migration files in the repo.
+
 ## Features
 
 - **Login / Sign Up**: real email and password accounts via Supabase Auth
