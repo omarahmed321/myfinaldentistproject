@@ -6,7 +6,7 @@ A **staff-only PMS (Patient Management System)** that replaces paper records and
 
 **Live demo:** [clinic-webapp-supabase.vercel.app](https://clinic-webapp-supabase.vercel.app/)
 
-This is the **Supabase** version, real accounts and a shared Postgres database. For the simpler version with no backend, see the [main branch](https://github.com/omarahmed321/myfinaldentistproject) ([live demo](https://clinic-saas-webapp.vercel.app/login)).
+This is the **Supabase** version — real accounts and a shared Postgres database. For the simpler version with no backend, see the [main branch](https://github.com/omarahmed321/myfinaldentistproject) ([live demo](https://clinic-saas-webapp.vercel.app/login)).
 
 ---
 
@@ -27,7 +27,7 @@ Small dental clinics often manage patients and appointments on paper or in Excel
 
 ## Data Storage
 
-This version replaces local storage with **Supabase**: a hosted Postgres database plus real authentication. Each doctor signs up with an email and password, and **Row Level Security (RLS)** on the `patients` and `appointments` tables makes sure a doctor only ever sees their own data, enforced by the database itself, not just the app code. Auth state is checked in Next.js middleware before any page loads, so the same route protection from the local storage version still applies here.
+This version replaces local storage with **Supabase**: a hosted Postgres database plus real authentication. Each doctor signs up with an email and password, and **Row Level Security (RLS)** on the `patients` and `appointments` tables makes sure a doctor only ever sees their own data — enforced by the database itself, not just the app code. Auth state is checked in Next.js middleware before any page loads, so the same route protection from the local storage version still applies here.
 
 ![Database schema](screenshots/db-schema.png)
 
@@ -35,19 +35,32 @@ This version replaces local storage with **Supabase**: a hosted Postgres databas
 
 ## Features
 
-- **Login / Sign Up**: real email and password accounts via Supabase Auth
-- **Dashboard**: quick overview of clinic activity
-- **Patients List**: searchable, paginated table of all patients
-- **Add / Edit Patient**: name, phone, age, gender, and a **note** field (for allergies or medical conditions)
-- **Patient Details**: full record view for a single patient
-- **Appointments**: book and view appointments by date and time
+- **Login / Sign Up:** real email and password accounts via Supabase Auth, plus **Sign in with Google (OAuth)**
+- **Email confirmation** flow with a "check your inbox" screen, and a duplicate-email guard
+- **Onboarding:** Google users are asked once for their clinic name before entering the dashboard
+- **Dashboard:** today's appointments load with **incremental (infinite) scroll** — an `IntersectionObserver` watches a sentinel element and loads 5 more at a time as you scroll
+- **Patients List:** live search by name or phone, filter tabs by status, classic pagination (kept here deliberately — infinite scroll is dashboard-only)
+- **Add / Edit Patient:** name, phone, age, gender, and a **note** field (for allergies or medical conditions), validated with clear Arabic error messages
+- **Patient Details:** full record view, medical note shown as a highlighted warning banner
+- **Appointments:** book and view appointments by date and time, with double-booking prevention
+- **Toast notifications** for saving, errors, and validation feedback
+- **Skeleton loading states** instead of blank screens while data loads
+- **Smooth scrolling** across the app via Lenis
+- **Installable as an app (PWA):** manifest, app icons, and Android TWA support
+- **Fully RTL** layout throughout
 
 ## Tech Stack
 
 - **Framework:** [Next.js](https://nextjs.org)
 - **UI:** React + [Tailwind CSS](https://tailwindcss.com)
 - **Language:** JavaScript
-- **Backend:** [Supabase](https://supabase.com) (Postgres, Auth, Row Level Security)
+- **Backend:** [Supabase](https://supabase.com) — Postgres, Auth, Row Level Security (via `@supabase/supabase-js` and `@supabase/ssr`)
+- **Forms:** [Formik](https://formik.org) + [Yup](https://github.com/jquense/yup)
+- **Icons:** [Lucide React](https://lucide.dev)
+- **Notifications:** [React Hot Toast](https://react-hot-toast.com)
+- **Smooth scrolling:** [Lenis](https://lenis.darkroom.engineering)
+- **PWA:** installable app with manifest, icons, and Android TWA support
+- **Linting/formatting:** ESLint + Prettier
 
 ## Run Locally
 
@@ -87,7 +100,10 @@ Open [http://localhost:3000](http://localhost:3000) to see it running.
 
 ```
 myfinaldentistproject/ (supabase branch)
-├── public/                 # icons and static assets
+├── public/
+│   ├── icons/               # PWA app icons
+│   ├── manifest.json        # PWA manifest (installable app)
+│   └── .well-known/         # Android TWA verification
 ├── src/
 │   ├── app/
 │   │   ├── (dashboard)/
@@ -96,18 +112,22 @@ myfinaldentistproject/ (supabase branch)
 │   │   │   ├── patientdetail/  # single patient view + booking
 │   │   │   ├── patients/       # patients list
 │   │   │   ├── layout.jsx      # dashboard layout (nav + sidebar)
-│   │   │   └── page.jsx        # dashboard home
+│   │   │   └── page.jsx        # dashboard home (incremental scroll)
+│   │   ├── auth/callback/      # OAuth callback (exchanges code for session)
+│   │   ├── onboarding/         # clinic-name step for Google users
 │   │   ├── login/
 │   │   ├── signup/
-│   │   └── layout.tsx
-│   ├── components/         # NavBar, SideBar, and other shared UI
+│   │   └── layout.tsx          # root layout, mounts SmoothScroll
+│   ├── components/
+│   │   ├── SmoothScroll.jsx    # Lenis smooth scroll, mounted app-wide
+│   │   └── ...                 # NavBar, SideBar, and other shared UI
 │   └── utils/
-│       ├── storage.js      # Supabase queries (patients, appointments, auth)
+│       ├── storage.js          # Supabase queries (patients, appointments, auth)
 │       ├── supabase/
-│       │   ├── client.js   # browser Supabase client
-│       │   └── server.js   # server-side Supabase client
+│       │   ├── client.js       # browser Supabase client
+│       │   └── server.js       # server-side Supabase client
 │       └── pagenation.js
-├── src/proxy.js             # middleware, checks Supabase auth session
+├── src/proxy.js                # middleware, checks Supabase auth session
 ├── package.json
 └── tsconfig.json
 ```
