@@ -30,6 +30,10 @@ Small dental clinics often manage patients and appointments on paper or in Excel
 
 This app stores all data in the **browser's local storage**. There is no shared database. Data is private to whoever is using the browser, and it stays only on that device. Local storage was used to keep the project **self-contained**, no backend setup or hosting needed to run it.
 
+![Database schema](screenshots/db-schema.png)
+
+> Each key (`users`, `patients`, `appointments`) is a JSON array in the browser's localStorage. Relations are enforced only by app code (`array.filter`), not by a database.
+
 ## Features
 
 - **Login / Sign Up**: staff account creation and login

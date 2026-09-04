@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { readAppointments } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { readPatients, readCurrentUser, readMyPatients } from '@/utils/storage';
+import { readPatients, readCurrentUser, readMyPatients ,readTodaysAppointments ,countCompletedToday } from '@/utils/storage';
 import Skeleton from '@/components/Skeletron';
 import { paginate } from '@/utils/pagenation';
 import PagenationButtons from '@/components/PagenationButtons';
@@ -35,14 +35,11 @@ export default function page() {
     setIsLoading(false);
   }, []);
   /////////////////////////// filter todays date
-  let todayDate = new Date().toISOString().split('T')[0];
-  let todaysAppointments = appointments.filter((app) => app.date === todayDate);
-  // يعني المفروض فكرتها تعمل اراي فيها فقط الحاجات المكتمله النهارده
-  let theCompeletedAppointmentsToday = todaysAppointments.filter(
-    (appointment) => appointment.status == 'مكتمل'
-  );
-  let numberOfTheAppointmentsCompeletedToday =
-    theCompeletedAppointmentsToday.length;
+
+  let todaysAppointments = readTodaysAppointments();
+
+// عدد المواعيد المكتمله النهارده
+let numberOfTheAppointmentsCompeletedToday = countCompletedToday();
   /////////////////////////// pagination
   const {
     items: paginatedData,

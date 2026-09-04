@@ -75,3 +75,20 @@ export let deletePatients = (patientId) => {
   );
   saveAppointments(updatedAppointments);
 };
+
+////////////////////////////////////////// تاريخ النهارده بالتوقيت المحلي 
+export let getTodayLocal = () => {
+  let d = new Date();
+  let year = d.getFullYear();
+  let month = String(d.getMonth() + 1).padStart(2, '0');
+  let day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+////////////////////////////////////////// مواعيد النهارده
+export let readTodaysAppointments = () =>
+  readAppointments().filter((appointment) => appointment.date === getTodayLocal());
+
+////////////////////////////////////////// عدد المواعيد المكتملة النهارده
+export let countCompletedToday = () =>
+  readTodaysAppointments().filter((appointment) => appointment.status === 'مكتمل').length;
