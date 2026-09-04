@@ -6,7 +6,7 @@ A **staff-only PMS (Patient Management System)** that replaces paper records and
 
 **Live demo:** [clinic-saas-webapp.vercel.app](https://clinic-saas-webapp.vercel.app/login)
 
-This is the **local storage** version, data lives only in your own browser. For the version with a real backend, see the [Supabase branch](https://github.com/omarahmed321/myfinaldentistproject/tree/supabase) ([live demo](https://clinic-webapp-supabase.vercel.app/)).
+This is the **local storage** version — data lives only in your own browser. For the version with a real backend, see the [Supabase branch](https://github.com/omarahmed321/myfinaldentistproject/tree/supabase) ([live demo](https://clinic-webapp-supabase.vercel.app/)).
 
 ---
 
@@ -28,7 +28,7 @@ Small dental clinics often manage patients and appointments on paper or in Excel
 
 ## Data Storage
 
-This app stores all data in the **browser's local storage**. There is no shared database. Data is private to whoever is using the browser, and it stays only on that device. Local storage was used to keep the project **self-contained**, no backend setup or hosting needed to run it.
+This app stores all data in the **browser's local storage**. There is no shared database. Data is private to whoever is using the browser, and it stays only on that device. Local storage was used to keep the project **self-contained** — no backend setup or hosting needed to run it.
 
 ![Database schema](screenshots/db-schema.png)
 
@@ -36,12 +36,15 @@ This app stores all data in the **browser's local storage**. There is no shared 
 
 ## Features
 
-- **Login / Sign Up**: staff account creation and login
-- **Dashboard**: quick overview of clinic activity
-- **Patients List**: searchable, paginated table of all patients
-- **Add / Edit Patient**: name, phone, age, gender, and a **note** field (for allergies or medical conditions)
-- **Patient Details**: full record view for a single patient
-- **Appointments**: book and view appointments by date and time
+- **Login / Sign Up:** staff account creation and login
+- **Dashboard:** quick overview of clinic activity
+- **Patients List:** live search by name or phone, filter tabs by status (new / regular / needs follow-up), paginated table
+- **Add / Edit Patient:** name, phone, age, gender, and a **note** field (for allergies or medical conditions), validated with clear Arabic error messages
+- **Patient Details:** full record view for a single patient, medical note shown as a highlighted warning banner
+- **Appointments:** book and view appointments by date and time, with double-booking prevention
+- **Toast notifications** for saving, errors, and validation feedback
+- **Skeleton loading states** instead of blank screens while data loads
+- **Fully RTL** layout throughout
 
 ## Screenshots
 
@@ -79,6 +82,10 @@ This app stores all data in the **browser's local storage**. There is no shared 
 - **UI:** React + [Tailwind CSS](https://tailwindcss.com)
 - **Language:** JavaScript
 - **Storage:** Browser local storage (no backend database)
+- **Forms:** [Formik](https://formik.org) + [Yup](https://github.com/jquense/yup)
+- **Icons:** [Lucide React](https://lucide.dev)
+- **Notifications:** [React Hot Toast](https://react-hot-toast.com)
+- **Linting/formatting:** ESLint + Prettier
 
 ## Run Locally
 
