@@ -1,4 +1,4 @@
-# Dental Clinic Management System (PMS) — Supabase Edition
+#  Clinic Management System (PMS) — Supabase Edition
 
 A **staff-only PMS (Patient Management System)** that replaces paper records and Excel sheets for dental clinics. **Receptionists** and **doctors** manage **patients** and **appointments** from one dashboard.
 
