@@ -1,4 +1,4 @@
-# Dental Clinic Management System (PMS)
+#  Clinic Management System (PMS)
 
 A **staff-only PMS (Patient Management System)** that replaces paper records and Excel sheets for dental clinics. **Receptionists** and **doctors** manage **patients** and **appointments** from one dashboard.
 
